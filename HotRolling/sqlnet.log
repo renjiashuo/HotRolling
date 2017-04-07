@@ -1,0 +1,228 @@
+
+
+***********************************************************************
+Fatal NI connect error 12543, connecting to:
+ (DESCRIPTION=(CONNECT_DATA=(SERVICE_NAME=orcl)(CID=(PROGRAM=C:\Users\DELL\Desktop\??????????\??????????\HR\HotRolling\Debug\HotRolling.exe)(HOST=SXLIU-PC)(USER=DELL)))(ADDRESS=(PROTOCOL=TCP)(HOST=219.216.110.163)(PORT=1521)))
+
+  VERSION INFORMATION:
+	TNS for 32-bit Windows: Version 10.2.0.3.0 - Production
+	Windows NT TCP/IP NT Protocol Adapter for 32-bit Windows: Version 10.2.0.3.0 - Production
+  Time: 31-3月 -2017 14:10:29
+  Tracing not turned on.
+  Tns error struct:
+    ns main err code: 12543
+    TNS-12543: TNS: 无法连接目标主机
+    ns secondary err code: 12560
+    nt main err code: 513
+    TNS-00513: 不能连接的终点主机
+    nt secondary err code: 51
+    nt OS err code: 0
+
+
+***********************************************************************
+Fatal NI connect error 12543, connecting to:
+ (DESCRIPTION=(CONNECT_DATA=(SERVICE_NAME=orcl)(CID=(PROGRAM=C:\Users\DELL\Desktop\??????????\??????????\HR\HotRolling\Debug\HotRolling.exe)(HOST=SXLIU-PC)(USER=DELL)))(ADDRESS=(PROTOCOL=TCP)(HOST=219.216.110.163)(PORT=1521)))
+
+  VERSION INFORMATION:
+	TNS for 32-bit Windows: Version 10.2.0.3.0 - Production
+	Windows NT TCP/IP NT Protocol Adapter for 32-bit Windows: Version 10.2.0.3.0 - Production
+  Time: 31-3月 -2017 14:10:32
+  Tracing not turned on.
+  Tns error struct:
+    ns main err code: 12543
+    TNS-12543: TNS: 无法连接目标主机
+    ns secondary err code: 12560
+    nt main err code: 513
+    TNS-00513: 不能连接的终点主机
+    nt secondary err code: 51
+    nt OS err code: 0
+
+
+***********************************************************************
+Fatal NI connect error 12543, connecting to:
+ (DESCRIPTION=(CONNECT_DATA=(SERVICE_NAME=orcl)(CID=(PROGRAM=C:\Users\DELL\Desktop\??????????\??????????\HR\HotRolling\Debug\HotRolling.exe)(HOST=SXLIU-PC)(USER=DELL)))(ADDRESS=(PROTOCOL=TCP)(HOST=219.216.110.163)(PORT=1521)))
+
+  VERSION INFORMATION:
+	TNS for 32-bit Windows: Version 10.2.0.3.0 - Production
+	Windows NT TCP/IP NT Protocol Adapter for 32-bit Windows: Version 10.2.0.3.0 - Production
+  Time: 31-3月 -2017 14:10:44
+  Tracing not turned on.
+  Tns error struct:
+    ns main err code: 12543
+    TNS-12543: TNS: 无法连接目标主机
+    ns secondary err code: 12560
+    nt main err code: 513
+    TNS-00513: 不能连接的终点主机
+    nt secondary err code: 51
+    nt OS err code: 0
+
+
+***********************************************************************
+Fatal NI connect error 12541, connecting to:
+ (DESCRIPTION=(CONNECT_DATA=(SERVICE_NAME=orcl)(CID=(PROGRAM=C:\Users\DELL\Desktop\??????????\??????????\HR\HotRolling\Debug\HotRolling.exe)(HOST=SXLIU-PC)(USER=DELL)))(ADDRESS=(PROTOCOL=TCP)(HOST=219.216.110.163)(PORT=1521)))
+
+  VERSION INFORMATION:
+	TNS for 32-bit Windows: Version 10.2.0.3.0 - Production
+	Windows NT TCP/IP NT Protocol Adapter for 32-bit Windows: Version 10.2.0.3.0 - Production
+  Time: 05-4月 -2017 08:27:05
+  Tracing not turned on.
+  Tns error struct:
+    ns main err code: 12541
+    TNS-12541: TNS: 无监听程序
+    ns secondary err code: 12560
+    nt main err code: 511
+    TNS-00511: 无监听程序
+    nt secondary err code: 61
+    nt OS err code: 0
+
+
+***********************************************************************
+Fatal NI connect error 12541, connecting to:
+ (DESCRIPTION=(CONNECT_DATA=(SERVICE_NAME=orcl)(CID=(PROGRAM=C:\Users\DELL\Desktop\??????????\??????????\HR\HotRolling\Debug\HotRolling.exe)(HOST=SXLIU-PC)(USER=DELL)))(ADDRESS=(PROTOCOL=TCP)(HOST=219.216.110.163)(PORT=1521)))
+
+  VERSION INFORMATION:
+	TNS for 32-bit Windows: Version 10.2.0.3.0 - Production
+	Windows NT TCP/IP NT Protocol Adapter for 32-bit Windows: Version 10.2.0.3.0 - Production
+  Time: 05-4月 -2017 08:27:06
+  Tracing not turned on.
+  Tns error struct:
+    ns main err code: 12541
+    TNS-12541: TNS: 无监听程序
+    ns secondary err code: 12560
+    nt main err code: 511
+    TNS-00511: 无监听程序
+    nt secondary err code: 61
+    nt OS err code: 0
+
+
+***********************************************************************
+Fatal NI connect error 12541, connecting to:
+ (DESCRIPTION=(CONNECT_DATA=(SERVICE_NAME=orcl)(CID=(PROGRAM=C:\Users\DELL\Desktop\??????????\??????????\HR\HotRolling\Debug\HotRolling.exe)(HOST=SXLIU-PC)(USER=DELL)))(ADDRESS=(PROTOCOL=TCP)(HOST=219.216.110.163)(PORT=1521)))
+
+  VERSION INFORMATION:
+	TNS for 32-bit Windows: Version 10.2.0.3.0 - Production
+	Windows NT TCP/IP NT Protocol Adapter for 32-bit Windows: Version 10.2.0.3.0 - Production
+  Time: 05-4月 -2017 08:27:15
+  Tracing not turned on.
+  Tns error struct:
+    ns main err code: 12541
+    TNS-12541: TNS: 无监听程序
+    ns secondary err code: 12560
+    nt main err code: 511
+    TNS-00511: 无监听程序
+    nt secondary err code: 61
+    nt OS err code: 0
+
+
+***********************************************************************
+Fatal NI connect error 12541, connecting to:
+ (DESCRIPTION=(CONNECT_DATA=(SERVICE_NAME=orcl)(CID=(PROGRAM=C:\Users\DELL\Desktop\??????????\??????????\HR\HotRolling\Debug\HotRolling.exe)(HOST=SXLIU-PC)(USER=DELL)))(ADDRESS=(PROTOCOL=TCP)(HOST=219.216.110.163)(PORT=1521)))
+
+  VERSION INFORMATION:
+	TNS for 32-bit Windows: Version 10.2.0.3.0 - Production
+	Windows NT TCP/IP NT Protocol Adapter for 32-bit Windows: Version 10.2.0.3.0 - Production
+  Time: 05-4月 -2017 08:27:16
+  Tracing not turned on.
+  Tns error struct:
+    ns main err code: 12541
+    TNS-12541: TNS: 无监听程序
+    ns secondary err code: 12560
+    nt main err code: 511
+    TNS-00511: 无监听程序
+    nt secondary err code: 61
+    nt OS err code: 0
+
+
+***********************************************************************
+Fatal NI connect error 12541, connecting to:
+ (DESCRIPTION=(CONNECT_DATA=(SERVICE_NAME=orcl)(CID=(PROGRAM=C:\Users\DELL\Desktop\??????????\??????????\HR\HotRolling\Debug\HotRolling.exe)(HOST=SXLIU-PC)(USER=DELL)))(ADDRESS=(PROTOCOL=TCP)(HOST=219.216.110.163)(PORT=1521)))
+
+  VERSION INFORMATION:
+	TNS for 32-bit Windows: Version 10.2.0.3.0 - Production
+	Windows NT TCP/IP NT Protocol Adapter for 32-bit Windows: Version 10.2.0.3.0 - Production
+  Time: 05-4月 -2017 08:29:09
+  Tracing not turned on.
+  Tns error struct:
+    ns main err code: 12541
+    TNS-12541: TNS: 无监听程序
+    ns secondary err code: 12560
+    nt main err code: 511
+    TNS-00511: 无监听程序
+    nt secondary err code: 61
+    nt OS err code: 0
+
+
+***********************************************************************
+Fatal NI connect error 12541, connecting to:
+ (DESCRIPTION=(CONNECT_DATA=(SERVICE_NAME=orcl)(CID=(PROGRAM=C:\Users\DELL\Desktop\??????????\??????????\HR\HotRolling\Debug\HotRolling.exe)(HOST=SXLIU-PC)(USER=DELL)))(ADDRESS=(PROTOCOL=TCP)(HOST=219.216.110.163)(PORT=1521)))
+
+  VERSION INFORMATION:
+	TNS for 32-bit Windows: Version 10.2.0.3.0 - Production
+	Windows NT TCP/IP NT Protocol Adapter for 32-bit Windows: Version 10.2.0.3.0 - Production
+  Time: 05-4月 -2017 08:29:10
+  Tracing not turned on.
+  Tns error struct:
+    ns main err code: 12541
+    TNS-12541: TNS: 无监听程序
+    ns secondary err code: 12560
+    nt main err code: 511
+    TNS-00511: 无监听程序
+    nt secondary err code: 61
+    nt OS err code: 0
+
+
+***********************************************************************
+Fatal NI connect error 12541, connecting to:
+ (DESCRIPTION=(CONNECT_DATA=(SERVICE_NAME=orcl)(CID=(PROGRAM=C:\Users\DELL\Desktop\??????????\??????????\HR\HotRolling\Debug\HotRolling.exe)(HOST=SXLIU-PC)(USER=DELL)))(ADDRESS=(PROTOCOL=TCP)(HOST=219.216.110.163)(PORT=1521)))
+
+  VERSION INFORMATION:
+	TNS for 32-bit Windows: Version 10.2.0.3.0 - Production
+	Windows NT TCP/IP NT Protocol Adapter for 32-bit Windows: Version 10.2.0.3.0 - Production
+  Time: 05-4月 -2017 08:29:31
+  Tracing not turned on.
+  Tns error struct:
+    ns main err code: 12541
+    TNS-12541: TNS: 无监听程序
+    ns secondary err code: 12560
+    nt main err code: 511
+    TNS-00511: 无监听程序
+    nt secondary err code: 61
+    nt OS err code: 0
+
+
+***********************************************************************
+Fatal NI connect error 12541, connecting to:
+ (DESCRIPTION=(CONNECT_DATA=(SERVICE_NAME=orcl)(CID=(PROGRAM=C:\Users\DELL\Desktop\??????????\??????????\HR\HotRolling\Debug\HotRolling.exe)(HOST=SXLIU-PC)(USER=DELL)))(ADDRESS=(PROTOCOL=TCP)(HOST=219.216.110.163)(PORT=1521)))
+
+  VERSION INFORMATION:
+	TNS for 32-bit Windows: Version 10.2.0.3.0 - Production
+	Windows NT TCP/IP NT Protocol Adapter for 32-bit Windows: Version 10.2.0.3.0 - Production
+  Time: 05-4月 -2017 08:29:32
+  Tracing not turned on.
+  Tns error struct:
+    ns main err code: 12541
+    TNS-12541: TNS: 无监听程序
+    ns secondary err code: 12560
+    nt main err code: 511
+    TNS-00511: 无监听程序
+    nt secondary err code: 61
+    nt OS err code: 0
+
+
+***********************************************************************
+Fatal NI connect error 12170.
+
+  VERSION INFORMATION:
+	TNS for 32-bit Windows: Version 10.2.0.3.0 - Production
+	Windows NT TCP/IP NT Protocol Adapter for 32-bit Windows: Version 10.2.0.3.0 - Production
+  Time: 07-4月 -2017 08:33:34
+  Tracing not turned on.
+  Tns error struct:
+    ns main err code: 12535
+    TNS-12535: TNS: 操作超时
+    ns secondary err code: 12560
+    nt main err code: 505
+    TNS-00505: 操作超时
+    nt secondary err code: 60
+    nt OS err code: 0
+  Client address: <unknown>
