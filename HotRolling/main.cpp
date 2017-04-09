@@ -5,10 +5,24 @@
 #include"TortoiseShell.h"
 int main()
 {	
-	SteelCoil::SteelCoilgroup();
-	Group::vec_group();	
-	TortoiseShell::shell();
-	datacheck();
+	//////////////////////////////////////////////////////////////////////////
+	// 监视用
+	SteelCoil::s_pre_flagSteelCoil;
+	SteelCoil::s_nonpre_flagSteelCoil;
+	SteelCoil::s_DHCRSteelCoil;
+	Group::s_mapSetOfGroup;
+	Group::s_mapSetOfGroup1;
+	Group::s_mapSetOfsmallGroup;
+	TortoiseShell::s_mapSetOfTortoiseShell;
+	//////////////////////////////////////////////////////////////////////////
+
+	//datacheck();	// 数据校验
+
+	SteelCoil::SteelCoilgroup();	// 初始化钢卷数据
+	Group::vec_group();			// 初始化钢卷组数据
+	TortoiseShell::InitShell();		// 初始化乌龟壳
+	TortoiseShell::FinishShell();	// 完成乌龟壳初始解
+
 	system("pause");
 	return 0;
 }

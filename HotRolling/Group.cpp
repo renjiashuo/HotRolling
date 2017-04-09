@@ -26,13 +26,72 @@ Group::Group(int value1, int value2, string value3, double value4, double value5
 	st_no = value3;
 	nom_roll_thick = value4;
 	nom_roll_width = value5;
-	//roll_len = value6;
 	nom_heat_temp = value6;
 	nom_afft_temp = value7;
 	nom_coil_temp = value8;
 	m_SteelCoil = value9;
-	//m_SteelCoil = value10;
+	for (int i = 0; i < m_SteelCoil.size(); i++)
+		roll_len += m_SteelCoil[i]->roll_len;
 }
+
+Group::Group(Group *group, int n)
+{
+	// 初始化相同遍历
+	this->group_no = s_mapSetOfsmallGroup.size() + 1;
+	this->plan_type = group->plan_type;
+	this->st_no = group->st_no;
+	this->nom_roll_thick = group->nom_roll_thick;
+	this->nom_roll_width = group->nom_roll_width;
+	this->nom_heat_temp = group->nom_heat_temp;
+	this->nom_afft_temp = group->nom_afft_temp;
+	this->nom_coil_temp = group->nom_coil_temp;
+	// 转移钢卷到新的钢卷组中
+	vector<SteelCoil*>::iterator iter = group->m_SteelCoil.begin();
+	advance(iter, n);
+	this->m_SteelCoil.insert(this->m_SteelCoil.begin(), group->m_SteelCoil.begin(), iter);
+	group->m_SteelCoil.erase(group->m_SteelCoil.begin(), iter);
+	// 计算轧制长度
+	roll_len = 0;
+	for (iter = m_SteelCoil.begin(); iter != m_SteelCoil.end(); iter++)
+	{
+		SteelCoil *steelCoil = *iter;
+		roll_len += steelCoil->SteelCoil_len;
+	}
+}
+
+Group::Group(Group *group, double lonth)
+{
+	// 初始化相同遍历
+	this->group_no = s_mapSetOfsmallGroup.size() + 1;
+	this->plan_type = group->plan_type;
+	this->st_no = group->st_no;
+	this->nom_roll_thick = group->nom_roll_thick;
+	this->nom_roll_width = group->nom_roll_width;
+	this->nom_heat_temp = group->nom_heat_temp;
+	this->nom_afft_temp = group->nom_afft_temp;
+	this->nom_coil_temp = group->nom_coil_temp;
+	// 转移钢卷到新的钢卷组中
+	roll_len = 0;	// 轧制长度
+	for (vector<SteelCoil*>::iterator iter = group->m_SteelCoil.begin(); iter != group->m_SteelCoil.end();)
+	{
+		// 钢卷组内每一个钢卷
+		SteelCoil *steelCoil = *iter;
+		// 如果新钢卷组的长度加下一个钢卷的长度小于等于需要的长度
+		if (roll_len + steelCoil->SteelCoil_len <= lonth)
+		{
+			// 更新新钢卷组长度
+			roll_len += steelCoil->SteelCoil_len;
+			// 更新原钢卷组长度
+			group->roll_len -= steelCoil->SteelCoil_len;
+			// 转移钢卷
+			this->m_SteelCoil.insert(this->m_SteelCoil.end(), iter, iter+1);
+			iter = group->m_SteelCoil.erase(iter);
+		}
+		else
+			break;
+	}
+}
+
 void indata(map<int, Group*>&m_data, int a, Group* b)
 {
 	m_data.insert(make_pair(a, b));
@@ -106,8 +165,7 @@ Group::~Group()
 //////////////////////////////////////////////////////////////////////////
 map<int, Group*>		Group::s_mapSetOfGroup = map<int, Group*>();
 map<int, Group*>		Group::s_mapSetOfGroup1 = map<int, Group*>();
-map<string, Group*>     Group::s_mapSetOfsmallGroup = map<string, Group*>();
+map<int, Group*>     Group::s_mapSetOfsmallGroup = map<int, Group*>();
 int						Group::s_GroupCount = 0;
-
 ////////////////////////////////////////////////////////////////////////
 #pragma endregion

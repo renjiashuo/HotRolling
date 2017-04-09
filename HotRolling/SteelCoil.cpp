@@ -73,27 +73,27 @@ void SteelCoil::SteelCoilgroup()
 		Connection con(" 127.0.0.1/orcl", "scott", "tiger");//连接数据库（IP地址/服务名，“用户名”，“密码“）
 		Statement st(con);//创建数据集
 		ostring rowid;
-		st.Execute("select * from data");//选择表
+		st.Execute("select * from DATA1 t order by SLAB_WIDTH DESC");//选择表
 		Resultset rs = st.GetResultset();
 		
 		while (rs.Next())
 		{
-			if (rs.Get<int>(10) == 1)//将有DHCR标记的钢卷按七组标准组成钢卷组放入map
+			if (rs.Get<int>(30) == 1)//将有DHCR标记的钢卷按七组标准组成钢卷组放入map
 			{
-				SteelCoil *DHCRSteelCoil = new SteelCoil(rs.Get<ostring>(2), rs.Get<double>(3), rs.Get<double>(4), rs.Get<double>(5), rs.Get<ostring>(6), rs.Get<int>(7), rs.Get<double>(8), rs.Get<int>(9), rs.Get<int>(10), rs.Get<int>(11), rs.Get<int>(12), rs.Get<int>(13), rs.Get<int>(14), rs.Get<int>(15));
-				indata(SteelCoil::s_DHCRSteelCoil, rs.Get<int>(12), rs.Get<ostring>(6), rs.Get<double>(3), rs.Get<double>(4), rs.Get<int>(7), rs.Get<int>(8), rs.Get<int>(9), DHCRSteelCoil);
+				SteelCoil *DHCRSteelCoil = new SteelCoil(rs.Get<ostring>(10), rs.Get<double>(18), rs.Get<double>(19), rs.Get<double>(20), rs.Get<ostring>(22), rs.Get<int>(51), rs.Get<int>(52), rs.Get<int>(53), rs.Get<int>(30), rs.Get<int>(40), rs.Get<int>(56), rs.Get<int>(54), rs.Get<int>(55), rs.Get<int>(82));
+				indata(SteelCoil::s_DHCRSteelCoil, rs.Get<int>(56), rs.Get<ostring>(22), rs.Get<double>(18), rs.Get<double>(19), rs.Get<int>(51), rs.Get<int>(52), rs.Get<int>(53), DHCRSteelCoil);
 				//SteelCoil::s_DHCRSteelCoil.insert(make_pair(DHCRSteelCoil->mat_no, DHCRSteelCoil));
 			}		
-			if (rs.Get<int>(11) == 1 && rs.Get<int>(10)==0)//将有烫辊材标记（不包括DHCR）的钢卷按七组标准组成钢卷组放入map
+			if (rs.Get<int>(40) == 1 && rs.Get<int>(30)==0)//将有烫辊材标记（不包括DHCR）的钢卷按七组标准组成钢卷组放入map
 			{
-				SteelCoil *PRESteelCoil = new SteelCoil(rs.Get<ostring>(2), rs.Get<double>(3), rs.Get<double>(4), rs.Get<double>(5), rs.Get<ostring>(6), rs.Get<double>(7), rs.Get<double>(8), rs.Get<int>(9), rs.Get<int>(10), rs.Get<int>(11), rs.Get<int>(12), rs.Get<int>(13), rs.Get<int>(14), rs.Get<int>(15));
-				indata(SteelCoil::s_pre_flagSteelCoil, rs.Get<int>(12), rs.Get<ostring>(6), rs.Get<double>(3), rs.Get<double>(4), rs.Get<int>(7), rs.Get<int>(8), rs.Get<int>(9), PRESteelCoil);
+				SteelCoil *PRESteelCoil = new SteelCoil(rs.Get<ostring>(10), rs.Get<double>(18), rs.Get<double>(19), rs.Get<double>(20), rs.Get<ostring>(22), rs.Get<int>(51), rs.Get<int>(52), rs.Get<int>(53), rs.Get<int>(30), rs.Get<int>(40), rs.Get<int>(56), rs.Get<int>(54), rs.Get<int>(55), rs.Get<int>(82));
+				indata(SteelCoil::s_pre_flagSteelCoil, rs.Get<int>(56), rs.Get<ostring>(22), rs.Get<double>(18), rs.Get<double>(19), rs.Get<int>(51), rs.Get<int>(52), rs.Get<int>(53), PRESteelCoil);
 				//SteelCoil::s_pre_flagSteelCoil.insert(make_pair(PRESteelCoil->mat_no, PRESteelCoil));
 			}
-			if (rs.Get<int>(11) == 0 && rs.Get<int>(10) == 0)//将无烫辊材标记（不包括DHCR）的钢卷按七组标准组成钢卷组放入map
+			if (rs.Get<int>(40) == 0 && rs.Get<int>(30) == 0)//将无烫辊材标记（不包括DHCR）的钢卷按七组标准组成钢卷组放入map
 			{
-				SteelCoil *nonPRESteelCoil = new SteelCoil(rs.Get<ostring>(2), rs.Get<double>(3), rs.Get<double>(4), rs.Get<double>(5), rs.Get<ostring>(6), rs.Get<double>(7), rs.Get<double>(8), rs.Get<int>(9), rs.Get<int>(10), rs.Get<int>(11), rs.Get<int>(12), rs.Get<int>(13), rs.Get<int>(14), rs.Get<int>(15));
-				indata(SteelCoil::s_nonpre_flagSteelCoil, rs.Get<int>(12), rs.Get<ostring>(6), rs.Get<double>(3), rs.Get<double>(4), rs.Get<int>(7), rs.Get<int>(8), rs.Get<int>(9), nonPRESteelCoil);
+				SteelCoil *nonPRESteelCoil = new SteelCoil(rs.Get<ostring>(10), rs.Get<double>(18), rs.Get<double>(19), rs.Get<double>(20), rs.Get<ostring>(22), rs.Get<int>(51), rs.Get<int>(52), rs.Get<int>(53), rs.Get<int>(30), rs.Get<int>(40), rs.Get<int>(56), rs.Get<int>(54), rs.Get<int>(55), rs.Get<int>(82));
+				indata(SteelCoil::s_nonpre_flagSteelCoil, rs.Get<int>(56), rs.Get<ostring>(22), rs.Get<double>(18), rs.Get<double>(19), rs.Get<int>(51), rs.Get<int>(52), rs.Get<int>(53), nonPRESteelCoil);
 				//SteelCoil::s_nonpre_flagSteelCoil.insert(make_pair(nonPRESteelCoil->mat_no, nonPRESteelCoil));
 			}			
 		}
