@@ -22,6 +22,7 @@ int main()
 	Group::vec_group();			// 初始化钢卷组数据
 	TortoiseShell::InitShell();		// 初始化乌龟壳
 	TortoiseShell::FinishShell();	// 完成乌龟壳初始解
+	TortoiseShell::showResult();	// 输出到控制台
 
 	system("pause");
 	return 0;

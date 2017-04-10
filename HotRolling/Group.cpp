@@ -57,6 +57,8 @@ Group::Group(Group *group, int n)
 		SteelCoil *steelCoil = *iter;
 		roll_len += steelCoil->SteelCoil_len;
 	}
+	// 将新的钢卷组放入小钢卷组map中
+	Group::s_mapSetOfsmallGroup.insert(make_pair(this->group_no, this));
 }
 
 Group::Group(Group *group, double lonth)
