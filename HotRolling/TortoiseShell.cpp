@@ -52,7 +52,8 @@ TortoiseShell::TortoiseShell(Group *group)
 		// 如果烫辊材计划类型与初始化乌龟壳的钢卷计划类型一样，则放入烫辊材
 		map<pair<int, int>, int>::iterator iter2 = plantype.find(make_pair(plan_type, plan_type2));
 		int type = iter2->second;
-		if (type!=2 && group2->nom_roll_width != width)
+		//if (type!=2 && group2->nom_roll_width != width)
+		if (type == 1 && group2->nom_roll_width != width)
 		{
 			width = group2->nom_roll_width;
 			// 如果该钢卷组内钢卷个数大于3，则只拿出3块做烫辊材，否则全部做烫辊材
@@ -260,7 +261,8 @@ void TortoiseShell::FinishShell()
 				map<pair<int, int>, int>::iterator iter4 = plantype.find(make_pair(plan_type, plan_type2));
 				int type = iter4->second;
 				// 如果计划内不能组合，则不用查找本乌龟壳了，继续下一个乌龟壳查找
-				if (type == 2)
+				//if (type == 2)
+				if (type != 1)
 					break;
 			}
 			// 如果还没到这个乌龟壳里的最后一个钢卷组就触发了break，则说明有冲突，寻找下一个乌龟壳吧
@@ -279,7 +281,8 @@ void TortoiseShell::FinishShell()
 				map<pair<int, int>, int>::iterator iter4 = plantype.find(make_pair(plan_type, plan_type2));
 				int type = iter4->second;
 				// 如果计划内不能组合，则不用查找本乌龟壳了，继续下一个乌龟壳查找
-				if (type == 2)
+				//if (type == 2)
+				if (type != 1)
 					break;
 			}
 			// 如果1）顺利的查找到了这个乌龟壳里的最后一个钢卷组也没触发break，则说明准备放入的钢卷组可以放入本乌龟壳中，那么放入吧
@@ -423,7 +426,8 @@ void TortoiseShell::FinishShell()
 				map<pair<int, int>, int>::iterator iter4 = plantype.find(make_pair(plan_type, plan_type2));
 				int type = iter4->second;
 				// 如果计划内不能组合，则不用查找本乌龟壳了，继续下一个乌龟壳查找
-				if (type == 2)
+				//if (type == 2)
+				if (type != 1)
 					break;
 			}
 			// 如果还没到这个乌龟壳里的最后一个钢卷组就触发了break，则说明有冲突，寻找下一个乌龟壳吧
@@ -442,7 +446,8 @@ void TortoiseShell::FinishShell()
 				map<pair<int, int>, int>::iterator iter4 = plantype.find(make_pair(plan_type, plan_type2));
 				int type = iter4->second;
 				// 如果计划内不能组合，则不用查找本乌龟壳了，继续下一个乌龟壳查找
-				if (type == 2)
+				//if (type == 2)
+				if (type != 1)
 					break;
 			}
 			// 如果1）顺利的查找到了这个乌龟壳里的最后一个钢卷组也没触发break，则说明准备放入的钢卷组可以放入本乌龟壳中，那么放入吧
@@ -561,7 +566,9 @@ void TortoiseShell::FinishShell()
 		{
 			Group *group = iter2->second;
 			// 上一个钢卷组分配的末位置
-			int end_located = tortoiseShell->m_groups.rbegin()->first.second;
+			int end_located = 0;
+			if (!tortoiseShell->m_groups.empty())
+				end_located = tortoiseShell->m_groups.rbegin()->first.second;
 			tortoiseShell->m_groups.insert(make_pair(make_pair(end_located, end_located + group->roll_len), group));
 		}
 		tortoiseShell->m_groups_temp.clear();
@@ -607,6 +614,46 @@ void TortoiseShell::showResult()
 	cout << endl;
 	cout << "s_mapSetOfGroup1集合里还剩 " << Group::s_mapSetOfGroup1.size() << " 个钢卷组" << endl;
 	cout << endl << endl;
+}
+
+void TortoiseShell::showResultFile()
+{
+	string filename_result = "result.csv";
+	ofstream fout(filename_result);
+	fout << "钢卷号," << "流向," << "切断时间," << "必做标记," << "计划类型," << "额定轧制厚度," << "额定轧制宽度," << "额定出炉温度," << "额定终轧温度," << "额定卷取温度," << "计划号" << endl;
+	// 遍历乌龟壳
+	for (map<int, TortoiseShell*>::iterator iter = s_mapSetOfTortoiseShell.begin(); iter != s_mapSetOfTortoiseShell.end(); iter++)
+	{
+		// 乌龟壳
+		TortoiseShell *tortoiseShell = iter->second;
+		int tortoiseShellNo = iter->first;
+		fout << tortoiseShellNo << endl;
+		// 遍历乌龟壳内的板坯组
+		for (map<pair<int, int>, Group*>::iterator iter2 = tortoiseShell->m_groups.begin(); iter2 != tortoiseShell->m_groups.end(); iter2++)
+		{
+			// 钢卷组
+			Group *group = iter2->second;
+			// 遍历板坯组内的板坯
+			for (vector<SteelCoil*>::iterator iter3 = group->m_SteelCoil.begin(); iter3 != group->m_SteelCoil.end(); iter3++)
+			{
+				// 钢卷
+				SteelCoil *steelCoil = *iter3;
+				string	mat_no = steelCoil->mat_no;						// 钢卷号
+				string	flow = steelCoil->flow;							// 流向
+				string	fin_cut_time = steelCoil->fin_cut_time;				// 切断时间
+				//bool		must_do_flag = steelCoil->must_do_flag;				// 必做标记
+				bool		must_do_flag = 0;				// 必做标记
+				int		plan_type = steelCoil->plan_type;					// 计划类型
+				double	SteelCoil_thick = steelCoil->SteelCoil_thick;			// 额定轧制厚度
+				double	SteelCoil_width = steelCoil->SteelCoil_width;			// 额定轧制宽度
+				int		nom_heat_temp = steelCoil->nom_heat_temp;			// 额定出炉温度
+				int		nom_afft_temp = steelCoil->nom_afft_temp;			// 额定终轧温度
+				int		nom_coil_temp = steelCoil->nom_coil_temp;			// 额定卷取温度
+				string	plan_no = steelCoil->plan_no;						// 计划号
+				fout << mat_no << "," << flow << "," << fin_cut_time << "," << (int)must_do_flag << "," << plan_type << "," << SteelCoil_thick << "," << SteelCoil_width << "," << nom_heat_temp << "," << nom_afft_temp << "," << nom_coil_temp << "," << plan_no << endl;
+			}
+		}
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////

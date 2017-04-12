@@ -89,6 +89,10 @@ public:
 	// 摘要:
 	//     结果控制台展示。
 	static void showResult();
+	//
+	// 摘要:
+	//     结果输出到文本。
+	static void showResultFile();
 	//////////////////////////////////////////////////////////////////////////
 	#pragma endregion
 
