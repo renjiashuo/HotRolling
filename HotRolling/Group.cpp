@@ -30,8 +30,9 @@ Group::Group(int value1, int value2, string value3, double value4, double value5
 	nom_afft_temp = value7;
 	nom_coil_temp = value8;
 	m_SteelCoil = value9;
+	roll_len = 0;
 	for (int i = 0; i < m_SteelCoil.size(); i++)
-		roll_len += m_SteelCoil[i]->roll_len;
+		roll_len += m_SteelCoil[i]->SteelCoil_len;
 }
 
 Group::Group(Group *group, int n)
@@ -92,6 +93,7 @@ Group::Group(Group *group, double lonth)
 		else
 			break;
 	}
+	Group::s_mapSetOfsmallGroup.insert(make_pair(this->group_no, this));
 }
 
 void indata(map<int, Group*>&m_data, int a, Group* b)

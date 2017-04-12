@@ -1,14 +1,113 @@
-﻿生成启动时间为 2017/4/10 14:56:13。
-     1>项目“C:\Users\wsgbcsc\Documents\GitHub\HotRolling\HotRolling\HotRolling.vcxproj”在节点 2 上(Build 个目标)。
-     1>Link:
+﻿生成启动时间为 2017/4/12 16:52:31。
+     1>项目“C:\Users\wsgbcsc\Documents\GitHub\HotRolling\HotRolling\HotRolling.vcxproj”在节点 2 上(Rebuild 个目标)。
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /IC:\Users\wsgbcsc\Documents\GitHub\HotRolling\HotRolling\include /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt datacheck.cpp Group.cpp main.cpp SteelCoil.cpp TortoiseShell.cpp
+         TortoiseShell.cpp
+     1>c:\users\wsgbcsc\documents\github\hotrolling\hotrolling\tortoiseshell.cpp(88): warning C4018: “<”: 有符号/无符号不匹配
+     1>c:\program files (x86)\microsoft visual studio 12.0\vc\include\utility(157): warning C4244: “初始化”: 从“double”转换到“int”，可能丢失数据
+                 c:\program files (x86)\microsoft visual studio 12.0\vc\include\utility(157): 参见对正在编译的函数 模板 实例化“std::pair<int,int>::pair<double,int,void>(std::pair<double,int> &&)”的引用
+                 c:\program files (x86)\microsoft visual studio 12.0\vc\include\utility(157): 参见对正在编译的函数 模板 实例化“std::pair<int,int>::pair<double,int,void>(std::pair<double,int> &&)”的引用
+                 c:\program files (x86)\microsoft visual studio 12.0\vc\include\xmemory0(600): 参见对正在编译的函数 模板 实例化“std::pair<const _Kty,_Ty>::pair<std::pair<double,int>,Group*,void>(std::pair<std::pair<double,int>,Group *> &&)”的引用
+                 with
+                 [
+                     _Kty=std::pair<int,int>
+         ,            _Ty=Group *
+                 ]
+                 c:\program files (x86)\microsoft visual studio 12.0\vc\include\xmemory0(600): 参见对正在编译的函数 模板 实例化“std::pair<const _Kty,_Ty>::pair<std::pair<double,int>,Group*,void>(std::pair<std::pair<double,int>,Group *> &&)”的引用
+                 with
+                 [
+                     _Kty=std::pair<int,int>
+         ,            _Ty=Group *
+                 ]
+                 c:\program files (x86)\microsoft visual studio 12.0\vc\include\xmemory0(723): 参见对正在编译的函数 模板 实例化“void std::allocator<_Other>::construct<_Objty,_Ty>(_Objty *,_Ty &&)”的引用
+                 with
+                 [
+                     _Other=std::_Tree_node<std::pair<const std::pair<int,int>,Group *>,void *>
+         ,            _Objty=std::pair<const std::pair<int,int>,Group *>
+         ,            _Ty=std::pair<std::pair<double,int>,Group *>
+                 ]
+                 c:\program files (x86)\microsoft visual studio 12.0\vc\include\xmemory0(723): 参见对正在编译的函数 模板 实例化“void std::allocator<_Other>::construct<_Objty,_Ty>(_Objty *,_Ty &&)”的引用
+                 with
+                 [
+                     _Other=std::_Tree_node<std::pair<const std::pair<int,int>,Group *>,void *>
+         ,            _Objty=std::pair<const std::pair<int,int>,Group *>
+         ,            _Ty=std::pair<std::pair<double,int>,Group *>
+                 ]
+                 c:\program files (x86)\microsoft visual studio 12.0\vc\include\xmemory0(872): 参见对正在编译的函数 模板 实例化“void std::allocator_traits<_Alloc>::construct<_Ty,std::pair<std::pair<double,int>,Group *>>(std::allocator<_Other> &,_Objty *,std::pair<std::pair<double,int>,Group *> &&)”的引用
+                 with
+                 [
+                     _Alloc=std::allocator<std::_Tree_node<std::pair<const std::pair<int,int>,Group *>,void *>>
+         ,            _Ty=std::pair<const std::pair<int,int>,Group *>
+         ,            _Other=std::_Tree_node<std::pair<const std::pair<int,int>,Group *>,void *>
+         ,            _Objty=std::pair<const std::pair<int,int>,Group *>
+                 ]
+                 c:\program files (x86)\microsoft visual studio 12.0\vc\include\xmemory0(872): 参见对正在编译的函数 模板 实例化“void std::allocator_traits<_Alloc>::construct<_Ty,std::pair<std::pair<double,int>,Group *>>(std::allocator<_Other> &,_Objty *,std::pair<std::pair<double,int>,Group *> &&)”的引用
+                 with
+                 [
+                     _Alloc=std::allocator<std::_Tree_node<std::pair<const std::pair<int,int>,Group *>,void *>>
+         ,            _Ty=std::pair<const std::pair<int,int>,Group *>
+         ,            _Other=std::_Tree_node<std::pair<const std::pair<int,int>,Group *>,void *>
+         ,            _Objty=std::pair<const std::pair<int,int>,Group *>
+                 ]
+                 c:\program files (x86)\microsoft visual studio 12.0\vc\include\xtree(933): 参见对正在编译的函数 模板 实例化“void std::_Wrap_alloc<std::allocator<_Other>>::construct<_Ty,std::pair<std::pair<double,int>,Group *>>(_Ty *,std::pair<std::pair<double,int>,Group *> &&)”的引用
+                 with
+                 [
+                     _Other=std::_Tree_node<std::pair<const std::pair<int,int>,Group *>,void *>
+         ,            _Ty=std::pair<const std::pair<int,int>,Group *>
+                 ]
+                 c:\program files (x86)\microsoft visual studio 12.0\vc\include\xtree(933): 参见对正在编译的函数 模板 实例化“void std::_Wrap_alloc<std::allocator<_Other>>::construct<_Ty,std::pair<std::pair<double,int>,Group *>>(_Ty *,std::pair<std::pair<double,int>,Group *> &&)”的引用
+                 with
+                 [
+                     _Other=std::_Tree_node<std::pair<const std::pair<int,int>,Group *>,void *>
+         ,            _Ty=std::pair<const std::pair<int,int>,Group *>
+                 ]
+                 c:\program files (x86)\microsoft visual studio 12.0\vc\include\xtree(1158): 参见对正在编译的函数 模板 实例化“std::_Tree_node<std::pair<const _Kty,_Ty>,void *> *std::_Tree_buy<std::pair<const _Kty,_Ty>,std::allocator<std::pair<const _Kty,_Ty>>>::_Buynode<std::pair<std::pair<double,int>,Group *>>(std::pair<std::pair<double,int>,Group *> &&)”的引用
+                 with
+                 [
+                     _Kty=std::pair<int,int>
+         ,            _Ty=Group *
+                 ]
+                 c:\program files (x86)\microsoft visual studio 12.0\vc\include\xtree(1158): 参见对正在编译的函数 模板 实例化“std::_Tree_node<std::pair<const _Kty,_Ty>,void *> *std::_Tree_buy<std::pair<const _Kty,_Ty>,std::allocator<std::pair<const _Kty,_Ty>>>::_Buynode<std::pair<std::pair<double,int>,Group *>>(std::pair<std::pair<double,int>,Group *> &&)”的引用
+                 with
+                 [
+                     _Kty=std::pair<int,int>
+         ,            _Ty=Group *
+                 ]
+                 c:\users\wsgbcsc\documents\github\hotrolling\hotrolling\tortoiseshell.cpp(38): 参见对正在编译的函数 模板 实例化“std::pair<std::_Tree_iterator<std::_Tree_val<std::_Tree_simple_types<std::pair<const _Kty,_Ty>>>>,bool> std::_Tree<std::_Tmap_traits<_Kty,_Ty,_Pr,_Alloc,false>>::insert<std::pair<std::pair<double,int>,Group *>>(_Valty &&)”的引用
+                 with
+                 [
+                     _Kty=std::pair<int,int>
+         ,            _Ty=Group *
+         ,            _Pr=std::less<std::pair<int,int>>
+         ,            _Alloc=std::allocator<std::pair<const std::pair<int,int>,Group *>>
+         ,            _Valty=std::pair<std::pair<double,int>,Group *>
+                 ]
+                 c:\users\wsgbcsc\documents\github\hotrolling\hotrolling\tortoiseshell.cpp(38): 参见对正在编译的函数 模板 实例化“std::pair<std::_Tree_iterator<std::_Tree_val<std::_Tree_simple_types<std::pair<const _Kty,_Ty>>>>,bool> std::_Tree<std::_Tmap_traits<_Kty,_Ty,_Pr,_Alloc,false>>::insert<std::pair<std::pair<double,int>,Group *>>(_Valty &&)”的引用
+                 with
+                 [
+                     _Kty=std::pair<int,int>
+         ,            _Ty=Group *
+         ,            _Pr=std::less<std::pair<int,int>>
+         ,            _Alloc=std::allocator<std::pair<const std::pair<int,int>,Group *>>
+         ,            _Valty=std::pair<std::pair<double,int>,Group *>
+                 ]
+         SteelCoil.cpp
+     1>c:\users\wsgbcsc\documents\github\hotrolling\hotrolling\steelcoil.cpp(42): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
+     1>c:\users\wsgbcsc\documents\github\hotrolling\hotrolling\steelcoil.cpp(43): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
+         main.cpp
+         Group.cpp
+     1>c:\users\wsgbcsc\documents\github\hotrolling\hotrolling\group.cpp(34): warning C4018: “<”: 有符号/无符号不匹配
+         datacheck.cpp
+         正在生成代码...
+       Link:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\wsgbcsc\Documents\GitHub\HotRolling\Debug\HotRolling.exe" /INCREMENTAL /NOLOGO /LIBPATH:C:\Users\wsgbcsc\Documents\GitHub\HotRolling\HotRolling\lib32 ociliba.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\wsgbcsc\Documents\GitHub\HotRolling\Debug\HotRolling.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\wsgbcsc\Documents\GitHub\HotRolling\Debug\HotRolling.lib" /MACHINE:X86 Debug\datacheck.obj
          Debug\Group.obj
          Debug\main.obj
          Debug\SteelCoil.obj
          Debug\TortoiseShell.obj
          HotRolling.vcxproj -> C:\Users\wsgbcsc\Documents\GitHub\HotRolling\Debug\HotRolling.exe
-     1>已完成生成项目“C:\Users\wsgbcsc\Documents\GitHub\HotRolling\HotRolling\HotRolling.vcxproj”(Build 个目标)的操作。
+     1>已完成生成项目“C:\Users\wsgbcsc\Documents\GitHub\HotRolling\HotRolling\HotRolling.vcxproj”(Rebuild 个目标)的操作。
 
 生成成功。
 
-已用时间 00:00:01.08
+已用时间 00:00:10.37
