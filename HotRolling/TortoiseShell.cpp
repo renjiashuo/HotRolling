@@ -52,8 +52,7 @@ TortoiseShell::TortoiseShell(Group *group)
 		// 如果烫辊材计划类型与初始化乌龟壳的钢卷计划类型一样，则放入烫辊材
 		map<pair<int, int>, int>::iterator iter2 = plantype.find(make_pair(plan_type, plan_type2));
 		int type = iter2->second;
-		//if (type!=2 && group2->nom_roll_width != width)
-		if (type == 1 && group2->nom_roll_width != width)
+		if (type != 2 && type != 0 && group2->nom_roll_width != width)
 		{
 			width = group2->nom_roll_width;
 			// 如果该钢卷组内钢卷个数大于3，则只拿出3块做烫辊材，否则全部做烫辊材
@@ -249,6 +248,25 @@ void TortoiseShell::FinishShell()
 			// 检查同宽公里数是否满足，若不满足，则这个乌龟壳不能放这个钢卷组
 			if (tortoiseShell->width_lonth.find(group->nom_roll_width) != tortoiseShell->width_lonth.end() && tortoiseShell->width_lonth.find(group->nom_roll_width)->second >= samewidth_limit)
 				continue;
+			// 检查该钢卷如果放入，有没有相邻冲突，如果有，则不能放入该乌龟壳
+			Group* group_temp = NULL;
+			tortoiseShell->m_groups_temp.insert(make_pair(make_pair(group->nom_roll_width, tortoiseShell->m_groups_temp.size() + 1), group_temp));
+			map<pair<int, int>, Group*>	::iterator iter_now = tortoiseShell->m_groups_temp.find(make_pair(group->nom_roll_width, tortoiseShell->m_groups_temp.size()));
+			map<pair<int, int>, Group*>	::iterator iter_before = iter_now;
+			map<pair<int, int>, Group*>	::iterator iter_after = iter_now;
+			iter_before--;
+			iter_after++;
+			if (iter_now != tortoiseShell->m_groups_temp.begin() && plantype.find(make_pair(plan_type, iter_before->second->plan_type))->second == 0)
+			{
+				tortoiseShell->m_groups_temp.erase(iter_now);
+				continue;
+			}
+			if (iter_after != tortoiseShell->m_groups_temp.end() && plantype.find(make_pair(plan_type, iter_after->second->plan_type))->second == 0)
+			{
+				tortoiseShell->m_groups_temp.erase(iter_now);
+				continue;
+			}
+			tortoiseShell->m_groups_temp.erase(iter_now);
 			// 检查这个乌龟壳里的烫辊材有没有和钢卷组冲突，如果有，则此乌龟壳不能放此钢卷组
 			map<pair<int, int>, Group*>::iterator iter5 = tortoiseShell->m_groups.begin();
 			for (; iter5 != tortoiseShell->m_groups.end(); iter5++)
@@ -261,8 +279,7 @@ void TortoiseShell::FinishShell()
 				map<pair<int, int>, int>::iterator iter4 = plantype.find(make_pair(plan_type, plan_type2));
 				int type = iter4->second;
 				// 如果计划内不能组合，则不用查找本乌龟壳了，继续下一个乌龟壳查找
-				//if (type == 2)
-				if (type != 1)
+				if (type == 2)
 					break;
 			}
 			// 如果还没到这个乌龟壳里的最后一个钢卷组就触发了break，则说明有冲突，寻找下一个乌龟壳吧
@@ -281,8 +298,7 @@ void TortoiseShell::FinishShell()
 				map<pair<int, int>, int>::iterator iter4 = plantype.find(make_pair(plan_type, plan_type2));
 				int type = iter4->second;
 				// 如果计划内不能组合，则不用查找本乌龟壳了，继续下一个乌龟壳查找
-				//if (type == 2)
-				if (type != 1)
+				if (type == 2)
 					break;
 			}
 			// 如果1）顺利的查找到了这个乌龟壳里的最后一个钢卷组也没触发break，则说明准备放入的钢卷组可以放入本乌龟壳中，那么放入吧
@@ -414,6 +430,25 @@ void TortoiseShell::FinishShell()
 			// 检查同宽公里数是否满足，若不满足，则这个乌龟壳不能放这个钢卷组
 			if (tortoiseShell->width_lonth.find(group->nom_roll_width) != tortoiseShell->width_lonth.end() && tortoiseShell->width_lonth.find(group->nom_roll_width)->second >= samewidth_limit)
 				continue;
+			// 检查该钢卷如果放入，有没有相邻冲突，如果有，则不能放入该乌龟壳
+			Group* group_temp = NULL;
+			tortoiseShell->m_groups_temp.insert(make_pair(make_pair(group->nom_roll_width, tortoiseShell->m_groups_temp.size() + 1), group_temp));
+			map<pair<int, int>, Group*>	::iterator iter_now = tortoiseShell->m_groups_temp.find(make_pair(group->nom_roll_width, tortoiseShell->m_groups_temp.size()));
+			map<pair<int, int>, Group*>	::iterator iter_before = iter_now;
+			map<pair<int, int>, Group*>	::iterator iter_after = iter_now;
+			iter_before--;
+			iter_after++;
+			if (iter_now != tortoiseShell->m_groups_temp.begin() && plantype.find(make_pair(plan_type, iter_before->second->plan_type))->second == 0)
+			{
+				tortoiseShell->m_groups_temp.erase(iter_now);
+				continue;
+			}
+			if (iter_after != tortoiseShell->m_groups_temp.end() && plantype.find(make_pair(plan_type, iter_after->second->plan_type))->second == 0)
+			{
+				tortoiseShell->m_groups_temp.erase(iter_now);
+				continue;
+			}
+			tortoiseShell->m_groups_temp.erase(iter_now);
 			// 检查这个乌龟壳里的烫辊材有没有和钢卷组冲突，如果有，则此乌龟壳不能放此钢卷组
 			map<pair<int, int>, Group*>::iterator iter5 = tortoiseShell->m_groups.begin();
 			for (; iter5 != tortoiseShell->m_groups.end(); iter5++)
@@ -426,8 +461,7 @@ void TortoiseShell::FinishShell()
 				map<pair<int, int>, int>::iterator iter4 = plantype.find(make_pair(plan_type, plan_type2));
 				int type = iter4->second;
 				// 如果计划内不能组合，则不用查找本乌龟壳了，继续下一个乌龟壳查找
-				//if (type == 2)
-				if (type != 1)
+				if (type == 2)
 					break;
 			}
 			// 如果还没到这个乌龟壳里的最后一个钢卷组就触发了break，则说明有冲突，寻找下一个乌龟壳吧
@@ -446,8 +480,7 @@ void TortoiseShell::FinishShell()
 				map<pair<int, int>, int>::iterator iter4 = plantype.find(make_pair(plan_type, plan_type2));
 				int type = iter4->second;
 				// 如果计划内不能组合，则不用查找本乌龟壳了，继续下一个乌龟壳查找
-				//if (type == 2)
-				if (type != 1)
+				if (type == 2)
 					break;
 			}
 			// 如果1）顺利的查找到了这个乌龟壳里的最后一个钢卷组也没触发break，则说明准备放入的钢卷组可以放入本乌龟壳中，那么放入吧
