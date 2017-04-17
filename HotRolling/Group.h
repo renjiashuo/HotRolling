@@ -36,7 +36,7 @@ class Group
 
 public:// 钢卷组参数
 	int						group_no;				// 钢卷组代码
-	int						plan_type;			// 计划类型
+	string					plan_type;			// 计划类型
 	string					st_no;				// 出钢记号（钢种）	
 	double					nom_roll_thick;		// 额定轧制厚度
 	double					nom_roll_width;		// 额定轧制宽度
@@ -69,7 +69,7 @@ public:
 	//
 	// 摘要:
 	//     构造函数。初始化一个钢卷组。
-	Group(int value1, int value2, string value3, double value4, double value5, int value6, int value7, int value8,vector<SteelCoil*>&value9);
+	Group(int value1, string value2, string value3, double value4, double value5, int value6, int value7, int value8,vector<SteelCoil*>&value9);
 	//
 	// 摘要:
 	//     构造函数。将钢卷组的前n个钢卷赋给新的钢卷组。

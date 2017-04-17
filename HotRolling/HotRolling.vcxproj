@@ -14,9 +14,17 @@
     <ClInclude Include="common.h" />
     <ClInclude Include="global.h" />
     <ClInclude Include="Group.h" />
+    <ClInclude Include="keyindicator_def.h" />
+    <ClInclude Include="rulepara_def.h" />
     <ClInclude Include="rulescore.h" />
+    <ClInclude Include="ruleset_def.h" />
+    <ClInclude Include="rule_def.h" />
+    <ClInclude Include="rule_penalty.h" />
+    <ClInclude Include="sectionlink_rule.h" />
     <ClInclude Include="SteelCoil.h" />
+    <ClInclude Include="tangguncai.h" />
     <ClInclude Include="TortoiseShell.h" />
+    <ClInclude Include="zhuticai.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="datacheck.cpp" />

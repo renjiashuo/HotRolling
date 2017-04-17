@@ -23,21 +23,27 @@ using namespace std;
 
 #pragma region SteelCoil成员函数
 //////////////////////////////////////////////////////////////////////////
-struct compwidth
+//struct compwidth
+//{
+//	bool operator()(const pair<pair < pair<pair<pair<pair<int, string>, double>, double>, int>, int>, int>&A, const pair<pair < pair<pair<pair<pair<int, string>, double>, double>, int>, int>, int>&B)const
+//	{
+//		if (A.first.first.first.second != B.first.first.first.second)
+//			return A.first.first.first.second > B.first.first.first.second;
+//		//return false;
+//	}
+//};
+SteelCoil::SteelCoil(string value1, string value2, double value3, double value4, double value5, string value6, double value7, double value8, int value9, string value10, string value11, string value12, string value13, string value14, string value15, string value16,
+	string value17, int value18, string value19, int value20, string value21, string value22, string value23, double value24, double value25, string value26, string value27, string value28, string value29, string value30, string value31,
+	string value32, string value33, string value34, string value35, string value36, string value37, string value38, string value39, string value40, int value41, int value42, string value43, string value44, string value45, string value46,
+	string value47, string value48, bool value49, int value50, double value51, int value52, string value53, int value54, string value55, string value56, double value57, double value58, double value59, double value60, int value61,
+	int value62, int value63, int value64, int value65, int value66, int value67, int value68, int value69, int value70, int value71, int value72, int value73, int value74, int value75, int value76,
+	int value77,  string value82, string value83, string value84, string value85, string value86, string value87, string value88, string value89, double value90)
 {
-	bool operator()(const pair<pair < pair<pair<pair<pair<int, string>, double>, double>, int>, int>, int>&A, const pair<pair < pair<pair<pair<pair<int, string>, double>, double>, int>, int>, int>&B)const
-	{
-		if (A.first.first.first.second != B.first.first.first.second)
-			return A.first.first.first.second > B.first.first.first.second;
-		//return false;
-	}
-};
-SteelCoil::SteelCoil(string value2, double value3, double value4, double value5, string value6, double value7, double value8, int value9, int value10, int value11, int value12, int value13, int value14, int value15)
-{
+	roll_plan_type = value1;
 	mat_no = value2;
-	SteelCoil_thick = value3;
-	SteelCoil_width = value4;
-	SteelCoil_len = value5;
+	nom_roll_thick = value3;
+	nom_roll_width = value4;
+	roll_len = value5;
 	st_no = value6;
 	nom_heat_temp = value7;
 	nom_afft_temp = value8;
@@ -47,11 +53,95 @@ SteelCoil::SteelCoil(string value2, double value3, double value4, double value5,
 	plan_type = value12;
 	nom_hard_group_code = value13;
 	nom_surf_index_code = value14;
-	low_temp_flag = value15;
+	high_temp_flag = value15;
+	low_temp_flag = value16;
+
+	whole_backlog = value17;
+	whole_backlog_seq = value18;
+	whole_backlog_code = value19;
+	next_whole_backlog_seq = value20;
+	next_whole_backlog_code = value21;
+	work_type = value22;
+	order_no = value23;
+	slab_wt = value24;
+	slab_width = value25;
+	sg_sign = value26;
+	new_test_no = value27;
+	slab_dest = value28;
+	stock_code = value29;
+	fin_cut_time = value30;
+	prec_slab_no = value31;
+
+	ips_pono = value32;
+	order_hot_charge_flag = value33;
+	ips_cast_lot_no = value34;
+	prec_roll_plan_no = value35;
+	bg_mat_status = value36;
+	bg_app_status = value37;
+	transfer_plan_no = value38;
+	mat_status = value39;
+	roll_plan_no = value40;
+	width_top_slab = value41;
+	width_bot_slab = value42;
+	adjust_width_mark = value43;
+	stock_stay_time = value44;
+	in_stock_time = value45;
+	roll_end_time = value46;
+
+	hold_cause_code = value47;
+	hr_plan_date = value48;
+	must_do_flag = value49;
+	slab_len = value50;
+	roll_time = value51;
+	order_pri = value52;
+	plan_no = value53;
+	mat_seq_no = value54;
+	flow = value55;
+	mod_stamp_no = value56;
+	thick_forward_max = value57;
+	thick_forward_min = value58;
+	thick_backward_max = value59;
+	thick_backward_min = value60;
+	heat_temp_jump_max = value61;
+
+	heat_temp_jump_min = value62;
+	afft_temp_jump_max = value63;
+	afft_temp_jump_min = value64;
+	coil_temp_jump_max = value65;
+	coil_temp_jump_min = value66;
+	hard_group_jump_max = value67;
+	hard_group_jump_min = value68;
+	max_high_temp_coil_num = value69;
+	min_high_temp_coil_num = value70;
+	min_low_temp_coil_num = value71;
+	max_low_temp_coil_num = value72;
+	num = value73;
+	zone_max_num = value74;
+	zone_min_num = value75;
+	zone_max_m = value76;
+
+	zone_min_m = value77;
+	
+	REC_CREATOR = value82;
+	REC_CREATE_TIME = value83;
+	REC_REVISOR = value84;
+	REC_REVISE_TIME = value85;
+	ARCHIVE_FLAG = value86;
+	ARCHIVE_STAMP_NO = value87;
+	COMPANY_CODE = value88;
+	COMPANY_NAME = value89;
+	slab_thick = value90;
+	
+
+
+
+
+
+
 
 }/*---------将七组同规格的钢卷分组放入指定vector里，再放入map----------*/
 
-void indata(map<pair<pair<pair<pair<pair<pair<int, string>, double>, double>, int>, int>, int>, vector<SteelCoil*>> &m_data, int a, string b, double c, double d, int e, int f, int g, SteelCoil* h)
+void indata(map<pair<pair<pair<pair<pair<pair<string, string>, double>, double>, int>, int>, int>, vector<SteelCoil*>> &m_data, string a, string b, double c, double d, int e, int f, int g, SteelCoil* h)
 {
 	if (m_data.find(make_pair(make_pair(make_pair(make_pair(make_pair(make_pair(a,b),c),d),e),f),g)) == m_data.end())
 	{
@@ -73,42 +163,41 @@ void SteelCoil::SteelCoilgroup()
 		Connection con(" 127.0.0.1/orcl", "scott", "tiger");//连接数据库（IP地址/服务名，“用户名”，“密码“）
 		Statement st(con);//创建数据集
 		ostring rowid;
-		st.Execute("select * from DATA1 t order by SLAB_WIDTH DESC");//选择表
+		st.Execute("select * from TIPHRM01 t order by SLAB_WIDTH DESC");//选择表
 		Resultset rs = st.GetResultset();
 		
 		while (rs.Next())
 		{
-			if (rs.Get<int>(30) == 1)//将有DHCR标记的钢卷按七组标准组成钢卷组放入map
+				
+			if (rs.Get<ostring>(39) == "1" && rs.Get<ostring>(29)=="0")//将有烫辊材标记（不包括DHCR）的钢卷按七组标准组成钢卷组放入map
 			{
-				SteelCoil *DHCRSteelCoil = new SteelCoil(rs.Get<ostring>(10), rs.Get<double>(18), rs.Get<double>(19), rs.Get<double>(20), rs.Get<ostring>(22), rs.Get<int>(51), rs.Get<int>(52), rs.Get<int>(53), rs.Get<int>(30), rs.Get<int>(40), rs.Get<int>(56), rs.Get<int>(54), rs.Get<int>(55), rs.Get<int>(82));
-				indata(SteelCoil::s_DHCRSteelCoil, rs.Get<int>(56), rs.Get<ostring>(22), rs.Get<double>(18), rs.Get<double>(19), rs.Get<int>(51), rs.Get<int>(52), rs.Get<int>(53), DHCRSteelCoil);
-				//SteelCoil::s_DHCRSteelCoil.insert(make_pair(DHCRSteelCoil->mat_no, DHCRSteelCoil));
-			}		
-			if (rs.Get<int>(40) == 1 && rs.Get<int>(30)==0)//将有烫辊材标记（不包括DHCR）的钢卷按七组标准组成钢卷组放入map
-			{
-				SteelCoil *PRESteelCoil = new SteelCoil(rs.Get<ostring>(10), rs.Get<double>(18), rs.Get<double>(19), rs.Get<double>(20), rs.Get<ostring>(22), rs.Get<int>(51), rs.Get<int>(52), rs.Get<int>(53), rs.Get<int>(30), rs.Get<int>(40), rs.Get<int>(56), rs.Get<int>(54), rs.Get<int>(55), rs.Get<int>(82));
-				indata(SteelCoil::s_pre_flagSteelCoil, rs.Get<int>(56), rs.Get<ostring>(22), rs.Get<double>(18), rs.Get<double>(19), rs.Get<int>(51), rs.Get<int>(52), rs.Get<int>(53), PRESteelCoil);
+				SteelCoil *PRESteelCoil = new SteelCoil(rs.Get<ostring>(36),rs.Get<ostring>(9), rs.Get<double>(48), rs.Get<double>(49), rs.Get<double>(57), rs.Get<ostring>(21), rs.Get<int>(50), rs.Get<int>(51), rs.Get<int>(52), rs.Get<ostring>(29), rs.Get<ostring>(39), rs.Get<ostring>(55), rs.Get<ostring>(53), rs.Get<ostring>(54), rs.Get<ostring>(80), rs.Get<ostring>(81)
+					, rs.Get<ostring>(10), rs.Get<int>(11), rs.Get<ostring>(12), rs.Get<int>(13), rs.Get<ostring>(14), rs.Get<ostring>(15), rs.Get<ostring>(16), rs.Get<double>(20), rs.Get<double>(18), rs.Get<ostring>(22), rs.Get<ostring>(23), rs.Get<ostring>(24), rs.Get<ostring>(25), rs.Get<ostring>(26), rs.Get<ostring>(27), rs.Get<ostring>(28)
+					, rs.Get<ostring>(30), rs.Get<ostring>(31), rs.Get<ostring>(32), rs.Get<ostring>(33), rs.Get<ostring>(34), rs.Get<ostring>(35), rs.Get<ostring>(37), rs.Get<ostring>(38), rs.Get<int>(40), rs.Get<int>(41), rs.Get<ostring>(42), rs.Get<ostring>(43), rs.Get<ostring>(44), rs.Get<ostring>(45), rs.Get<ostring>(46), rs.Get<ostring>(47)
+					, rs.Get<int>(56), rs.Get<int>(19), rs.Get<double>(58), rs.Get<int>(59), rs.Get<ostring>(60), rs.Get<int>(61), rs.Get<ostring>(62), rs.Get<ostring>(63), rs.Get<double>(64), rs.Get<double>(65), rs.Get<double>(66), rs.Get<double>(67), rs.Get<int>(68), rs.Get<int>(69), rs.Get<int>(70), rs.Get<int>(71)
+					, rs.Get<int>(72), rs.Get<int>(73), rs.Get<int>(74), rs.Get<int>(75), rs.Get<int>(76), rs.Get<int>(77), rs.Get<int>(78), rs.Get<int>(79), rs.Get<int>(82), rs.Get<int>(83), rs.Get<int>(84), rs.Get<int>(85), rs.Get<int>(86), rs.Get<ostring>(1), rs.Get<ostring>(2), rs.Get<ostring>(3),
+					rs.Get<ostring>(4), rs.Get<ostring>(5), rs.Get<ostring>(6), rs.Get<ostring>(7), rs.Get<ostring>(8), rs.Get<double>(17));
+
+				indata(SteelCoil::s_pre_flagSteelCoil, rs.Get<ostring>(55), rs.Get<ostring>(21), rs.Get<double>(48), rs.Get<double>(49), rs.Get<int>(50), rs.Get<int>(51), rs.Get<int>(52), PRESteelCoil);
 				//SteelCoil::s_pre_flagSteelCoil.insert(make_pair(PRESteelCoil->mat_no, PRESteelCoil));
 			}
-			if (rs.Get<int>(40) == 0 && rs.Get<int>(30) == 0)//将无烫辊材标记（不包括DHCR）的钢卷按七组标准组成钢卷组放入map
+			else
 			{
-				SteelCoil *nonPRESteelCoil = new SteelCoil(rs.Get<ostring>(10), rs.Get<double>(18), rs.Get<double>(19), rs.Get<double>(20), rs.Get<ostring>(22), rs.Get<int>(51), rs.Get<int>(52), rs.Get<int>(53), rs.Get<int>(30), rs.Get<int>(40), rs.Get<int>(56), rs.Get<int>(54), rs.Get<int>(55), rs.Get<int>(82));
-				indata(SteelCoil::s_nonpre_flagSteelCoil, rs.Get<int>(56), rs.Get<ostring>(22), rs.Get<double>(18), rs.Get<double>(19), rs.Get<int>(51), rs.Get<int>(52), rs.Get<int>(53), nonPRESteelCoil);
+				SteelCoil *nonPRE_DHCRSteelCoil = new SteelCoil(rs.Get<ostring>(36), rs.Get<ostring>(9), rs.Get<double>(48), rs.Get<double>(49), rs.Get<double>(57), rs.Get<ostring>(21), rs.Get<int>(50), rs.Get<int>(51), rs.Get<int>(52), rs.Get<ostring>(29), rs.Get<ostring>(39), rs.Get<ostring>(55), rs.Get<ostring>(53), rs.Get<ostring>(54), rs.Get<ostring>(80), rs.Get<ostring>(81)
+					, rs.Get<ostring>(10), rs.Get<int>(11), rs.Get<ostring>(12), rs.Get<int>(13), rs.Get<ostring>(14), rs.Get<ostring>(15), rs.Get<ostring>(16), rs.Get<double>(20), rs.Get<double>(18), rs.Get<ostring>(22), rs.Get<ostring>(23), rs.Get<ostring>(24), rs.Get<ostring>(25), rs.Get<ostring>(26), rs.Get<ostring>(27), rs.Get<ostring>(28)
+					, rs.Get<ostring>(30), rs.Get<ostring>(31), rs.Get<ostring>(32), rs.Get<ostring>(33), rs.Get<ostring>(34), rs.Get<ostring>(35), rs.Get<ostring>(37), rs.Get<ostring>(38), rs.Get<int>(40), rs.Get<int>(41), rs.Get<ostring>(42), rs.Get<ostring>(43), rs.Get<ostring>(44), rs.Get<ostring>(45), rs.Get<ostring>(46), rs.Get<ostring>(47)
+					, rs.Get<int>(56), rs.Get<int>(19), rs.Get<double>(58), rs.Get<int>(59), rs.Get<ostring>(60), rs.Get<int>(61), rs.Get<ostring>(62), rs.Get<ostring>(63), rs.Get<double>(64), rs.Get<double>(65), rs.Get<double>(66), rs.Get<double>(67), rs.Get<int>(68), rs.Get<int>(69), rs.Get<int>(70), rs.Get<int>(71)
+					, rs.Get<int>(72), rs.Get<int>(73), rs.Get<int>(74), rs.Get<int>(75), rs.Get<int>(76), rs.Get<int>(77), rs.Get<int>(78), rs.Get<int>(79), rs.Get<int>(82), rs.Get<int>(83), rs.Get<int>(84), rs.Get<int>(85), rs.Get<int>(86), rs.Get<ostring>(1), rs.Get<ostring>(2), rs.Get<ostring>(3),
+					rs.Get<ostring>(4), rs.Get<ostring>(5), rs.Get<ostring>(6), rs.Get<ostring>(7), rs.Get<ostring>(8), rs.Get<double>(17));
+
+				indata(SteelCoil::s_nonpre_DHCR_flagSteelCoil, rs.Get<ostring>(55), rs.Get<ostring>(21), rs.Get<double>(48), rs.Get<double>(49), rs.Get<int>(50), rs.Get<int>(51), rs.Get<int>(52), nonPRE_DHCRSteelCoil);
 				//SteelCoil::s_nonpre_flagSteelCoil.insert(make_pair(nonPRESteelCoil->mat_no, nonPRESteelCoil));
-			}			
+			}
 		}
 		
 		/*-----------输出每个钢卷组内的钢卷--------------*/
-		for (map<pair<pair < pair<pair<pair<pair<int, string>, double>, double>, int>, int>, int>, vector<SteelCoil*>>::iterator iter = s_DHCRSteelCoil.begin(); iter != s_DHCRSteelCoil.end(); iter++)
-		{
-			cout << (*iter).first.first.first.first.second << endl;//输出每个钢卷组的宽度
-			for (vector<SteelCoil*>::iterator iter1 = iter->second.begin(); iter1 != iter->second.end(); iter1++)
-			{
-				cout << (*iter1)->mat_no << endl;
-			}
-		}
-		cout << endl << endl;
-		for (map<pair<pair < pair<pair<pair<pair<int, string>, double>, double>, int>, int>, int>, vector<SteelCoil*>>::iterator iter = s_pre_flagSteelCoil.begin(); iter != s_pre_flagSteelCoil.end(); iter++)
+		
+		for (map<pair<pair < pair<pair<pair<pair<string, string>, double>, double>, int>, int>, int>, vector<SteelCoil*>>::iterator iter = s_pre_flagSteelCoil.begin(); iter != s_pre_flagSteelCoil.end(); iter++)
 		{
 			cout << (*iter).first.first.first.first.second << endl;
 			for (vector<SteelCoil*>::iterator iter1 = iter->second.begin(); iter1 != iter->second.end(); iter1++)
@@ -117,7 +206,7 @@ void SteelCoil::SteelCoilgroup()
 			}
 		}
 		cout << endl << endl;
-		for (map<pair<pair < pair<pair<pair<pair<int, string>, double>, double>, int>, int>, int>, vector<SteelCoil*>>::iterator iter = s_nonpre_flagSteelCoil.begin(); iter != s_nonpre_flagSteelCoil.end(); iter++)
+		for (map<pair<pair < pair<pair<pair<pair<string, string>, double>, double>, int>, int>, int>, vector<SteelCoil*>>::iterator iter = s_nonpre_DHCR_flagSteelCoil.begin(); iter != s_nonpre_DHCR_flagSteelCoil.end(); iter++)
 		{
 			
 			cout << (*iter).first.first.first.first.second << endl;
@@ -126,7 +215,7 @@ void SteelCoil::SteelCoilgroup()
 				cout << (*iter1)->mat_no << endl;
 			}
 		}
-		int s_GroupCount = s_DHCRSteelCoil.size() + s_nonpre_flagSteelCoil.size() + s_pre_flagSteelCoil.size();
+		int s_GroupCount =s_nonpre_DHCR_flagSteelCoil.size() + s_pre_flagSteelCoil.size();
 		cout << "所有钢卷组的个数:" << "  " << s_GroupCount << endl;//钢卷组个数
 		cout << endl ;
 
@@ -153,12 +242,13 @@ catch (exception &ex)
 #pragma endregion
 
 #pragma region SteelCoil静态变量
-		//////////////////////////////////////////////////////////////////////////
-		//map<string, SteelCoil*>		SteelCoil::s_mapSetOfSteelCoil = map<string, SteelCoil*>();
-		int					SteelCoil::s_SteelCoilCount = 0;
-		map<pair<pair < pair<pair<pair<pair<int, string>, double>, double>, int>, int>, int>, vector<SteelCoil*>>    SteelCoil::s_pre_flagSteelCoil = map<pair<pair < pair<pair<pair<pair<int, string>, double>, double>, int>, int>, int>, vector<SteelCoil*>>();
-		map<pair<pair < pair<pair<pair<pair<int, string>, double>, double>, int>, int>, int>, vector<SteelCoil*>>    SteelCoil::s_nonpre_flagSteelCoil = map<pair<pair < pair<pair<pair<pair<int, string>, double>, double>, int>, int>, int>, vector<SteelCoil*>>();
-		map<pair<pair < pair<pair<pair<pair<int, string>, double>, double>, int>, int>, int>, vector<SteelCoil*>>    SteelCoil::s_DHCRSteelCoil = map<pair<pair < pair<pair<pair<pair<int, string>, double>, double>, int>, int>, int>, vector<SteelCoil*>>();
-		//map< pair<pair < pair<pair<pair<pair<int, string>, double>, double>, int>, int>, int>, vector<SteelCoil*>>    SteelCoil::s_mapSetOfSteelCoilgroup = map< pair<pair < pair<pair<pair<pair<int, string>, double>, double>, int>, int>, int>, vector<SteelCoil*>>();
+//////////////////////////////////////////////////////////////////////////
+//map<string, SteelCoil*>		SteelCoil::s_mapSetOfSteelCoil = map<string, SteelCoil*>();
+int					SteelCoil::s_SteelCoilCount = 0;
+map<pair<pair < pair<pair<pair<pair<string, string>, double>, double>, int>, int>, int>, vector<SteelCoil*>>    SteelCoil::s_pre_flagSteelCoil = map<pair<pair < pair<pair<pair<pair<string, string>, double>, double>, int>, int>, int>, vector<SteelCoil*>>();
+map<pair<pair < pair<pair<pair<pair<string, string>, double>, double>, int>, int>, int>, vector<SteelCoil*>>    SteelCoil::s_nonpre_DHCR_flagSteelCoil = map<pair<pair < pair<pair<pair<pair<string, string>, double>, double>, int>, int>, int>, vector<SteelCoil*>>();
+//map<pair<pair < pair<pair<pair<pair<int, string>, double>, double>, int>, int>, int>, vector<SteelCoil*>>    SteelCoil::s_DHCRSteelCoil = map<pair<pair < pair<pair<pair<pair<int, string>, double>, double>, int>, int>, int>, vector<SteelCoil*>>();
+//map< pair<pair < pair<pair<pair<pair<int, string>, double>, double>, int>, int>, int>, vector<SteelCoil*>>    SteelCoil::s_mapSetOfSteelCoilgroup = map< pair<pair < pair<pair<pair<pair<int, string>, double>, double>, int>, int>, int>, vector<SteelCoil*>>();
+map<string, SteelCoil*>	SteelCoil::s_least = map<string, SteelCoil*>();
 ////////////////////////////////////////////////////////////////////////
 #pragma endregion

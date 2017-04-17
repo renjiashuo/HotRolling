@@ -33,6 +33,30 @@
     <ClInclude Include="common.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="keyindicator_def.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="sectionlink_rule.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ruleset_def.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="rulepara_def.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="rule_penalty.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="rule_def.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="zhuticai.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="tangguncai.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Group.cpp">

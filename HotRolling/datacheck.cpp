@@ -14,7 +14,7 @@ int datacheck()
 		Connection con("127.0.0.1/orcl", "scott", "tiger");//连接数据库（IP地址/服务名，“用户名”，“密码”）
 		Statement st(con);//创建数据集
 		ostring rowid;
-		st.Execute("select * from data1");//选择表
+		st.Execute("select * from TIPHRM01");//选择表
 		Resultset rs = st.GetResultset();
 		int hard_group = 0;
 		int surf_index = 0;
@@ -25,22 +25,22 @@ int datacheck()
 		while (rs.Next())//如果下一行有数据，继续
 		{
 			row++;//获取表的行数
-			if (rs.Get<int>(40) == 1)
+			if (rs.Get<ostring>(39) == "1")
 			{				
-				if (rs.Get<int>(54) > 3)
+				if (rs.Get<ostring>(53) > "3")
 				{
 					hard_group++;
 				}
-				if (rs.Get<int>(55)>4 || rs.Get<int>(55)<2)
+				if (rs.Get<ostring>(54)>"4" || rs.Get<ostring>(54)<"2")
 				{
 					surf_index++;
 				}
-				if (rs.Get<double>(18) <230)
+				if (rs.Get<double>(48) <230)
 				{
 					slab_thick++;
 				}
 			}
-			if (rs.Get<int>(82) == 1)
+			if (rs.Get<ostring>(81) == "1")
 			{
 				low_temp++;
 			}
