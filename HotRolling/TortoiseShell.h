@@ -91,6 +91,10 @@ public:
 	static void DeleteBad();
 	//
 	// 摘要:
+	//     重新分配未分配成功的钢卷
+	static void ReFinishShell();
+	//
+	// 摘要:
 	//     结果控制台展示。
 	static void showResult();
 	//

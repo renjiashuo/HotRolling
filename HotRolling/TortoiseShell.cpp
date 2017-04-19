@@ -26,8 +26,10 @@
 
 TortoiseShell::TortoiseShell(Group *group)
 {
+	// 乌龟壳个数+1
+	s_TortoiseShellCount++;
 	// 初始化基础参数
-	this->m_tortoiseShellName = s_mapSetOfTortoiseShell.size() + 1;
+	this->m_tortoiseShellName = s_TortoiseShellCount;
 	this->m_TortoiseShell_len = 0;
 	this->m_startTime = 0;
 	this->m_finishTime = 0;
@@ -640,7 +642,8 @@ void TortoiseShell::FinishShell()
 
 void TortoiseShell::DeleteBad()
 {
-	// 遍历已经生成的乌龟壳计算每个乌龟壳的长度
+	#pragma region 遍历已经生成的乌龟壳计算每个乌龟壳的长度
+	//////////////////////////////////////////////////////////////////////////
 	for (map<int, TortoiseShell*>::iterator iter = s_mapSetOfTortoiseShell.begin(); iter != s_mapSetOfTortoiseShell.end(); iter++)
 	{
 		TortoiseShell *tortoiseShell = iter->second;
@@ -656,7 +659,11 @@ void TortoiseShell::DeleteBad()
 			}
 		}
 	}
-	// 遍历已经生成的乌龟壳，将不满足高温段块数范围、低温段块数范围、轧制位区间范围的钢卷重新放入未分配钢卷组中。
+	//////////////////////////////////////////////////////////////////////////
+	#pragma endregion
+
+	#pragma region 遍历已经生成的乌龟壳，将不满足高温段块数范围、低温段块数范围的钢卷重新放入未分配钢卷组中。
+	//////////////////////////////////////////////////////////////////////////
 	for (map<int, TortoiseShell*>::iterator iter = s_mapSetOfTortoiseShell.begin(); iter != s_mapSetOfTortoiseShell.end(); iter++)
 	{
 		TortoiseShell *tortoiseShell = iter->second;
@@ -736,7 +743,42 @@ void TortoiseShell::DeleteBad()
 			}
 		}
 	}
-	// 遍历已经生成的乌龟壳，如果长度太短，则删除整个乌龟壳
+	//////////////////////////////////////////////////////////////////////////
+	#pragma endregion
+
+	#pragma region 遍历已经生成的乌龟壳，将不满足轧制位区间范围的钢卷重新放入未分配钢卷组中。
+	//////////////////////////////////////////////////////////////////////////
+	for (map<int, TortoiseShell*>::iterator iter = s_mapSetOfTortoiseShell.begin(); iter != s_mapSetOfTortoiseShell.end(); iter++)
+	{
+		TortoiseShell *tortoiseShell = iter->second;
+		int lonth = 0;	// 钢卷累计位置
+		// 遍历乌龟壳内的钢卷组信息
+		for (map<pair<int, int>, Group*>::iterator iter2 = tortoiseShell->m_groups.begin(); iter2 != tortoiseShell->m_groups.end(); iter2++)
+		{
+			Group *group = iter2->second;
+			// 遍历钢卷组内钢卷信息
+			for (vector<SteelCoil*>::iterator iter3 = group->m_SteelCoil.begin(); iter3 != group->m_SteelCoil.end();)
+			{
+				SteelCoil *steelCoil = *iter3;
+				if (lonth > steelCoil->zone_min_m)
+				{
+					tortoiseShell->m_TortoiseShell_len -= steelCoil->roll_len;
+					SteelCoil::s_least.insert(make_pair(steelCoil->mat_no, steelCoil));
+					iter3 = group->m_SteelCoil.erase(iter3);
+				}
+				else
+				{
+					lonth += steelCoil->roll_len;
+					iter3++;
+				}
+			}
+		}
+	}
+	//////////////////////////////////////////////////////////////////////////
+	#pragma endregion
+
+	#pragma region 遍历已经生成的乌龟壳，如果长度太短，则删除整个乌龟壳
+	//////////////////////////////////////////////////////////////////////////
 	for (map<int, TortoiseShell*>::iterator iter = s_mapSetOfTortoiseShell.begin(); iter != s_mapSetOfTortoiseShell.end(); )
 	{
 		TortoiseShell *tortoiseShell = iter->second;
@@ -760,6 +802,36 @@ void TortoiseShell::DeleteBad()
 		}
 		iter = s_mapSetOfTortoiseShell.erase(iter);
 	}
+	//////////////////////////////////////////////////////////////////////////
+	#pragma endregion
+}
+
+void TortoiseShell::ReFinishShell()
+{
+	#pragma region 遍历未分配的钢卷
+	//////////////////////////////////////////////////////////////////////////
+	for (map<string, SteelCoil*>::iterator iter = SteelCoil::s_least.begin(); iter != SteelCoil::s_least.end(); iter++)
+	{
+		SteelCoil *steelCoil = iter->second;
+		// 遍历已经生成的乌龟壳
+		for (map<int, TortoiseShell*>::iterator iter2 = s_mapSetOfTortoiseShell.begin(); iter2 != s_mapSetOfTortoiseShell.end(); iter2++)
+		{
+			TortoiseShell *tortoiseShell = iter2->second;
+			// 遍历乌龟壳内的钢卷组信息
+			for (map<pair<int, int>, Group*>::iterator iter3 = tortoiseShell->m_groups.begin(); iter3 != (--tortoiseShell->m_groups.end()); iter3++)
+			{
+				Group *group1 = iter3->second;
+				iter3++;
+				Group *group2 = iter3->second;
+				iter3--;
+				// 如果要分配的钢卷宽度小于等于group1的钢卷且大于group2的钢卷
+				// 尝试根据同宽范围、正跳反跳范围、高温段块数范围、低温段块数范围、轧制位区间范围是否满足来判断该钢卷可否被分配到这个位置(各个逻辑在上面的代码里均写过)
+				// 如果可以，分配(同时两层break)，如果不可以，查找下一个乌龟壳(break)。
+			}
+		}
+	}
+	//////////////////////////////////////////////////////////////////////////
+	#pragma endregion
 }
 
 void TortoiseShell::showResult()
