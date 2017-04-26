@@ -31,71 +31,87 @@ TortoiseShell::TortoiseShell(Group *group)
 	// 初始化基础参数
 	this->m_tortoiseShellName = s_TortoiseShellCount;
 	this->m_TortoiseShell_len = 0;
+	this->m_TortoiseShell_WT = 0;
+	this->m_TortoiseShellflow10_WT = 0;
+	this->m_TortoiseShell_DHCR = 0;
+	this->m_TortoiseShell_len1 = 0;
+	this->m_TortoiseShell_WT1 = 0;
+	this->m_TortoiseShellflow10_WT1 = 0;
+	this->m_TortoiseShell_DHCR1 = 0;
+	this->m_TortoiseShell_len_temp = 0;
+	this->m_tang_len = 0;
 	this->m_startTime = 0;
 	this->m_finishTime = 0;
 	this->m_timeSpan = 0;
-	//this->nom_roll_width = 0;
 	// 初始化乌龟壳内的钢卷组
-	//m_groups.insert(make_pair(make_pair(100000.0, 100000.0 + group->roll_len), group));
-	m_groups_temp.insert(make_pair(make_pair(group->nom_roll_width, 1), group));
-	// 待放钢卷的计划类型
-	string	plan_type = group->plan_type;
-	// 预留烫辊材(生成一个乌龟壳就放烫辊材)
-	vector<Group*> tang_temp;
-	// 上一个烫辊材的宽度
-	double width = 0;
-	// 总共预留烫辊材的个数
-	int num = 0;
-	for (map<int, Group*>::iterator iter = Group::s_mapSetOfGroup1.begin(); iter != Group::s_mapSetOfGroup1.end(); iter++)
-	{
-		// 准备放入的钢卷组及其计划类型
-		Group* group2 = iter->second;
-		string	plan_type2 = group2->plan_type;
-		// 如果烫辊材计划类型与初始化乌龟壳的钢卷计划类型不互斥且能相邻组合，则放入烫辊材
-		map<pair<string, string>, string>::iterator iter2 = plantype.find(make_pair(plan_type, plan_type2));
-		string type = iter2->second;
-		if (type != "2" && type != "0"&& group2->nom_roll_width >= width)	
-		{
-			width = group2->nom_roll_width;
-			// 如果该钢卷组内钢卷个数大于3，则只拿出3块做烫辊材，否则全部做烫辊材
-			if (group2->m_SteelCoil.size() > 3)
-			{
-				int needCount = 3;
-				// 最多总共需要6块烫辊材
-				if (6 - num < needCount)
-					needCount = 6 - num;
-				// 已预留烫辊材数量更新
-				num += needCount;
-				// 建立新的小钢卷组
-				Group *group_temp = new Group(group2, needCount);
-				tang_temp.push_back(group_temp);
-			}
-			else
-			{
-				int needCount = group2->m_SteelCoil.size();
-				// 最多总共需要6块烫辊材
-				if (6 - num < needCount)
-					needCount = 6 - num;
-				// 已预留烫辊材数量更新
-				num += needCount;
-				// 建立新的小钢卷组
-				Group *group_temp = new Group(group2, needCount);
-				tang_temp.push_back(group_temp);
-			}
-		}
-		if (num >= 6)
-			break;
-	}
-	// 将预留烫辊材分配到这个乌龟壳的前端
-	for (int i = 0; i < tang_temp.size(); i++)
-	{
-		if (m_groups.empty())
-			m_groups.insert(make_pair(make_pair(0, tang_temp[i]->roll_len), tang_temp[i]));
-		else
-			m_groups.insert(make_pair(make_pair(m_groups.rbegin()->first.second, m_groups.rbegin()->first.second + tang_temp[i]->roll_len), tang_temp[i]));
-	}
-}
+	m_main_groups.insert(make_pair(make_pair(0, group->roll_len), group));
+	
+	// 初始化乌龟壳内的钢卷组
+	//m_groups_temp.insert(make_pair(make_pair(group->nom_roll_width, 1), group));
+	//// 待放钢卷的计划类型
+	//string	plan_type = group->plan_type;
+	//// 预留烫辊材(生成一个乌龟壳就放烫辊材)
+	//vector<Group*> tang_temp;
+	//// 上一个烫辊材的宽度
+	//double width = 0;
+	//// 总共预留烫辊材的个数
+	//int num = 0;
+	//for (map<int, Group*>::iterator iter = Group::s_mapSetOfGroup1.begin(); iter != Group::s_mapSetOfGroup1.end(); iter++)
+	//{
+	//	// 准备放入的钢卷组及其计划类型
+	//	Group* group2 = iter->second;
+	//	string	plan_type2 = group2->plan_type;
+	//	// 如果烫辊材计划类型与初始化乌龟壳的钢卷计划类型不互斥且能相邻组合，则放入烫辊材
+	//	map<pair<string, string>, string>::iterator iter2 = plantype.find(make_pair(plan_type, plan_type2));
+	//	string type = iter2->second;
+	//	if (type != "2" && type != "0"&& group2->nom_roll_width >= width)
+	//	{
+	//		width = group2->nom_roll_width;			
+	//			 // 如果该钢卷组内钢卷个数大于4，则只拿出4块做烫辊材，否则全部做烫辊材
+	//			if (group2->m_SteelCoil.size() > 4)
+	//			{
+	//				int needCount = 4;
+	//				// 最多总共需要6块烫辊材
+	//				if (6 - num < needCount)
+	//					needCount = 6 - num;
+	//				// 已预留烫辊材数量更新
+	//				num += needCount;
+	//				// 建立新的小钢卷组
+	//				Group *group_temp = new Group(group2, needCount);
+	//				tang_temp.push_back(group_temp);
+	//			}
+	//			else
+	//			{
+	//				int needCount = group2->m_SteelCoil.size();
+	//				// 最多总共需要6块烫辊材
+	//				if (6 - num < needCount)
+	//					needCount = 6 - num;
+	//				// 已预留烫辊材数量更新
+	//				num += needCount;
+	//				// 建立新的小钢卷组
+	//				Group *group_temp = new Group(group2, needCount);
+	//				tang_temp.push_back(group_temp);
+	//			}
+	//	}
+	//	if (num >= 6)
+	//		break;
+	//}
+	//// 将预留烫辊材分配到这个乌龟壳的前端
+	//for (int i = 0; i < tang_temp.size(); i++)
+	//{
+	//	if (m_groups.empty())
+	//		m_groups.insert(make_pair(make_pair(0, tang_temp[i]->roll_len), tang_temp[i]));
+	//	else
+	//		m_groups.insert(make_pair(make_pair(m_groups.rbegin()->first.second, m_groups.rbegin()->first.second + tang_temp[i]->roll_len), tang_temp[i]));
+	//}
+	//// 更新乌龟壳实时长度
+	//for (int i = 0; i < tang_temp.size(); i++)
+	//{
+	//	m_tang_len += tang_temp[i]->roll_len;
+	//}
+	//m_TortoiseShell_len_temp = m_tang_len + group->roll_len;
 
+}
 TortoiseShell::~TortoiseShell()
 {
 }
@@ -103,9 +119,11 @@ TortoiseShell::~TortoiseShell()
 ////////////////////////////////////////////////////////////////////////
 #pragma endregion
 
+
+#pragma endregion
+
 #pragma region 乌龟壳计划相关
 //////////////////////////////////////////////////////////////////////////
-
 void TortoiseShell::InitShell()
 {
 	const double samewidth_limit = 500000.0;//同宽公里数限制
@@ -122,8 +140,8 @@ void TortoiseShell::InitShell()
 		while (rs.Next())
 		{
 			pair<string, string> temp;
-			temp = make_pair(rs.Get<string>(13), rs.Get<string>(14));
-			plantype.insert(make_pair(temp, rs.Get<string>(15)));
+			temp = make_pair(rs.Get<ostring>(13), rs.Get<ostring>(14));
+			plantype.insert(make_pair(temp, rs.Get<ostring>(15)));
 		}
 	}
 	catch (exception &ex)
@@ -131,15 +149,15 @@ void TortoiseShell::InitShell()
 		cout << ex.what() << endl;
 	}
 	Environment::Cleanup();
-#pragma region 创建初始乌龟壳
 
+	#pragma region 创建初始乌龟壳
 	//////////////////////////////////////////////////////////////////////////
 	// 遍历有DHCR标记和无烫辊材标记的钢卷组的map集合
 	for (map<int, Group*>::iterator iter = Group::s_mapSetOfGroup.begin(); iter != Group::s_mapSetOfGroup.end();)
 	{
 		// 一个钢卷组及其计划类型
 		Group* group = iter->second;
-		string	plan_type = group->plan_type;
+		string plan_type = group->plan_type;
 		// 遍历已有乌龟壳
 		map<int, TortoiseShell*>::iterator iter2 = s_mapSetOfTortoiseShell.begin();
 		for (; iter2 != s_mapSetOfTortoiseShell.end(); iter2++)
@@ -147,7 +165,7 @@ void TortoiseShell::InitShell()
 			// 这个乌龟壳
 			TortoiseShell* tortoiseShell = iter2->second;
 			// 这个乌龟壳里的第一个钢卷组及其计划类型
-			Group* group2 = tortoiseShell->m_groups_temp.begin()->second;
+			Group* group2 = tortoiseShell->m_main_groups.begin()->second;
 			string	plan_type2 = group2->plan_type;
 			// 如果是相同的组合方式，则不用查找了
 			if (plan_type == plan_type2)
@@ -220,13 +238,13 @@ void TortoiseShell::InitShell()
 			iter++;
 	}
 	//////////////////////////////////////////////////////////////////////////
-#pragma endregion
+	#pragma endregion
 }
 
 void TortoiseShell::FinishShell()
 {
-	const double samewidth_limit = 500000.0;//同宽公里数限制
-
+	const double samewidth_limit = 500000.0;			// 同宽公里数限制
+	const double max_TortoiseShell_len = 50000;		// 乌龟壳最大公里是（假设）
 #pragma region 遍历有DHCR标记和无烫辊材标记的钢卷组的map集合
 	//////////////////////////////////////////////////////////////////////////
 	for (map<int, Group*>::iterator iter = Group::s_mapSetOfGroup.begin(); iter != Group::s_mapSetOfGroup.end();)
@@ -253,6 +271,7 @@ void TortoiseShell::FinishShell()
 			// 检查该钢卷如果放入，有没有相邻冲突，如果有，则不能放入该乌龟壳
 			//Group* group_temp = NULL;
 			tortoiseShell->m_groups_temp.insert(make_pair(make_pair(group->nom_roll_width, tortoiseShell->m_groups_temp.size() + 1), group));
+			// iter_now指向刚放入，待比较的钢卷组
 			map<pair<int, int>, Group*>	::iterator iter_now = tortoiseShell->m_groups_temp.find(make_pair(group->nom_roll_width, tortoiseShell->m_groups_temp.size()));
 			map<pair<int, int>, Group*>	::iterator iter_before = iter_now;
 			map<pair<int, int>, Group*>	::iterator iter_after = iter_now;
@@ -267,9 +286,10 @@ void TortoiseShell::FinishShell()
 				|| abs((*iter_now->second->m_SteelCoil.begin())->nom_hard_group_code[0] - (*iter_before->second->m_SteelCoil.rbegin())->nom_hard_group_code[0]) > (*iter_now->second->m_SteelCoil.begin())->hard_group_jump_max
 				))
 			{
+				// 如果有一项约束不满足，则删除此钢卷组，继续用此钢卷组遍历下一个乌龟壳
 				tortoiseShell->m_groups_temp.erase(iter_now);
 				continue;
-			}
+			}			
 			if (iter_after != tortoiseShell->m_groups_temp.end() && 
 				(plantype.find(make_pair(plan_type, iter_after->second->plan_type))->second =="0"
 				|| (*iter_after->second->m_SteelCoil.begin())->nom_roll_thick - (*iter_now->second->m_SteelCoil.rbegin())->nom_roll_thick > (*iter_now->second->m_SteelCoil.begin())->thick_forward_max
@@ -283,6 +303,10 @@ void TortoiseShell::FinishShell()
 				continue;
 			}
 			tortoiseShell->m_groups_temp.erase(iter_now);
+			// 检查放入钢卷组是否满足高温卷段数，块数、低温卷块数和轧制位区间。
+
+
+
 			// 检查这个乌龟壳里的烫辊材有没有和钢卷组冲突，如果有，则此乌龟壳不能放此钢卷组
 			map<pair<int, int>, Group*>::iterator iter5 = tortoiseShell->m_groups.begin();
 			for (; iter5 != tortoiseShell->m_groups.end(); iter5++)
@@ -320,33 +344,39 @@ void TortoiseShell::FinishShell()
 			// 如果1）顺利的查找到了这个乌龟壳里的最后一个钢卷组也没触发break，则说明准备放入的钢卷组可以放入本乌龟壳中，那么放入吧
 			if (iter3 == tortoiseShell->m_groups_temp.end())
 			{
+				if (tortoiseShell->m_TortoiseShell_len_temp >= max_TortoiseShell_len)
+					continue;
 				// 计算这个宽度的钢卷组在这个乌龟壳中的已有总长度（不算即将加入的这个钢卷组）
 				double lonth = 0;
 				if (tortoiseShell->width_lonth.find(group->nom_roll_width) != tortoiseShell->width_lonth.end())
 					lonth = tortoiseShell->width_lonth.find(group->nom_roll_width)->second;
-				// 如果钢卷组内的公里数大于最大同宽公里数限制，则分割成小钢卷组
-				if (group->roll_len >= samewidth_limit - lonth)
+				// 如果钢卷组内的公里数大于最大同宽公里数限制或者大于乌龟壳最大公里数限制，则分割成小钢卷组
+				if ((group->roll_len >= samewidth_limit - lonth) || (tortoiseShell->m_TortoiseShell_len_temp + group->roll_len > max_TortoiseShell_len))
 				{
+					double lenth = ((samewidth_limit - lonth) < (max_TortoiseShell_len - tortoiseShell->m_TortoiseShell_len_temp) ? (samewidth_limit - lonth) : (max_TortoiseShell_len - tortoiseShell->m_TortoiseShell_len_temp));
 					// 创建小钢卷组
-					Group *group_new = new Group(group, samewidth_limit - lonth);
+					Group *group_new = new Group(group, lenth);
 					// 如果是空空的小钢卷组，则说明一个钢卷太大放不了了，那么查找下一个乌龟壳
 					if (group_new->m_SteelCoil.empty())
 					{
 						Group::s_mapSetOfsmallGroup.erase(Group::s_mapSetOfsmallGroup.find(group_new->group_no));
 						delete group_new;
 						continue;
-					}
-					// 将小钢卷组插入到当前乌龟壳的临时钢卷组变量中
-					tortoiseShell->m_groups_temp.insert(make_pair(make_pair(group->nom_roll_width, tortoiseShell->m_groups_temp.size() + 1), group_new));
-					// 更新乌龟壳中钢卷组的同宽公里数
-					if (tortoiseShell->width_lonth.find(group_new->nom_roll_width) == tortoiseShell->width_lonth.end())
-						tortoiseShell->width_lonth.insert(make_pair(group_new->nom_roll_width, group_new->roll_len));
-					else
-						tortoiseShell->width_lonth.find(group_new->nom_roll_width)->second += group_new->roll_len;
-				}
+					}										
+						// 将小钢卷组插入到当前乌龟壳的临时钢卷组变量中
+						tortoiseShell->m_groups_temp.insert(make_pair(make_pair(group_new->nom_roll_width, tortoiseShell->m_groups_temp.size() + 1), group_new));
+						// 更新乌龟壳实时长度
+						tortoiseShell->m_TortoiseShell_len_temp += group_new->roll_len;
+						// 更新乌龟壳中钢卷组的同宽公里数
+						if (tortoiseShell->width_lonth.find(group_new->nom_roll_width) == tortoiseShell->width_lonth.end())
+							tortoiseShell->width_lonth.insert(make_pair(group_new->nom_roll_width, group_new->roll_len));
+						else
+							tortoiseShell->width_lonth.find(group_new->nom_roll_width)->second += group_new->roll_len;										
+				}			
 				// 否则，直接将整个钢卷组加入到乌龟壳中
 				else
 				{
+					// 创建小刚卷组
 					Group *group_new = new Group(group, (int)group->m_SteelCoil.size());
 					// 如果是空空的小钢卷组，则说明一个钢卷太大放不了了，那么查找下一个乌龟壳
 					if (group_new->m_SteelCoil.empty())
@@ -354,15 +384,17 @@ void TortoiseShell::FinishShell()
 						Group::s_mapSetOfsmallGroup.erase(Group::s_mapSetOfsmallGroup.find(group_new->group_no));
 						delete group_new;
 						continue;
-					}
-					// 将小钢卷组插入到当前乌龟壳的末尾
-					tortoiseShell->m_groups_temp.insert(make_pair(make_pair(group->nom_roll_width, tortoiseShell->m_groups_temp.size() + 1), group_new));
-					// 更新乌龟壳中钢卷组的同宽公里数
-					if (tortoiseShell->width_lonth.find(group_new->nom_roll_width) == tortoiseShell->width_lonth.end())
-						tortoiseShell->width_lonth.insert(make_pair(group_new->nom_roll_width, group_new->roll_len));
-					else
-						tortoiseShell->width_lonth.find(group_new->nom_roll_width)->second += group_new->roll_len;
-				}
+					}					
+						// 将小钢卷组插入到当前乌龟壳的临时钢卷组变量中
+						tortoiseShell->m_groups_temp.insert(make_pair(make_pair(group_new->nom_roll_width, tortoiseShell->m_groups_temp.size() + 1), group_new));
+						// 更新乌龟壳实时长度
+						tortoiseShell->m_TortoiseShell_len_temp += group_new->roll_len;
+						// 更新乌龟壳中钢卷组的同宽公里数
+						if (tortoiseShell->width_lonth.find(group_new->nom_roll_width) == tortoiseShell->width_lonth.end())
+							tortoiseShell->width_lonth.insert(make_pair(group_new->nom_roll_width, group_new->roll_len));
+						else
+							tortoiseShell->width_lonth.find(group_new->nom_roll_width)->second += group_new->roll_len;
+				}				
 				// 跳出乌龟壳遍历，回到准备放入的钢卷组的遍历
 				break;
 			}
@@ -516,15 +548,18 @@ void TortoiseShell::FinishShell()
 			// 如果1）顺利的查找到了这个乌龟壳里的最后一个钢卷组也没触发break，则说明准备放入的钢卷组可以放入本乌龟壳中，那么放入吧
 			if (iter3 == tortoiseShell->m_groups_temp.end())
 			{
+				if (tortoiseShell->m_TortoiseShell_len_temp >= max_TortoiseShell_len)
+					continue;
 				// 计算这个宽度的钢卷组在这个乌龟壳中的已有总长度（不算即将加入的这个钢卷组）
 				double lonth = 0;
 				if (tortoiseShell->width_lonth.find(group->nom_roll_width) != tortoiseShell->width_lonth.end())
 					lonth = tortoiseShell->width_lonth.find(group->nom_roll_width)->second;
-				// 如果钢卷组内的公里数大于最大同宽公里数限制，则分割成小钢卷组
-				if (group->roll_len >= samewidth_limit - lonth)
+				// 如果钢卷组内的公里数大于最大同宽公里数限制或者大于乌龟壳最大公里数限制，则分割成小钢卷组
+				if ((group->roll_len >= samewidth_limit - lonth) || (tortoiseShell->m_TortoiseShell_len_temp + group->roll_len > max_TortoiseShell_len))
 				{
+					double lenth = ((samewidth_limit - lonth) < (max_TortoiseShell_len - tortoiseShell->m_TortoiseShell_len_temp) ? (samewidth_limit - lonth) : (max_TortoiseShell_len - tortoiseShell->m_TortoiseShell_len_temp));
 					// 创建小钢卷组
-					Group *group_new = new Group(group, samewidth_limit - lonth);
+					Group *group_new = new Group(group, lenth);
 					// 如果是空空的小钢卷组，则说明一个钢卷太大放不了了，那么查找下一个乌龟壳
 					if (group_new->m_SteelCoil.empty())
 					{
@@ -533,16 +568,20 @@ void TortoiseShell::FinishShell()
 						continue;
 					}
 					// 将小钢卷组插入到当前乌龟壳的临时钢卷组变量中
-					tortoiseShell->m_groups_temp.insert(make_pair(make_pair(group->nom_roll_width, tortoiseShell->m_groups_temp.size() + 1), group_new));
+					tortoiseShell->m_groups_temp.insert(make_pair(make_pair(group_new->nom_roll_width, tortoiseShell->m_groups_temp.size() + 1), group_new));
+					// 更新乌龟壳实时长度
+					tortoiseShell->m_TortoiseShell_len_temp += group_new->roll_len;
 					// 更新乌龟壳中钢卷组的同宽公里数
 					if (tortoiseShell->width_lonth.find(group_new->nom_roll_width) == tortoiseShell->width_lonth.end())
 						tortoiseShell->width_lonth.insert(make_pair(group_new->nom_roll_width, group_new->roll_len));
 					else
 						tortoiseShell->width_lonth.find(group_new->nom_roll_width)->second += group_new->roll_len;
 				}
+					
 				// 否则，直接将整个钢卷组加入到乌龟壳中
 				else
 				{
+					// 创建小刚卷组
 					Group *group_new = new Group(group, (int)group->m_SteelCoil.size());
 					// 如果是空空的小钢卷组，则说明一个钢卷太大放不了了，那么查找下一个乌龟壳
 					if (group_new->m_SteelCoil.empty())
@@ -551,14 +590,16 @@ void TortoiseShell::FinishShell()
 						delete group_new;
 						continue;
 					}
-					// 将小钢卷组插入到当前乌龟壳的末尾
-					tortoiseShell->m_groups_temp.insert(make_pair(make_pair(group->nom_roll_width, tortoiseShell->m_groups_temp.size() + 1), group_new));
+					// 将小钢卷组插入到当前乌龟壳的临时钢卷组变量中
+					tortoiseShell->m_groups_temp.insert(make_pair(make_pair(group_new->nom_roll_width, tortoiseShell->m_groups_temp.size() + 1), group_new));
+					// 更新乌龟壳实时长度
+					tortoiseShell->m_TortoiseShell_len_temp += group_new->roll_len;
 					// 更新乌龟壳中钢卷组的同宽公里数
 					if (tortoiseShell->width_lonth.find(group_new->nom_roll_width) == tortoiseShell->width_lonth.end())
 						tortoiseShell->width_lonth.insert(make_pair(group_new->nom_roll_width, group_new->roll_len));
 					else
-						tortoiseShell->width_lonth.find(group_new->nom_roll_width)->second += group_new->roll_len;
-				}
+						tortoiseShell->width_lonth.find(group_new->nom_roll_width)->second += group_new->roll_len;					
+				}				
 				// 跳出乌龟壳遍历，回到准备放入的钢卷组的遍历
 				break;
 			}
@@ -638,12 +679,10 @@ void TortoiseShell::FinishShell()
 	}
 	//////////////////////////////////////////////////////////////////////////
 #pragma endregion
-}
 
-void TortoiseShell::DeleteBad()
-{
-	#pragma region 遍历已经生成的乌龟壳计算每个乌龟壳的长度
+#pragma region 乌龟壳计算
 	//////////////////////////////////////////////////////////////////////////
+	// 遍历已经生成的乌龟壳计算每个乌龟壳所有钢卷总重量、某流向钢卷总重量、有DHCR标记的钢卷总数、乌龟壳总长度
 	for (map<int, TortoiseShell*>::iterator iter = s_mapSetOfTortoiseShell.begin(); iter != s_mapSetOfTortoiseShell.end(); iter++)
 	{
 		TortoiseShell *tortoiseShell = iter->second;
@@ -656,188 +695,318 @@ void TortoiseShell::DeleteBad()
 			{
 				SteelCoil *steelCoil = *iter3;
 				tortoiseShell->m_TortoiseShell_len += steelCoil->roll_len;
+				tortoiseShell->m_TortoiseShell_WT += steelCoil->slab_wt;
+				if (steelCoil->flow == "10")
+					tortoiseShell->m_TortoiseShellflow10_WT += steelCoil->slab_wt;
+				if (steelCoil->nom_hot_send_flag == "1")
+					tortoiseShell->m_TortoiseShell_DHCR++;
 			}
 		}
-	}
-	//////////////////////////////////////////////////////////////////////////
-	#pragma endregion
 
-	#pragma region 遍历已经生成的乌龟壳，将不满足高温段块数范围、低温段块数范围的钢卷重新放入未分配钢卷组中。
-	//////////////////////////////////////////////////////////////////////////
+	}
+	// 计算所有乌龟壳所有钢卷总重量、某流向钢卷总重量、有DHCR标记的钢卷总数、乌龟壳总长度
 	for (map<int, TortoiseShell*>::iterator iter = s_mapSetOfTortoiseShell.begin(); iter != s_mapSetOfTortoiseShell.end(); iter++)
 	{
-		TortoiseShell *tortoiseShell = iter->second;
-		int high_num = 0;// 高温卷段数
-		int high_temp_coil_num = 0;// 这段高温卷的钢卷数
-		int low_temp_coil_num = 0;// 这段低温卷的钢卷数
-		int coil_flag = 0;// 0为低温卷，1为高温卷
-		// 遍历乌龟壳内的钢卷组信息
-		for (map<pair<int, int>, Group*>::iterator iter2 = tortoiseShell->m_groups.begin(); iter2 != tortoiseShell->m_groups.end(); iter2++)
-		{
-			Group *group = iter2->second;
-			// 遍历钢卷组内钢卷信息
-			for (vector<SteelCoil*>::iterator iter3 = group->m_SteelCoil.begin(); iter3 != group->m_SteelCoil.end(); )
-			{
-				SteelCoil *steelCoil = *iter3;
-				// 如果上一个是低温卷
-				if (coil_flag == 0)
-				{
-					// 如果当前是低温卷
-					if (steelCoil->high_temp_flag == "0")
-					{
-						low_temp_coil_num++;
-						if (low_temp_coil_num > steelCoil->max_low_temp_coil_num)
-						{
-							low_temp_coil_num--;
-							tortoiseShell->m_TortoiseShell_len -= steelCoil->roll_len;
-							SteelCoil::s_least.insert(make_pair(steelCoil->mat_no, steelCoil));
-							iter3 = group->m_SteelCoil.erase(iter3);
-							continue;
-						}
-						iter3++;
-					}
-					// 如果当前是高温卷
-					else
-					{
-						high_num++;
-						if (high_num > 3)
-						{
-							high_num--;
-							tortoiseShell->m_TortoiseShell_len -= steelCoil->roll_len;
-							SteelCoil::s_least.insert(make_pair(steelCoil->mat_no, steelCoil));
-							iter3 = group->m_SteelCoil.erase(iter3);
-							continue;
-						}
-						low_temp_coil_num = 0;
-						high_temp_coil_num++;
-						coil_flag = 1;
-						iter3++;
-					}
-				}
-				// 如果上一个是高温卷
-				else
-				{
-					// 如果当前是低温卷
-					if (steelCoil->high_temp_flag == "0")
-					{
-						high_temp_coil_num = 0;
-						low_temp_coil_num++;
-						coil_flag = 0;
-						iter3++;
-					}
-					// 如果当前是高温卷
-					else
-					{
-						high_temp_coil_num++;
-						if (high_temp_coil_num > steelCoil->max_high_temp_coil_num)
-						{
-							high_temp_coil_num--;
-							tortoiseShell->m_TortoiseShell_len -= steelCoil->roll_len;
-							SteelCoil::s_least.insert(make_pair(steelCoil->mat_no, steelCoil));
-							iter3 = group->m_SteelCoil.erase(iter3);
-							continue;
-						}
-						iter3++;
-					}
-				}
-			}
-		}
+		allTortoiseShell_len += (*iter).second->m_TortoiseShell_len;
+		allsteelcCoil_wt += (*iter).second->m_TortoiseShell_WT;
+		allflow10_wt += (*iter).second->m_TortoiseShellflow10_WT;
+		m_DHCR += (*iter).second->m_TortoiseShell_DHCR;		
 	}
-	//////////////////////////////////////////////////////////////////////////
-	#pragma endregion
-
-	#pragma region 遍历已经生成的乌龟壳，将不满足轧制位区间范围的钢卷重新放入未分配钢卷组中。
-	//////////////////////////////////////////////////////////////////////////
-	for (map<int, TortoiseShell*>::iterator iter = s_mapSetOfTortoiseShell.begin(); iter != s_mapSetOfTortoiseShell.end(); iter++)
-	{
-		TortoiseShell *tortoiseShell = iter->second;
-		int lonth = 0;	// 钢卷累计位置
-		// 遍历乌龟壳内的钢卷组信息
-		for (map<pair<int, int>, Group*>::iterator iter2 = tortoiseShell->m_groups.begin(); iter2 != tortoiseShell->m_groups.end(); iter2++)
-		{
-			Group *group = iter2->second;
-			// 遍历钢卷组内钢卷信息
-			for (vector<SteelCoil*>::iterator iter3 = group->m_SteelCoil.begin(); iter3 != group->m_SteelCoil.end();)
-			{
-				SteelCoil *steelCoil = *iter3;
-				if (lonth > steelCoil->zone_min_m)
-				{
-					tortoiseShell->m_TortoiseShell_len -= steelCoil->roll_len;
-					SteelCoil::s_least.insert(make_pair(steelCoil->mat_no, steelCoil));
-					iter3 = group->m_SteelCoil.erase(iter3);
-				}
-				else
-				{
-					lonth += steelCoil->roll_len;
-					iter3++;
-				}
-			}
-		}
-	}
-	//////////////////////////////////////////////////////////////////////////
-	#pragma endregion
-
-	#pragma region 遍历已经生成的乌龟壳，如果长度太短，则删除整个乌龟壳
-	//////////////////////////////////////////////////////////////////////////
-	for (map<int, TortoiseShell*>::iterator iter = s_mapSetOfTortoiseShell.begin(); iter != s_mapSetOfTortoiseShell.end(); )
-	{
-		TortoiseShell *tortoiseShell = iter->second;
-		if (tortoiseShell->m_TortoiseShell_len > 5000)
-		{
-			iter++;
-			continue;
-		}
-		// 遍历乌龟壳内的钢卷组信息
-		for (map<pair<int, int>, Group*>::iterator iter2 = tortoiseShell->m_groups.begin(); iter2 != tortoiseShell->m_groups.end();)
-		{
-			Group *group = iter2->second;
-			// 遍历钢卷组内钢卷信息
-			for (vector<SteelCoil*>::iterator iter3 = group->m_SteelCoil.begin(); iter3 != group->m_SteelCoil.end();)
-			{
-				SteelCoil *steelCoil = *iter3;
-				SteelCoil::s_least.insert(make_pair(steelCoil->mat_no, steelCoil));
-				iter3 = group->m_SteelCoil.erase(iter3);
-			}
-			iter2 = tortoiseShell->m_groups.erase(iter2);
-		}
-		iter = s_mapSetOfTortoiseShell.erase(iter);
-	}
-	//////////////////////////////////////////////////////////////////////////
-	#pragma endregion
 }
+//////////////////////////////////////////////////////////////////////////
+#pragma endregion
 
-void TortoiseShell::ReFinishShell()
+//void TortoiseShell::DeleteBad()
+//{
+////#pragma region 遍历已经生成的乌龟壳计算每个乌龟壳的长度
+//////////////////////////////////////////////////////////////////////////////
+//	for (map<int, TortoiseShell*>::iterator iter = s_mapSetOfTortoiseShell.begin(); iter != s_mapSetOfTortoiseShell.end(); iter++)
+//	{
+//		TortoiseShell *tortoiseShell = iter->second;
+//		// 遍历乌龟壳内的钢卷组信息
+//		for (map<pair<int, int>, Group*>::iterator iter2 = tortoiseShell->m_groups.begin(); iter2 != tortoiseShell->m_groups.end(); iter2++)
+//		{
+//			Group *group = iter2->second;
+//			// 遍历钢卷组内钢卷信息
+//			for (vector<SteelCoil*>::iterator iter3 = group->m_SteelCoil.begin(); iter3 != group->m_SteelCoil.end(); iter3++)
+//			{
+//				SteelCoil *steelCoil = *iter3;
+//				tortoiseShell->m_TortoiseShell_len += steelCoil->roll_len;
+//			}
+//		}
+//
+//	}
+//////////////////////////////////////////////////////////////////////////////
+//#pragma endregion
+//
+//#pragma region 遍历已经生成的乌龟壳，将不满足高温段块数范围、低温段块数范围的钢卷重新放入未分配钢卷组中。
+////////////////////////////////////////////////////////////////////////////
+//	for (map<int, TortoiseShell*>::iterator iter = s_mapSetOfTortoiseShell.begin(); iter != s_mapSetOfTortoiseShell.end(); iter++)
+//	{
+//		TortoiseShell *tortoiseShell = iter->second;
+//		int high_num = 0;// 高温卷段数
+//		int high_temp_coil_num = 0;// 这段高温卷的钢卷数
+//		int low_temp_coil_num = 0;// 这段低温卷的钢卷数
+//		int coil_flag = 0;// 0为低温卷，1为高温卷
+//		// 遍历乌龟壳内的钢卷组信息
+//		for (map<pair<int, int>, Group*>::iterator iter2 = tortoiseShell->m_groups.begin(); iter2 != tortoiseShell->m_groups.end(); iter2++)
+//		{
+//			Group *group = iter2->second;
+//			// 遍历钢卷组内钢卷信息
+//			for (vector<SteelCoil*>::iterator iter3 = group->m_SteelCoil.begin(); iter3 != group->m_SteelCoil.end(); )
+//			{
+//				SteelCoil *steelCoil = *iter3;
+//				// 如果上一个是低温卷
+//				if (coil_flag == 0)
+//				{
+//					// 如果当前是低温卷
+//					if (steelCoil->high_temp_flag == "0")
+//					{
+//						low_temp_coil_num++;
+//						if (low_temp_coil_num > steelCoil->max_low_temp_coil_num)
+//						{
+//							low_temp_coil_num--;
+//							tortoiseShell->m_TortoiseShell_len -= steelCoil->roll_len;
+//							SteelCoil::s_least.insert(make_pair(steelCoil->mat_no, steelCoil));
+//							iter3 = group->m_SteelCoil.erase(iter3);
+//							continue;
+//						}
+//						iter3++;
+//					}
+//					// 如果当前是高温卷
+//					else
+//					{
+//						high_num++;
+//						if (high_num > 3)
+//						{
+//							high_num--;
+//							tortoiseShell->m_TortoiseShell_len -= steelCoil->roll_len;
+//							SteelCoil::s_least.insert(make_pair(steelCoil->mat_no, steelCoil));
+//							iter3 = group->m_SteelCoil.erase(iter3);
+//							continue;
+//						}
+//						low_temp_coil_num = 0;
+//						high_temp_coil_num++;
+//						coil_flag = 1;
+//						iter3++;
+//					}
+//				}
+//				// 如果上一个是高温卷
+//				else
+//				{
+//					// 如果当前是低温卷
+//					if (steelCoil->high_temp_flag == "0")
+//					{
+//						high_temp_coil_num = 0;
+//						low_temp_coil_num++;
+//						coil_flag = 0;
+//						iter3++;
+//					}
+//					// 如果当前是高温卷
+//					else
+//					{
+//						high_temp_coil_num++;
+//						if (high_temp_coil_num > steelCoil->max_high_temp_coil_num)
+//						{
+//							high_temp_coil_num--;
+//							tortoiseShell->m_TortoiseShell_len -= steelCoil->roll_len;
+//							SteelCoil::s_least.insert(make_pair(steelCoil->mat_no, steelCoil));
+//							iter3 = group->m_SteelCoil.erase(iter3);
+//							continue;
+//						}
+//						iter3++;
+//					}
+//				}
+//			}
+//		}
+//	}
+////////////////////////////////////////////////////////////////////////////
+//#pragma endregion
+//
+//#pragma region 遍历已经生成的乌龟壳，将不满足轧制位区间范围的钢卷重新放入未分配钢卷组中。
+//	//////////////////////////////////////////////////////////////////////////
+//	for (map<int, TortoiseShell*>::iterator iter = s_mapSetOfTortoiseShell.begin(); iter != s_mapSetOfTortoiseShell.end(); iter++)
+//	{
+//		TortoiseShell *tortoiseShell = iter->second;
+//		int lonth = 0;				// 钢卷累计位置
+//		double del_lonth = 0;		// 删除的钢卷长度	
+//		// 遍历乌龟壳内的钢卷组信息
+//		for (map<pair<int, int>, Group*>::iterator iter2 = tortoiseShell->m_groups.begin(); iter2 != tortoiseShell->m_groups.end();)
+//		{
+//			Group *group = iter2->second;
+//			// 遍历钢卷组内钢卷信息
+//			for (vector<SteelCoil*>::iterator iter3 = group->m_SteelCoil.begin(); iter3 != group->m_SteelCoil.end();)
+//			{
+//				SteelCoil *steelCoil = *iter3;
+//				if (lonth > steelCoil->zone_min_m)
+//				{
+//					tortoiseShell->m_TortoiseShell_len -= steelCoil->roll_len;
+//					SteelCoil::s_least.insert(make_pair(steelCoil->mat_no, steelCoil));
+//					iter3 = group->m_SteelCoil.erase(iter3);
+//					group->roll_len -= steelCoil->roll_len;
+//					del_lonth += steelCoil->roll_len;
+//				}
+//				else
+//				{
+//					lonth += steelCoil->roll_len;
+//					iter3++;
+//				}
+//			}
+//		}
+//	}
+//			//// 如果删除了钢卷，则更新钢卷组的键值（具体位置）
+//	//		if (del_lonth != 0)
+//	//		{
+//	//			if (iter2 != tortoiseShell->m_groups.begin())
+//	//			{
+//	//				map<pair<int, int>, Group*> temp;
+//	//				temp.insert(make_pair(make_pair((iter2--)->first.second, iter2->first.second - del_lonth), group));
+//	//				iter2=tortoiseShell->m_groups.erase(iter2);
+//	//				map<pair<int, int>, Group*>::iterator iter4 = temp.begin();
+//	//				tortoiseShell->m_groups.insert(make_pair(make_pair(iter4->first.first, iter4->first.second), iter4->second));
+//	//				temp.clear();
+//	//			}
+//	//			else
+//	//			{
+//	//				map<pair<int, int>, Group*> temp;
+//	//				temp.insert(make_pair(make_pair(iter2->first.first, iter2->first.second - del_lonth), group));
+//	//				iter2 = tortoiseShell->m_groups.erase(iter2);
+//	//				map<pair<int, int>, Group*>::iterator iter4 = temp.begin();
+//	//				tortoiseShell->m_groups.insert(make_pair(make_pair(iter4->first.first, iter4->first.second), iter4->second));
+//	//				temp.clear();
+//	//			}
+//
+//	//		}
+//	//		// 如果没删除钢卷，也要根据上一个钢卷组的键更改此钢卷组的键
+//	//		else if (iter2 != tortoiseShell->m_groups.begin())
+//	//		{
+//	//			map<pair<int, int>, Group*> temp;
+//	//			temp.insert(make_pair(make_pair((iter2--)->first.second, (iter2--)->first.second + group->roll_len), group));
+//	//			iter2 = tortoiseShell->m_groups.erase(iter2);
+//	//			map<pair<int, int>, Group*>::iterator iter4 = temp.begin();
+//	//			tortoiseShell->m_groups.insert(make_pair(make_pair(iter4->first.first, iter4->first.second), iter4->second));
+//	//			temp.clear();
+//	//		}
+//	//		else
+//	//			continue;
+//		
+//	
+////////////////////////////////////////////////////////////////////////////
+//#pragma endregion
+//
+////#pragma region 遍历已经生成的乌龟壳，如果长度太短，则删除整个乌龟壳
+////	//////////////////////////////////////////////////////////////////////////
+//	
+//	for (map<int, TortoiseShell*>::iterator iter = s_mapSetOfTortoiseShell.begin(); iter != s_mapSetOfTortoiseShell.end(); )
+//	{
+//		TortoiseShell *tortoiseShell = iter->second;
+//		if (tortoiseShell->m_TortoiseShell_len > 5000)
+//		{
+//			iter++;
+//			continue;
+//		}
+//		// 遍历乌龟壳内的钢卷组信息
+//		for (map<pair<int, int>, Group*>::iterator iter2 = tortoiseShell->m_groups.begin(); iter2 != tortoiseShell->m_groups.end();)
+//		{
+//			Group *group = iter2->second;
+//			// 遍历钢卷组内钢卷信息
+//			for (vector<SteelCoil*>::iterator iter3 = group->m_SteelCoil.begin(); iter3 != group->m_SteelCoil.end();)
+//			{
+//				SteelCoil *steelCoil = *iter3;
+//				SteelCoil::s_least.insert(make_pair(steelCoil->mat_no, steelCoil));
+//				iter3 = group->m_SteelCoil.erase(iter3);
+//			}
+//			iter2 = tortoiseShell->m_groups.erase(iter2);
+//		}
+//		iter = s_mapSetOfTortoiseShell.erase(iter);
+//		s_TortoiseShellCount--;
+//	}
+//////////////////////////////////////////////////////////////////////////////
+////#pragma endregion
+////}
+//
+////void TortoiseShell::ReFinishShell()
+////{
+////#pragma region 遍历未分配的钢卷
+////	//////////////////////////////////////////////////////////////////////////
+////	for (map<string, SteelCoil*>::iterator iter = SteelCoil::s_least.begin(); iter != SteelCoil::s_least.end(); iter++)
+////	{
+////		SteelCoil *steelCoil = iter->second;
+////		// 遍历已经生成的乌龟壳
+////		for (map<int, TortoiseShell*>::iterator iter2 = s_mapSetOfTortoiseShell.begin(); iter2 != s_mapSetOfTortoiseShell.end(); iter2++)
+////		{
+////			TortoiseShell *tortoiseShell = iter2->second;
+////			// 遍历乌龟壳内的钢卷组信息
+////			for (map<pair<int, int>, Group*>::iterator iter3 = tortoiseShell->m_groups.begin(); iter3 != (--tortoiseShell->m_groups.end()); iter3++)
+////			{
+////				Group *group1 = iter3->second;
+////				iter3++;
+////				Group *group2 = iter3->second;
+////				iter3--;
+////				// 如果要分配的钢卷宽度小于等于group1的钢卷且大于group2的钢卷
+////				// 尝试根据同宽范围、正跳反跳范围、高温段块数范围、低温段块数范围、轧制位区间范围是否满足来判断该钢卷可否被分配到这个位置(各个逻辑在上面的代码里均写过)
+////				// 如果可以，分配(同时两层break)，如果不可以，查找下一个乌龟壳(break)。
+////			}
+////		}
+////	}
+////	//////////////////////////////////////////////////////////////////////////
+////#pragma endregion
+//}
+
+void TortoiseShell::computekpi()
 {
-	#pragma region 遍历未分配的钢卷
-	//////////////////////////////////////////////////////////////////////////
-	for (map<string, SteelCoil*>::iterator iter = SteelCoil::s_least.begin(); iter != SteelCoil::s_least.end(); iter++)
+	const double max_TortoiseShell_len = 50000;// 乌龟壳最大公里数
+	double flow10_wt = 0;
+	double assigned_wt = 0;
+	double assigned_DHCR = 0;
+	double flow_rate=0;
+	double DHCR_rate=0;
+	double order_rate=0;
+	double rollingkm_rate=0;
+	double rollingkm=0;
+	
+	// 计算排好乌龟壳的所有钢卷总重量、某流向钢卷总重量、有DHCR标记的钢卷总数、乌龟壳总长度
+	for (map<int, TortoiseShell*>::iterator iter = s_mapSetOfTortoiseShell.begin(); iter != s_mapSetOfTortoiseShell.end(); iter++)
 	{
-		SteelCoil *steelCoil = iter->second;
-		// 遍历已经生成的乌龟壳
-		for (map<int, TortoiseShell*>::iterator iter2 = s_mapSetOfTortoiseShell.begin(); iter2 != s_mapSetOfTortoiseShell.end(); iter2++)
+		TortoiseShell *tortoiseShell = iter->second;
+		// 遍历乌龟壳内的钢卷组信息
+		for (map<pair<int, int>, Group*>::iterator iter2 = tortoiseShell->m_groups.begin(); iter2 != tortoiseShell->m_groups.end(); iter2++)
 		{
-			TortoiseShell *tortoiseShell = iter2->second;
-			// 遍历乌龟壳内的钢卷组信息
-			for (map<pair<int, int>, Group*>::iterator iter3 = tortoiseShell->m_groups.begin(); iter3 != (--tortoiseShell->m_groups.end()); iter3++)
+			Group *group = iter2->second;
+			// 遍历钢卷组内钢卷信息
+			for (vector<SteelCoil*>::iterator iter3 = group->m_SteelCoil.begin(); iter3 != group->m_SteelCoil.end(); iter3++)
 			{
-				Group *group1 = iter3->second;
-				iter3++;
-				Group *group2 = iter3->second;
-				iter3--;
-				// 如果要分配的钢卷宽度小于等于group1的钢卷且大于group2的钢卷
-				// 尝试根据同宽范围、正跳反跳范围、高温段块数范围、低温段块数范围、轧制位区间范围是否满足来判断该钢卷可否被分配到这个位置(各个逻辑在上面的代码里均写过)
-				// 如果可以，分配(同时两层break)，如果不可以，查找下一个乌龟壳(break)。
+				SteelCoil *steelCoil = *iter3;
+				tortoiseShell->m_TortoiseShell_len1 += steelCoil->roll_len;
+				tortoiseShell->m_TortoiseShell_WT1 += steelCoil->slab_wt;
+				if (steelCoil->flow == "10")
+					tortoiseShell->m_TortoiseShellflow10_WT1 += steelCoil->slab_wt;
+				if (steelCoil->nom_hot_send_flag == "1")
+					tortoiseShell->m_TortoiseShell_DHCR1++;
 			}
 		}
+
 	}
-	//////////////////////////////////////////////////////////////////////////
-	#pragma endregion
+	for (map<int, TortoiseShell*>::iterator iter = s_mapSetOfTortoiseShell.begin(); iter != s_mapSetOfTortoiseShell.end(); iter++)
+	{
+		TortoiseShell *tortoiseShell = iter->second;
+		rollingkm += tortoiseShell->m_TortoiseShell_len1;
+		assigned_wt += tortoiseShell->m_TortoiseShell_WT1;
+		flow10_wt += tortoiseShell->m_TortoiseShellflow10_WT1;
+		assigned_DHCR += tortoiseShell->m_TortoiseShell_DHCR1;
+	}	
+	flow_rate = flow10_wt / allflow10_wt;																// 流向匹配率
+	order_rate = assigned_wt / allsteelcCoil_wt;														// 合同计划兑现率
+	rollingkm_rate = (rollingkm / s_mapSetOfTortoiseShell.size()) / max_TortoiseShell_len;				// 轧制公里率
+	DHCR_rate = assigned_DHCR / m_DHCR;																	// DHCR比率
+	cout << flow_rate << "   " << order_rate << "    " << rollingkm_rate << "   " << DHCR_rate << endl;
+
 }
 
 void TortoiseShell::showResult()
 {
 	int i = 0;
-	cout << "乌龟壳总数：  " << s_mapSetOfTortoiseShell.size() << endl;
+	cout << "乌龟壳总数：  " << s_TortoiseShellCount << endl;
 	// 输出此时乌龟壳的编号、在乌龟壳里的钢卷组编号和钢卷组里钢卷的钢卷号
 	for (map<int, TortoiseShell*>::iterator iter2 = s_mapSetOfTortoiseShell.begin(); iter2 != s_mapSetOfTortoiseShell.end(); iter2++)
 	{
@@ -846,7 +1015,7 @@ void TortoiseShell::showResult()
 			for (vector<SteelCoil*>::iterator iter4 = (*iter3).second->m_SteelCoil.begin(); iter4 != (*iter3).second->m_SteelCoil.end(); iter4++)
 			{
 				
-				i++;;
+				i++;
 				cout << iter2->first << "	" << iter3->second->group_no << "	" << (*iter4)->mat_no << "    "<<(*iter4)->nom_roll_width<<endl;
 			}
 		}
@@ -915,8 +1084,18 @@ void TortoiseShell::showResultFile()
 	}
 }
 
-//////////////////////////////////////////////////////////////////////////
-#pragma endregion
+void TortoiseShell::addMainGroup(Group *group)
+{
+	int begin_len = 0;
+	if (!m_main_groups.empty())
+		begin_len = m_main_groups.rbegin()->first.second;
+	m_main_groups.insert(make_pair(make_pair(begin_len, begin_len + group->roll_len), group));
+	m_TortoiseShell_len += group->roll_len;
+	m_TortoiseShell_WT += group->slab_wt;
+
+}
+
+
 
 ////////////////////////////////////////////////////////////////////////
 #pragma endregion
@@ -925,6 +1104,10 @@ void TortoiseShell::showResultFile()
 //////////////////////////////////////////////////////////////////////////
 map<int, TortoiseShell*>		TortoiseShell::s_mapSetOfTortoiseShell = map<int, TortoiseShell*>();
 int							TortoiseShell::s_TortoiseShellCount = 0;
+double						TortoiseShell::allTortoiseShell_len = 0;
+double						TortoiseShell::m_DHCR = 0;
+double						TortoiseShell::allflow10_wt = 0;
+double						TortoiseShell::allsteelcCoil_wt = 0;
 map<pair<string, string>, string>		TortoiseShell::plantype = map<pair<string, string>, string>();
 ////////////////////////////////////////////////////////////////////////
 #pragma endregion

@@ -131,13 +131,13 @@ public:// 钢卷集合
 	//static map<string, SteelCoil*>      s_lowtempSteelCoil;       //低温钢卷的map集合，key为钢卷号，value为钢卷
 	//static map<string, SteelCoil*>      s_coldSteelCoil;          //冷钢卷的map集合，key为钢卷号，value为钢卷
 	//static map<string, SteelCoil*>      s_hotSteelCoil;           //热钢卷的map集合，key为钢卷号，value为钢卷
-	static map<pair<pair < pair<pair<pair<pair<string, string>, double>, double>, int>, int>, int>, vector<SteelCoil*>>      s_pre_flagSteelCoil;		//有烫辊材标记的钢卷组map集合
-	static map<pair<pair < pair<pair<pair<pair<string, string>, double>, double>, int>, int>, int>, vector<SteelCoil*>>      s_nonpre_DHCR_flagSteelCoil;	//无烫辊材标记和有DHCR标记的钢卷组map集合
+	static map<pair<pair < pair<pair<pair<pair<pair<pair<pair<pair<pair<double, double>, string>, string>, int>, int>, int>,string>,int>,int>,int>,int>, vector<SteelCoil*>>      s_pre_flagSteelCoil;		//有烫辊材标记的钢卷组map集合
+	static map<pair<pair < pair<pair<pair<pair<pair<pair<pair<pair<pair<double, double>, string>, string>, int>, int>, int>, string>, int>, int>, int>, int>, vector<SteelCoil*>>      s_nonpre_DHCR_flagSteelCoil;	//无烫辊材标记和有DHCR标记的钢卷组map集合
 	//static map<pair<pair < pair<pair<pair<pair<int, string>, double>, double>, int>, int>, int>, vector<SteelCoil*>>      s_DHCRSteelCoil;			//有DHCR标记的钢卷组map集合
 	
-	//static map< pair<pair < pair<pair<pair<pair<int, string>, double>, double>, int>, int>,int>, vector<SteelCoil*>>     s_mapSetOfSteelCoilgroup;  //将钢卷按个字段排序： 计划类型 ， 钢级，厚度，宽度，出炉，终轧，卷取温度，将结果存在vector中
-	static map<string, SteelCoil*>			s_least;	// 未分配成功的钢卷
-	static int					s_SteelCoilCount;				    //钢卷个数
+	//static map< pair<pair < pair<pair<pair<pair<int, string>, double>, double>, int>, int>,int>, vector<SteelCoil*>>     s_mapSetOfSteelCoilgroup;  //将钢卷按个字段排序： 宽度，厚度，计划类型 ， 钢级，出炉，终轧，卷取温度，高温标记将结果存在vector中
+	static map<string, SteelCoil*>			s_least;							// 未分配成功的钢卷
+	static int								s_SteelCoilCount;				    //钢卷个数
 
 #pragma endregion
 
