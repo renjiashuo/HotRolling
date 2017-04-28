@@ -55,23 +55,36 @@ Group::Group(Group *group, int n)
 	this->nom_heat_temp = group->nom_heat_temp;
 	this->nom_afft_temp = group->nom_afft_temp;
 	this->nom_coil_temp = group->nom_coil_temp;
+	this->high_temp_flag = group->high_temp_flag;
+	this->zone_max_m = group->zone_max_m;
+	this->zone_max_num = group->zone_max_num;
+	this->zone_min_m = group->zone_min_m;
+	this->zone_min_num = group->zone_min_num;
+	this->slab_wt = group->slab_wt;
+	this->roll_len = group->roll_len;
 	// 转移钢卷到新的钢卷组中
 	vector<SteelCoil*>::iterator iter = group->m_SteelCoil.begin();
 	advance(iter, n);
 	this->m_SteelCoil.insert(this->m_SteelCoil.begin(), group->m_SteelCoil.begin(), iter);
 	group->m_SteelCoil.erase(group->m_SteelCoil.begin(), iter);
-	// 计算轧制长度、重量
+	// 计算新钢卷组轧制长度
 	roll_len = 0;
-	slab_wt = 0;
 	for (iter = m_SteelCoil.begin(); iter != m_SteelCoil.end(); iter++)
 	{
 		SteelCoil *steelCoil = *iter;
 		roll_len += steelCoil->roll_len;
+	}
+	// 计算新钢卷组轧制重量
+	slab_wt = 0;
+	for (iter = m_SteelCoil.begin(); iter != m_SteelCoil.end(); iter++)
+	{
+		SteelCoil *steelCoil = *iter;
 		slab_wt += steelCoil->slab_wt;
 	}
-	// 原钢卷组减去长度、重量
-	group->roll_len -= roll_len;
-	group->slab_wt -= slab_wt;
+	// 更新原钢卷组轧制长度
+	group->roll_len -= this->roll_len;
+	// 更新原钢卷组轧制重量
+	group->slab_wt -= this->slab_wt;
 	// 将新的钢卷组放入小钢卷组map中
 	Group::s_mapSetOfsmallGroup.insert(make_pair(this->group_no, this));
 }
@@ -87,6 +100,13 @@ Group::Group(Group *group, double lonth)
 	this->nom_heat_temp = group->nom_heat_temp;
 	this->nom_afft_temp = group->nom_afft_temp;
 	this->nom_coil_temp = group->nom_coil_temp;
+	this->high_temp_flag = group->high_temp_flag;
+	this->zone_max_m = group->zone_max_m;
+	this->zone_max_num = group->zone_max_num;
+	this->zone_min_m = group->zone_min_m;
+	this->zone_min_num = group->zone_min_num;
+	this->slab_wt = group->slab_wt;
+	this->roll_len = group->roll_len;
 	// 转移钢卷到新的钢卷组中
 	roll_len = 0;	// 轧制长度
 	for (vector<SteelCoil*>::iterator iter = group->m_SteelCoil.begin(); iter != group->m_SteelCoil.end();)
@@ -100,6 +120,10 @@ Group::Group(Group *group, double lonth)
 			roll_len += steelCoil->roll_len;
 			// 更新原钢卷组长度
 			group->roll_len -= steelCoil->roll_len;
+			// 更新新钢卷组的重量
+			slab_wt += steelCoil->slab_wt;
+			// 更新原钢卷组的重量
+			group->slab_wt += steelCoil->slab_wt;
 			// 转移钢卷
 			this->m_SteelCoil.insert(this->m_SteelCoil.end(), iter, iter+1);
 			iter = group->m_SteelCoil.erase(iter);

@@ -44,13 +44,13 @@ public:// 钢卷组参数
 	int						nom_afft_temp;		// 额定终轧温度
 	int						nom_coil_temp;		// 额定卷取温度
 	string					high_temp_flag;		// 高温标记
-	double					roll_len;			// 轧制长度
-	double					slab_wt;			// 轧制重量
-	int						zone_max_num;		// 区间最大块数
-	int						zone_min_num;		// 区间最小块数
+	double					roll_len;				// 轧制长度
+	double					slab_wt;				// 轧制重量
+	int						zone_max_num;			// 区间最大块数
+	int						zone_min_num;			// 区间最小块数
 	int						zone_max_m;			// 区间最大米数
 	int						zone_min_m;			// 区间最小米数
-	vector<SteelCoil*>			m_SteelCoil;	// 存放每个钢卷组的钢卷
+	vector<SteelCoil*>			m_SteelCoil;			// 存放每个钢卷组的钢卷
 	//string					sg_sign;				// 牌号（钢级）
 	//map<string, SteelCoil*>			m_SteelCoil;			// 包含钢卷，key为钢卷号，value为钢卷
 	map<int, SteelCoil*>			m_SteelCoilTime;			// 钢卷计划轧制时间，key为钢卷轧制开始时间，value为钢卷（小钢卷组的计划属性，内部的钢卷顺序，按时间排序）

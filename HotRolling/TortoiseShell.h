@@ -56,9 +56,13 @@ public:// 乌龟壳参数
 	map<pair<int, int>, Group*>				m_main_groups;			// 乌龟壳内主体材钢卷组信息，key.first，key.second(存钢卷组的位置)，value为钢卷组
 	
 public:// 排程过程中记录变量
-	map<double, double>					width_lonth;				// 目前乌龟壳中每种轧制宽度对应的已存在的公里数（只是主体材，无烫辊材）
-	//double							nom_roll_width;				// 目前乌龟壳中最后一个钢卷组的额定轧制宽度
-	//double							same_width_lonth;			// 目前最后一个钢卷组宽度的同宽公里数
+	//map<double, double>					width_lonth;				// 目前乌龟壳中每种轧制宽度对应的已存在的公里数（只是主体材，无烫辊材）
+	int									steelCoilNum;				// 乌龟壳内钢卷数
+	int									steelCoilLenth;			// 乌龟壳目前公里数
+	int									high_num;					// 乌龟壳内已有高温卷段数
+	int									high_temp_coil_num;		// 末尾连续高温卷的钢卷数
+	int									low_temp_coil_num;			// 末尾连续低温卷的钢卷数
+	int									coil_flag;				// 上一个钢卷的属性，0为低温卷，1为高温卷
 	
 public:// 乌龟壳集合
 	static map<int, TortoiseShell*>		s_mapSetOfTortoiseShell;	// 乌龟壳的map集合，key为乌龟壳代码，value为乌龟壳
@@ -121,8 +125,8 @@ public:
 	static void computekpi();
 	//
 	// 摘要:
-	//     向乌龟壳的最后添加一个主体材。
-	void addMainGroup(Group *group);
+	//     向乌龟壳的最后添加一个主体材，分配成功返回true，分配失败返回false。
+	bool addMainGroup(Group *group);
 	//////////////////////////////////////////////////////////////////////////
 	#pragma endregion
 

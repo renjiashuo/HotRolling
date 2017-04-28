@@ -1,8 +1,16 @@
-﻿生成启动时间为 2017/4/26 16:45:22。
+﻿生成启动时间为 2017/4/28 1:17:52。
      1>项目“C:\Users\wsgbcsc\Documents\GitHub\HotRolling\HotRolling\HotRolling.vcxproj”在节点 2 上(Build 个目标)。
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /IC:\Users\wsgbcsc\Documents\GitHub\HotRolling\HotRolling\include /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt TortoiseShell.cpp
          TortoiseShell.cpp
+     1>c:\users\wsgbcsc\documents\github\hotrolling\hotrolling\tortoiseshell.cpp(64): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
+     1>c:\users\wsgbcsc\documents\github\hotrolling\hotrolling\tortoiseshell.cpp(978): warning C4244: “+=”: 从“double”转换到“int”，可能丢失数据
+     1>c:\users\wsgbcsc\documents\github\hotrolling\hotrolling\tortoiseshell.cpp(988): warning C4018: “<”: 有符号/无符号不匹配
+     1>c:\users\wsgbcsc\documents\github\hotrolling\hotrolling\tortoiseshell.cpp(991): warning C4244: “+=”: 从“double”转换到“int”，可能丢失数据
+     1>c:\users\wsgbcsc\documents\github\hotrolling\hotrolling\tortoiseshell.cpp(1052): warning C4018: “<”: 有符号/无符号不匹配
+     1>c:\users\wsgbcsc\documents\github\hotrolling\hotrolling\tortoiseshell.cpp(1063): warning C4244: “+=”: 从“double”转换到“int”，可能丢失数据
+     1>c:\users\wsgbcsc\documents\github\hotrolling\hotrolling\tortoiseshell.cpp(1072): warning C4018: “<”: 有符号/无符号不匹配
+     1>c:\users\wsgbcsc\documents\github\hotrolling\hotrolling\tortoiseshell.cpp(1088): warning C4244: “+=”: 从“double”转换到“int”，可能丢失数据
      1>c:\program files (x86)\microsoft visual studio 12.0\vc\include\utility(157): warning C4244: “初始化”: 从“double”转换到“int”，可能丢失数据
                  c:\program files (x86)\microsoft visual studio 12.0\vc\include\type_traits(475): 参见对正在编译的函数 模板 实例化“std::pair<int,int>::pair<double,unsigned int,void>(std::pair<double,unsigned int> &&)”的引用
                  c:\users\wsgbcsc\documents\github\hotrolling\hotrolling\tortoiseshell.cpp(275): 参见对正在编译的函数 模板 实例化“std::pair<int,int>::pair<double,unsigned int,void>(std::pair<double,unsigned int> &&)”的引用
@@ -29,4 +37,4 @@
 
 生成成功。
 
-已用时间 00:00:03.49
+已用时间 00:00:03.90
