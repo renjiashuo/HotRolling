@@ -57,6 +57,9 @@
     <ClInclude Include="tangguncai.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="localsearch.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Group.cpp">
@@ -72,6 +75,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="datacheck.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="localsearch.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

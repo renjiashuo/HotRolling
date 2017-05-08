@@ -15,6 +15,7 @@
     <ClInclude Include="global.h" />
     <ClInclude Include="Group.h" />
     <ClInclude Include="keyindicator_def.h" />
+    <ClInclude Include="localsearch.h" />
     <ClInclude Include="rulepara_def.h" />
     <ClInclude Include="rulescore.h" />
     <ClInclude Include="ruleset_def.h" />
@@ -29,6 +30,7 @@
   <ItemGroup>
     <ClCompile Include="datacheck.cpp" />
     <ClCompile Include="Group.cpp" />
+    <ClCompile Include="localsearch.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="SteelCoil.cpp" />
     <ClCompile Include="TortoiseShell.cpp" />

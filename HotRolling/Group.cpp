@@ -142,22 +142,10 @@ void indata(map<int, Group*>&m_data, int a, Group* b)
 void Group::vec_group()
 {
 	int i = 1;
-	/*for (map<pair<pair < pair<pair<pair<pair<int, string>, double>, double>, int>, int>, int>, vector<SteelCoil*>>::iterator iter = SteelCoil::s_DHCRSteelCoil.begin(); iter != SteelCoil::s_DHCRSteelCoil.end(); iter++)
-	{				
-		Group* newgroup = new Group(i, (*iter).first.first.first.first.first.first.first, (*iter).first.first.first.first.first.first.second, (*iter).first.first.first.first.first.second, (*iter).first.first.first.first.second, (*iter).first.first.first.second, (*iter).first.first.second, (*iter).first.second,iter->second);
-		indata(Group::s_mapSetOfGroup, i, newgroup);
-		i++;
-	}*/
-	for (map<pair<pair < pair<pair<pair<pair<pair<pair<pair<pair<pair<double, double>, string>, string>, int>, int>, int>, string>, int>, int>, int>, int>, vector<SteelCoil*>>::iterator iter = SteelCoil::s_nonpre_DHCR_flagSteelCoil.begin(); iter != SteelCoil::s_nonpre_DHCR_flagSteelCoil.end(); iter++)
+	for (map<pair<pair < pair<pair<pair<pair<pair<pair<pair<pair<pair<double, double>, string>, string>, int>, int>, int>, string>, int>, int>, int>, int>, vector<SteelCoil*>>::iterator iter = SteelCoil::s_SteelCoil.begin(); iter != SteelCoil::s_SteelCoil.end(); iter++)
 	{
 		Group* newgroup1 = new Group(i, -(*iter).first.first.first.first.first.first.first.first.first.first.first.first, (*iter).first.first.first.first.first.first.first.first.first.first.first.second, (*iter).first.first.first.first.first.first.first.first.first.first.second, (*iter).first.first.first.first.first.first.first.first.first.second, (*iter).first.first.first.first.first.first.first.first.second, (*iter).first.first.first.first.first.first.first.second, (*iter).first.first.first.first.first.first.second, (*iter).first.first.first.first.first.second, (*iter).first.first.first.first.second, (*iter).first.first.first.second, (*iter).first.first.second, (*iter).first.second, iter->second);
 		indata(Group::s_mapSetOfGroup, i, newgroup1);
-		i++;
-	}
-	for (map<pair<pair < pair<pair<pair<pair<pair<pair<pair<pair<pair<double, double>, string>, string>, int>, int>, int>, string>, int>, int>, int>, int>, vector<SteelCoil*>>::iterator iter = SteelCoil::s_pre_flagSteelCoil.begin(); iter != SteelCoil::s_pre_flagSteelCoil.end(); iter++)
-	{
-		Group* newgroup2 = new Group(i, -(*iter).first.first.first.first.first.first.first.first.first.first.first.first, (*iter).first.first.first.first.first.first.first.first.first.first.first.second, (*iter).first.first.first.first.first.first.first.first.first.first.second, (*iter).first.first.first.first.first.first.first.first.first.second, (*iter).first.first.first.first.first.first.first.first.second, (*iter).first.first.first.first.first.first.first.second, (*iter).first.first.first.first.first.first.second, (*iter).first.first.first.first.first.second, (*iter).first.first.first.first.second, (*iter).first.first.first.second, (*iter).first.first.second, (*iter).first.second, iter->second);
-		indata(Group::s_mapSetOfGroup1, i, newgroup2);
 		i++;
 	}
 
@@ -169,24 +157,17 @@ void Group::vec_group()
 
 	}
 	cout << endl << endl;
-	for (map<int, Group*>::iterator iter = s_mapSetOfGroup1.begin(); iter != s_mapSetOfGroup1.end(); iter++)
-	{
-		cout << iter->first <<"  ";
-		cout << iter->second->plan_type << "	" << iter->second->st_no << "	" << iter->second->nom_roll_thick << "		" << iter->second->nom_roll_width << "		" << iter->second->nom_afft_temp << "		" << iter->second->nom_coil_temp << "		" << iter->second->nom_heat_temp << "		" << iter->second->high_temp_flag << "	  "<<iter->second->m_SteelCoil.size() << endl;
-	}
-	cout << endl << endl;
 	/*------------------------------输出钢卷组的参数----------------------------*/
 
-
 	/*-----------读取钢卷组集合里的钢卷组里的钢卷的长度（或者其他属性）--------------*/
-	for (map<int, Group*> ::iterator iter = s_mapSetOfGroup.begin(); iter != s_mapSetOfGroup.end(); iter++)
+	/*for (map<int, Group*> ::iterator iter = s_mapSetOfGroup.begin(); iter != s_mapSetOfGroup.end(); iter++)
 	{
 		for (vector<SteelCoil*>::iterator iter1 = (*iter).second->m_SteelCoil.begin(); iter1 != (*iter).second->m_SteelCoil.end(); iter1++)
 		{
 			cout << (*iter1)->high_temp_flag<< endl;
 		}		
 	}
-	cout << endl << endl;
+	cout << endl << endl;*/
 	/*-----------读取钢卷组集合里的钢卷组里的钢卷的长度（或者其他属性）--------------*/
 
 }
@@ -206,8 +187,8 @@ Group::~Group()
 #pragma region Group静态变量
 //////////////////////////////////////////////////////////////////////////
 map<int, Group*>		Group::s_mapSetOfGroup = map<int, Group*>();
-map<int, Group*>		Group::s_mapSetOfGroup1 = map<int, Group*>();
-map<int, Group*>     Group::s_mapSetOfsmallGroup = map<int, Group*>();
+map<int, Group*>		Group::s_mapSetOfsmallGroup = map<int, Group*>();
+map<double, Group*>		Group::s_least = map<double, Group*>();
 int						Group::s_GroupCount = 0;
 ////////////////////////////////////////////////////////////////////////
 #pragma endregion

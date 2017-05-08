@@ -169,7 +169,7 @@ void SteelCoil::SteelCoilgroup()
 		while (rs.Next())
 		{
 				
-			if (rs.Get<ostring>(39) == "1" && rs.Get<ostring>(29)=="0")		//将有烫辊材标记（不包括DHCR）的钢卷按七组标准组成钢卷组放入map
+			if (rs.Get<ostring>(39) == "1" && rs.Get<ostring>(29)=="0")		//将有烫辊材标记（不包括DHCR）的钢卷按十二组标准组成钢卷组放入map
 			{
 				SteelCoil *PRESteelCoil = new SteelCoil(rs.Get<ostring>(36),rs.Get<ostring>(9), rs.Get<double>(48), rs.Get<double>(49), rs.Get<double>(57), rs.Get<ostring>(21), rs.Get<int>(50), rs.Get<int>(51), rs.Get<int>(52), rs.Get<ostring>(29), rs.Get<ostring>(39), rs.Get<ostring>(55), rs.Get<ostring>(53), rs.Get<ostring>(54), rs.Get<ostring>(80), rs.Get<ostring>(81)
 					, rs.Get<ostring>(10), rs.Get<int>(11), rs.Get<ostring>(12), rs.Get<int>(13), rs.Get<ostring>(14), rs.Get<ostring>(15), rs.Get<ostring>(16), rs.Get<double>(20), rs.Get<double>(18), rs.Get<ostring>(22), rs.Get<ostring>(23), rs.Get<ostring>(24), rs.Get<ostring>(25), rs.Get<ostring>(26), rs.Get<ostring>(27), rs.Get<ostring>(28)
@@ -178,8 +178,7 @@ void SteelCoil::SteelCoilgroup()
 					, rs.Get<int>(72), rs.Get<int>(73), rs.Get<int>(74), rs.Get<int>(75), rs.Get<int>(76), rs.Get<int>(77), rs.Get<int>(78), rs.Get<int>(79), rs.Get<int>(82), rs.Get<int>(83), rs.Get<int>(84), rs.Get<int>(85), rs.Get<int>(86), rs.Get<ostring>(1), rs.Get<ostring>(2), rs.Get<ostring>(3),
 					rs.Get<ostring>(4), rs.Get<ostring>(5), rs.Get<ostring>(6), rs.Get<ostring>(7), rs.Get<ostring>(8), rs.Get<double>(17));
 
-				indata(SteelCoil::s_pre_flagSteelCoil, -rs.Get<double>(49), rs.Get<double>(48), rs.Get<ostring>(55), rs.Get<ostring>(21), rs.Get<int>(50), rs.Get<int>(51), rs.Get<int>(52), rs.Get<ostring>(80), rs.Get<int>(83), rs.Get<int>(84), rs.Get<int>(85), rs.Get<int>(86), PRESteelCoil);
-				//SteelCoil::s_pre_flagSteelCoil.insert(make_pair(PRESteelCoil->mat_no, PRESteelCoil));
+				indata(SteelCoil::s_SteelCoil, -rs.Get<double>(49), rs.Get<double>(48), rs.Get<ostring>(55), rs.Get<ostring>(21), rs.Get<int>(50), rs.Get<int>(51), rs.Get<int>(52), rs.Get<ostring>(80), rs.Get<int>(83), rs.Get<int>(84), rs.Get<int>(85), rs.Get<int>(86), PRESteelCoil);
 			}
 			else
 			{
@@ -190,32 +189,22 @@ void SteelCoil::SteelCoilgroup()
 					, rs.Get<int>(72), rs.Get<int>(73), rs.Get<int>(74), rs.Get<int>(75), rs.Get<int>(76), rs.Get<int>(77), rs.Get<int>(78), rs.Get<int>(79), rs.Get<int>(82), rs.Get<int>(83), rs.Get<int>(84), rs.Get<int>(85), rs.Get<int>(86), rs.Get<ostring>(1), rs.Get<ostring>(2), rs.Get<ostring>(3),
 					rs.Get<ostring>(4), rs.Get<ostring>(5), rs.Get<ostring>(6), rs.Get<ostring>(7), rs.Get<ostring>(8), rs.Get<double>(17));
 
-				indata(SteelCoil::s_nonpre_DHCR_flagSteelCoil, -rs.Get<double>(49), rs.Get<double>(48), rs.Get<ostring>(55), rs.Get<ostring>(21), rs.Get<int>(50), rs.Get<int>(51), rs.Get<int>(52), rs.Get<ostring>(80), rs.Get<int>(83), rs.Get<int>(84), rs.Get<int>(85), rs.Get<int>(86), nonPRE_DHCRSteelCoil);
-				//SteelCoil::s_nonpre_flagSteelCoil.insert(make_pair(nonPRESteelCoil->mat_no, nonPRESteelCoil));
+				indata(SteelCoil::s_SteelCoil, -rs.Get<double>(49), rs.Get<double>(48), rs.Get<ostring>(55), rs.Get<ostring>(21), rs.Get<int>(50), rs.Get<int>(51), rs.Get<int>(52), rs.Get<ostring>(80), rs.Get<int>(83), rs.Get<int>(84), rs.Get<int>(85), rs.Get<int>(86), nonPRE_DHCRSteelCoil);
 			}
 		}
 		
 		/*-----------输出每个钢卷组内的钢卷--------------*/
 		
-		for (map<pair<pair < pair<pair<pair<pair<pair<pair<pair<pair<pair<double, double>, string>, string>, int>, int>, int>, string>, int>, int>, int>, int>, vector<SteelCoil*>>::iterator iter = s_pre_flagSteelCoil.begin(); iter != s_pre_flagSteelCoil.end(); iter++)
+		for (map<pair<pair < pair<pair<pair<pair<pair<pair<pair<pair<pair<double, double>, string>, string>, int>, int>, int>, string>, int>, int>, int>, int>, vector<SteelCoil*>>::iterator iter = s_SteelCoil.begin(); iter != s_SteelCoil.end(); iter++)
 		{
-			cout << (*iter).first.first.first.first.second << endl;
+			cout << -(*iter).first.first.first.first.first.first.first.first.first.first.first.first << endl;
 			for (vector<SteelCoil*>::iterator iter1 = iter->second.begin(); iter1 != iter->second.end(); iter1++)
 			{
 				cout << (*iter1)->mat_no << endl;
 			}
 		}
 		cout << endl << endl;
-		for (map<pair<pair < pair<pair<pair<pair<pair<pair<pair<pair<pair<double, double>, string>, string>, int>, int>, int>, string>, int>, int>, int>, int>, vector<SteelCoil*>>::iterator iter = s_nonpre_DHCR_flagSteelCoil.begin(); iter != s_nonpre_DHCR_flagSteelCoil.end(); iter++)
-		{
-			
-			cout << (*iter).first.first.first.first.second << endl;
-			for (vector<SteelCoil*>::iterator iter1 = iter->second.begin(); iter1 != iter->second.end(); iter1++)
-			{
-				cout << (*iter1)->mat_no << endl;
-			}
-		}
-		int s_GroupCount =s_nonpre_DHCR_flagSteelCoil.size() + s_pre_flagSteelCoil.size();
+		int s_GroupCount =s_SteelCoil.size();
 		cout << "所有钢卷组的个数:" << "  " << s_GroupCount << endl;//钢卷组个数
 		cout << endl ;
 
@@ -243,12 +232,8 @@ catch (exception &ex)
 
 #pragma region SteelCoil静态变量
 //////////////////////////////////////////////////////////////////////////
-//map<string, SteelCoil*>		SteelCoil::s_mapSetOfSteelCoil = map<string, SteelCoil*>();
 int					SteelCoil::s_SteelCoilCount = 0;
-map<pair<pair < pair<pair<pair<pair<pair<pair<pair<pair<pair<double, double>, string>, string>, int>, int>, int>, string>, int>, int>, int>, int>, vector<SteelCoil*>>    SteelCoil::s_pre_flagSteelCoil = map<pair<pair < pair<pair<pair<pair<pair<pair<pair<pair<pair<double, double>, string>, string>, int>, int>, int>, string>, int>, int>, int>, int>, vector<SteelCoil*>>();
-map<pair<pair < pair<pair<pair<pair<pair<pair<pair<pair<pair<double, double>, string>, string>, int>, int>, int>, string>, int>, int>, int>, int>, vector<SteelCoil*>>    SteelCoil::s_nonpre_DHCR_flagSteelCoil = map<pair<pair < pair<pair<pair<pair<pair<pair<pair<pair<pair<double, double>, string>, string>, int>, int>, int>, string>, int>, int>, int>, int>, vector<SteelCoil*>>();
-//map<pair<pair < pair<pair<pair<pair<int, string>, double>, double>, int>, int>, int>, vector<SteelCoil*>>    SteelCoil::s_DHCRSteelCoil = map<pair<pair < pair<pair<pair<pair<int, string>, double>, double>, int>, int>, int>, vector<SteelCoil*>>();
-//map< pair<pair < pair<pair<pair<pair<int, string>, double>, double>, int>, int>, int>, vector<SteelCoil*>>    SteelCoil::s_mapSetOfSteelCoilgroup = map< pair<pair < pair<pair<pair<pair<int, string>, double>, double>, int>, int>, int>, vector<SteelCoil*>>();
-map<string, SteelCoil*>	SteelCoil::s_least = map<string, SteelCoil*>();
+map<pair<pair < pair<pair<pair<pair<pair<pair<pair<pair<pair<double, double>, string>, string>, int>, int>, int>, string>, int>, int>, int>, int>, vector<SteelCoil*>>    SteelCoil::s_SteelCoil = map<pair<pair < pair<pair<pair<pair<pair<pair<pair<pair<pair<double, double>, string>, string>, int>, int>, int>, string>, int>, int>, int>, int>, vector<SteelCoil*>>();
+
 ////////////////////////////////////////////////////////////////////////
 #pragma endregion
