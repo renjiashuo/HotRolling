@@ -366,31 +366,25 @@ void TortoiseShell::DeleteBad()
 		{
 			Group *group = iter2->second;
 			// 将删除的钢卷组放入map集合里
-			Group::s_least.insert(make_pair(group->nom_roll_width, group));			
+			Group::s_least.insert(make_pair(Group::s_least.size()+1, group));			
 			iter2 = tortoiseShell->m_main_groups.erase(iter2);
 		}		
 		iter = s_mapSetOfTortoiseShell.erase(iter);		
 		s_TortoiseShellCount--;
 	}
-	// 将得到的乌龟壳初始解放入最优乌龟壳的map集合里
-	for (map<int, TortoiseShell*>::iterator iter0 = s_mapSetOfTortoiseShell.begin(); iter0 != s_mapSetOfTortoiseShell.end();iter0++)
-	{
-		TortoiseShell *tortoiseShell = iter0->second;
-		s_bestSetOfTortoiseShell.insert(make_pair(iter0->first, tortoiseShell));
-	}
-	// 将初始解的kpi赋给最优kpi变量
-	best_kpi = computekpi(s_mapSetOfTortoiseShell);
 	// 删除乌龟壳之后，更新乌龟壳代码
 	map<int, TortoiseShell*> temp;
-	for (map<int, TortoiseShell*>::iterator iter = s_mapSetOfTortoiseShell.begin(); iter != s_mapSetOfTortoiseShell.end();iter++)
+	for (map<int, TortoiseShell*>::iterator iter = s_mapSetOfTortoiseShell.begin(); iter != s_mapSetOfTortoiseShell.end(); iter++)
 	{
-		temp.insert(make_pair(temp.size()+1, iter->second));
+		temp.insert(make_pair(temp.size() + 1, iter->second));
 	}
-	swap(s_mapSetOfTortoiseShell,temp);
-
-	// 生成新的乌龟壳，将删除钢卷组按宽度递减放入
+	swap(s_mapSetOfTortoiseShell, temp);
+	
+	// 将初始解的kpi赋给最优kpi变量
+	best_kpi = computekpi(s_mapSetOfTortoiseShell);	
+	// 生成新的乌龟壳，将删除钢卷组放入
 	TortoiseShell *tortoiseShell = new TortoiseShell();
-	for (map<double, Group*>::reverse_iterator iter3 = Group::s_least.rbegin(); iter3 != Group::s_least.rend(); iter3++)
+	for (map<int, Group*>::iterator iter3 = Group::s_least.begin(); iter3 != Group::s_least.end(); iter3++)
 	{
 		Group *group = iter3->second;
 		// 上一个钢卷组分配的末位置
@@ -400,6 +394,15 @@ void TortoiseShell::DeleteBad()
 		tortoiseShell->m_main_groups.insert(make_pair(make_pair(end_located, end_located + group->roll_len), group));
 	}
 	s_mapSetOfTortoiseShell.insert(make_pair(s_mapSetOfTortoiseShell.size()+1, tortoiseShell));
+	// 检查乌龟壳里是否有空的钢卷组
+	for (map<int, TortoiseShell*>::iterator iter11 = s_mapSetOfTortoiseShell.begin(); iter11 != s_mapSetOfTortoiseShell.end(); iter11++)
+	{
+		for (map<pair<int, int>, Group*>::iterator iter22 = (*iter11).second->m_main_groups.begin(); iter22 != (*iter11).second->m_main_groups.end(); iter22++)
+		{
+			if (iter22->second->m_SteelCoil.size() == 0)
+				std::cout << "有钢卷组为空" << endl;
+		}
+	}
 	////////////////////////////////////////////////////////////////////////////
 	#pragma endregion
 }
@@ -409,7 +412,7 @@ void TortoiseShell::showResult()
 	int i = 0;
 	cout << "乌龟壳总数：  " << s_TortoiseShellCount << endl;
 	// 输出此时乌龟壳的编号、在乌龟壳里的钢卷组编号和钢卷组里钢卷的钢卷号
-	for (map<int, TortoiseShell*>::iterator iter2 = s_bestSetOfTortoiseShell.begin(); iter2 != s_bestSetOfTortoiseShell.end(); iter2++)
+	for (map<int, TortoiseShell*>::iterator iter2 = s_mapSetOfTortoiseShell.begin(); iter2 != s_mapSetOfTortoiseShell.end(); iter2++)
 	{
 		for (map<pair<int, int>, Group*>::iterator iter3 = (*iter2).second->m_main_groups.begin(); iter3 != (*iter2).second->m_main_groups.end(); iter3++)
 		{
@@ -425,7 +428,7 @@ void TortoiseShell::showResult()
 	cout << "小刚卷组总数：	" << Group::s_mapSetOfsmallGroup.size() << endl;
 	cout << endl;
 	cout << "s_mapSetOfGroup集合里还剩 " << Group::s_mapSetOfGroup.size() << " 个钢卷组" << endl;
-	cout << "KPI" << best_kpi << endl;
+	cout << "KPI=" << best_kpi << endl;
 }
 
 void TortoiseShell::showResultFile()
@@ -434,7 +437,7 @@ void TortoiseShell::showResultFile()
 	ofstream fout(filename_result);
 	fout << "钢卷号," << "流向," << "切断时间," << "必做标记," << "计划类型," << "额定轧制厚度," << "额定轧制宽度," << "额定出炉温度," << "额定终轧温度," << "额定卷取温度," << "计划号," << "高温标记" << endl;
 	// 遍历乌龟壳
-	for (map<int, TortoiseShell*>::iterator iter = s_bestSetOfTortoiseShell.begin(); iter != s_bestSetOfTortoiseShell.end(); iter++)
+	for (map<int, TortoiseShell*>::iterator iter = s_mapSetOfTortoiseShell.begin(); iter != s_mapSetOfTortoiseShell.end(); iter++)
 	{
 		// 乌龟壳
 		TortoiseShell *tortoiseShell = iter->second;
@@ -475,12 +478,15 @@ double TortoiseShell::computekpi(map<int, TortoiseShell*>&NEW_TortoiseShell)
 	double flow10_wt = 0;
 	double assigned_wt = 0;
 	double assigned_DHCR = 0;
+	double rollingkm = 0;
 	double flow_rate = 0;
 	double DHCR_rate = 0;
 	double order_rate = 0;
-	double rollingkm_rate = 0;
-	double rollingkm = 0;
-
+	double rollingkm_rate = 0;	
+	double m_TortoiseShell_len1 = 0;
+	double m_TortoiseShell_WT1 = 0;
+	double m_TortoiseShellflow10_WT1 = 0;
+	double m_TortoiseShell_DHCR1 = 0;
 	// 计算排好乌龟壳的所有钢卷总重量、某流向钢卷总重量、有DHCR标记的钢卷总数、乌龟壳总长度
 	for (map<int, TortoiseShell*>::iterator iter = NEW_TortoiseShell.begin(); iter != NEW_TortoiseShell.end(); iter++)
 	{
@@ -702,7 +708,6 @@ bool TortoiseShell::addMainGroup(Group *group)
 #pragma region Group静态变量
 //////////////////////////////////////////////////////////////////////////
 map<int, TortoiseShell*>		TortoiseShell::s_mapSetOfTortoiseShell = map<int, TortoiseShell*>();
-map<int, TortoiseShell*>		TortoiseShell::s_bestSetOfTortoiseShell = map<int, TortoiseShell*>();
 int								TortoiseShell::s_TortoiseShellCount = 0;
 double							TortoiseShell::allTortoiseShell_len = 0;
 double							TortoiseShell::m_DHCR = 0;

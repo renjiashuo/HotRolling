@@ -188,7 +188,7 @@ Group::~Group()
 //////////////////////////////////////////////////////////////////////////
 map<int, Group*>		Group::s_mapSetOfGroup = map<int, Group*>();
 map<int, Group*>		Group::s_mapSetOfsmallGroup = map<int, Group*>();
-map<double, Group*>		Group::s_least = map<double, Group*>();
+map<int, Group*>		Group::s_least = map<int, Group*>();
 int						Group::s_GroupCount = 0;
 ////////////////////////////////////////////////////////////////////////
 #pragma endregion

@@ -13,20 +13,12 @@ int Chosen_Position_No;					//¶¨Òå Chosen_Position_No          ÎªÑ¡ÖĞµÄ¸Ö¾í×éµÄÎ
 int Chosen_Shell;							//¶¨Òå Chosen_Shell                ÎªËæ»ú×¥È¡µÄshell±àºÅ
 int Chosen_Position_Start;					//¶¨Òå Chosen_Position_Start       ÎªÑ¡ÖĞµÄ¸Ö¾í×éµÄ ÆğÊ¼ ¹«ÀïÊı
 int Chosen_Position_End;					//¶¨Òå Chosen_Position_End         ÎªÑ¡ÖĞµÄ ÖÕÖ¹ ¹«ÀïÊı
-int Chosen_Position_Upper_Start;			//¶¨Òå Chosen_Position_Upper_Start ÎªÑ¡ÖĞÎ»ÖÃ ÉÏÒ»¿é ¸Ö¾í×é ÆğÊ¼ ¹«ÀïÊı
-int Chosen_Position_Upper_End;				//¶¨Òå Chosen_Position_Upper_End   ÎªÑ¡ÖĞÎ»ÖÃ ÉÏÒ»¿é ¸Ö¾í×é ÖÕÖ¹ ¹«ÀïÊı
-int Chosen_Position_Under_Start;			//¶¨Òå Chosen_Position_Under_Start ÎªÑ¡ÖĞÎ»ÖÃ ÏÂÒ»¿é ¸Ö¾í×é ÆğÊ¼ ¹«ÀïÊı
-int Chosen_Position_Under_End;				//¶¨Òå Chosen_Position_Under_End   ÎªÑ¡ÖĞÎ»ÖÃ ÏÂÒ»¿é ¸Ö¾í×é ÖÕÖ¹ ¹«ÀïÊı
 int Chosen_Width = 0;						//¶¨Òå Chosen_Width                ÎªÑ¡È¡µÄ¸Ö¾í×éµÄ¿í¶È
 
 int Another_Position_No;					//¶¨Òå Another_Position_No          ÎªÑ¡µÚ¶ş¸ö¸Ö¾í×éµÄÎ»ÖÃºÅ
 int Another_Shell;							//¶¨Òå Another_Shell                ÎªµÚ¶ş¸öÎÚ¹ê¿ÇµÄ±àºÅ
 int Another_Position_Start = 0;			//¶¨Òå Another_Position_Start       ÎªµÚ¶ş¸öshellµÄÔşÖÆ¹«ÀïÊıÆğÊ¼	
 int Another_Position_End = 0;				//¶¨Òå Another_Position_End         ÎªµÚ¶ş¸öshellµÄÔşÖÆ¹«ÀïÊıÖÕÖ¹
-int Another_Position_Upper_Start;			//¶¨Òå Another_Position_Upper_Start ÎªµÚ¶ş¸öÑ¡ÖĞÎ»ÖÃ ÉÏÒ»¿é ¸Ö¾í×é ÆğÊ¼ ¹«ÀïÊı
-int Another_Position_Upper_End;			//¶¨Òå Another_Position_Upper_End   ÎªµÚ¶ş¸öÑ¡ÖĞÎ»ÖÃ ÉÏÒ»¿é ¸Ö¾í×é ÖÕÖ¹ ¹«ÀïÊı
-int Another_Position_Under_Start;			//¶¨Òå Another_Position_Under_Start ÎªµÚ¶ş¸öÑ¡ÖĞÎ»ÖÃ ÏÂÒ»¿é ¸Ö¾í×é ÆğÊ¼ ¹«ÀïÊı
-int Another_Position_Under_End;			//¶¨Òå Another_Position_Under_End   ÎªµÚ¶ş¸öÑ¡ÖĞÎ»ÖÃ ÏÂÒ»¿é ¸Ö¾í×é ÖÕÖ¹ ¹«ÀïÊı
 int Another_Width = 0;						//¶¨Òå Another_Width                ÎªµÚ¶ş¸öÎÚ¹ê¿ÇµÄ¸Ö¾í×éµÄ¿í¶È
 
 
@@ -34,7 +26,7 @@ int Another_Width = 0;						//¶¨Òå Another_Width                ÎªµÚ¶ş¸öÎÚ¹ê¿ÇµÄ
 map<int, pair< pair< int, int >, Group* > > map_Candidate_Group;
 map<pair<int, int>, Group*>			m_temp;						// ÁÙÊ±ÈİÆ÷£¬ÓÅ»¯Ê±£¬ÅĞ¶ÏÔşÖÆÎ»Çø¼äµÈÓÃ¡£
 map<pair<int, int>, Group*>			m_temp1;					// ÁÙÊ±ÈİÆ÷£¬ÓÅ»¯Ê±£¬ÅĞ¶ÏÔşÖÆÎ»Çø¼äµÈÓÃ¡£
-map<pair<int, int>, Group*>			temp;
-map<pair<int, int>, Group*>			temp1;
+map<pair<int, int>, Group*>			temp;						// ´æ·ÅChosen_ShellÀïÑ¡ÖĞµÄ¸Ö¾í×é
+map<pair<int, int>, Group*>			temp1;						// ´æ·ÅAnother_ShellÀïÑ¡ÖĞµÄ¸Ö¾í×é
 
 #pragma endregion

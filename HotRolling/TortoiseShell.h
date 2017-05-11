@@ -59,7 +59,6 @@ public:// 排程过程中记录变量
 	
 public:// 乌龟壳集合
 	static map<int, TortoiseShell*>		s_mapSetOfTortoiseShell;	// 乌龟壳的map集合，key为乌龟壳代码，value为乌龟壳
-	static map<int, TortoiseShell*>		s_bestSetOfTortoiseShell;	// 盛放最优乌龟壳
 	static int							s_TortoiseShellCount;		// 乌龟壳个数
 	static double						allTortoiseShell_len;		// 所有乌龟壳总长度
 	static double						m_DHCR;						// 有DHCR标记钢卷总数

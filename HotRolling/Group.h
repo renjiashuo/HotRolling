@@ -55,7 +55,7 @@ public:// 钢卷组参数
 	//map<int, SteelCoil*>			m_SteelCoilTime;			// 钢卷计划轧制时间，key为钢卷轧制开始时间，value为钢卷（小钢卷组的计划属性，内部的钢卷顺序，按时间排序）
 
 public:// 钢卷组集合
-	static map<double, Group*>  s_least;					// 删除钢卷组的集合
+	static map<int, Group*>  s_least;					// 删除钢卷组的集合
 	static map<int, Group*>	s_mapSetOfGroup;			// 钢卷组的map集合，key为钢卷组代码，value为钢卷组
 	static map<int, Group*>	s_mapSetOfsmallGroup;		// 小钢卷组的map集合，key是小刚卷组代码，value是钢卷组指针
 	static int				s_GroupCount;				// 钢卷组个数     

@@ -1,4 +1,4 @@
-#include"common.h"
+
 #include "global.h"
 #include"SteelCoil.h"
 #include"Group.h"
