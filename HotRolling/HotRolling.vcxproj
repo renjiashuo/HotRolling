@@ -15,7 +15,6 @@
     <ClInclude Include="global.h" />
     <ClInclude Include="Group.h" />
     <ClInclude Include="keyindicator_def.h" />
-    <ClInclude Include="localsearch.h" />
     <ClInclude Include="rulepara_def.h" />
     <ClInclude Include="rulescore.h" />
     <ClInclude Include="ruleset_def.h" />

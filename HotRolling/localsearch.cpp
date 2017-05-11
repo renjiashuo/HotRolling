@@ -1,38 +1,38 @@
-
 #include "global.h"
-#include"SteelCoil.h"
-#include"Group.h"
-#include"TortoiseShell.h" 
+#include "SteelCoil.h"
+#include "Group.h"
+#include "TortoiseShell.h" 
 
 using namespace std;
 
-#pragma region Variables
-int Chosen_Position_No;					//定义 Chosen_Position_No          为选中的钢卷组的位置号
-int Chosen_Shell;							//定义 Chosen_Shell                为随机抓取的shell编号
-int Chosen_Position_Start;					//定义 Chosen_Position_Start       为选中的钢卷组的 起始 公里数
-int Chosen_Position_End;					//定义 Chosen_Position_End         为选中的 终止 公里数
-int Chosen_Width = 0;						//定义 Chosen_Width                为选取的钢卷组的宽度
-
-int Another_Position_No;					//定义 Another_Position_No          为选第二个钢卷组的位置号
-int Another_Shell;							//定义 Another_Shell                为第二个乌龟壳的编号
-int Another_Position_Start = 0;			//定义 Another_Position_Start       为第二个shell的轧制公里数起始	
-int Another_Position_End = 0;				//定义 Another_Position_End         为第二个shell的轧制公里数终止
-int Another_Width = 0;						//定义 Another_Width                为第二个乌龟壳的钢卷组的宽度
-
-vector <int> vec_Chosen_Position_Start;		//定义 Group_Position_Start        容器存放选中的乌龟壳的所有group的 起始 位置
-vector <int> vec_Chosen_Position_End;		//定义 Group_Position_Start        容器存放选中的乌龟壳的所有group的 终止 位置
-vector <int> vec_Another_Position_Start;	//定义 map_Another_Position_Start  容器存放选第二个乌龟壳的所有group的 起始 位置
-vector <int> vec_Another_Position_End;		//定义 map_Another_Position_End    容器存放选第二个乌龟壳的所有group的 终止 位置
-//map<序号,[起始公里数，终止公里数，Group*] >
-map<int, pair< pair< int, int >, Group* >>	map_Candidate_Group;
-map<pair<int, int>, Group*>			m_temp;							// 临时容器，优化时，判断轧制位区间等用。
-map<pair<int, int>, Group*>			m_temp1;						// 临时容器，优化时，判断轧制位区间等用。
-map<pair<int, int>, Group*>			temp;							// 存放Chosen_Shell里选中的钢卷组
-map<pair<int, int>, Group*>			temp1;							// 存放Another_Shell里选中的钢卷组
-#pragma endregion
-
 void TortoiseShell::localsearch()
 {
+
+#pragma region Variables
+	int Chosen_Position_No;					//定义 Chosen_Position_No          为选中的钢卷组的位置号
+	int Chosen_Shell;							//定义 Chosen_Shell                为随机抓取的shell编号
+	int Chosen_Position_Start;					//定义 Chosen_Position_Start       为选中的钢卷组的 起始 公里数
+	int Chosen_Position_End;					//定义 Chosen_Position_End         为选中的 终止 公里数
+	int Chosen_Width = 0;						//定义 Chosen_Width                为选取的钢卷组的宽度
+
+	int Another_Position_No;					//定义 Another_Position_No          为选第二个钢卷组的位置号
+	int Another_Shell;							//定义 Another_Shell                为第二个乌龟壳的编号
+	int Another_Position_Start = 0;			//定义 Another_Position_Start       为第二个shell的轧制公里数起始	
+	int Another_Position_End = 0;				//定义 Another_Position_End         为第二个shell的轧制公里数终止
+	int Another_Width = 0;						//定义 Another_Width                为第二个乌龟壳的钢卷组的宽度
+
+	vector <int> vec_Chosen_Position_Start;		//定义 Group_Position_Start        容器存放选中的乌龟壳的所有group的 起始 位置
+	vector <int> vec_Chosen_Position_End;		//定义 Group_Position_Start        容器存放选中的乌龟壳的所有group的 终止 位置
+	vector <int> vec_Another_Position_Start;	//定义 map_Another_Position_Start  容器存放选第二个乌龟壳的所有group的 起始 位置
+	vector <int> vec_Another_Position_End;		//定义 map_Another_Position_End    容器存放选第二个乌龟壳的所有group的 终止 位置
+	//map<序号,[起始公里数，终止公里数，Group*] >
+	map<int, pair< pair< int, int >, Group* >>	map_Candidate_Group;
+	map<pair<int, int>, Group*>			m_temp;							// 临时容器，优化时，判断轧制位区间等用。
+	map<pair<int, int>, Group*>			m_temp1;						// 临时容器，优化时，判断轧制位区间等用。
+	map<pair<int, int>, Group*>			temp;							// 存放Chosen_Shell里选中的钢卷组
+	map<pair<int, int>, Group*>			temp1;							// 存放Another_Shell里选中的钢卷组
+#pragma endregion
+
 	// 设置迭代最大代数
 	int Max_Gen = 100;
 	srand((unsigned)time(NULL));			//设置时间种子
@@ -261,18 +261,9 @@ void TortoiseShell::localsearch()
 			// 查询Chosen_Shell里的钢卷组计划类型和Another_Shell中选中钢卷组的计划类型的组合方式
 			map<pair<string, string>, string>::iterator iter = plantype.find(make_pair(Another_plan_type, plan_type));
 			string type = iter->second;
-			if (iterChosen1->first.first != Chosen_Position_Start)
-			{
-				// 如果互斥，则取map_Candidate_Group里的另一个钢卷组，继续判断
-				if (type == "2")
-				{
-					break;
-				}
-				else
-					continue;
-			}
-			else
-				continue;
+			// 如果互斥，则取map_Candidate_Group里的另一个钢卷组，继续判断
+			if (iterChosen1->first.first != Chosen_Position_Start && type == "2")
+				break;
 		}
 		if (iterChosen1 != s_mapSetOfTortoiseShell[Chosen_Shell]->m_main_groups.end())
 			continue;
@@ -294,15 +285,8 @@ void TortoiseShell::localsearch()
 			// 查询Another_Shell里的钢卷组计划类型和Chosen_Shell中选中钢卷组的计划类型的组合方式
 			map<pair<string, string>, string>::iterator iter = plantype.find(make_pair(Chosen_plan_type, plan_type1));
 			string type1 = iter->second;
-			if (iterAnother2->first.first != Another_Position_Start)
-			{
-				if (type1 == "2")
-					break;
-				else
-					continue;
-			}
-			else
-				continue;
+			if (iterAnother2->first.first != Another_Position_Start && type1 == "2")
+				break;
 		}
 		if (iterAnother2 != s_mapSetOfTortoiseShell[Another_Shell]->m_main_groups.end())
 			continue;
