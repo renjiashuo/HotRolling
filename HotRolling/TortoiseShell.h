@@ -119,8 +119,12 @@ public:
 	static void showResultFile();	
 	//
 	// 摘要:
-	//     向乌龟壳的最后添加一个主体材，分配成功返回true，分配失败返回false。
-	 bool addMainGroup(Group *group);
+	//     向乌龟壳的最后添加一个主体材，分配成功返回true，分配失败返回false，允许拆分钢卷组。
+	bool addMainGroup(Group *group);
+	//
+	// 摘要:
+	//     向乌龟壳的最后添加一个主体材，分配成功返回true，分配失败返回false，不允许拆分钢卷组。
+	bool addMainGroup2(Group *group);
 	//
 	// 摘要:
 	//     局域搜索算法

@@ -311,7 +311,6 @@ void TortoiseShell::FinishShell()
 	//////////////////////////////////////////////////////////////////////////
 	#pragma endregion
 
-
 	#pragma region 乌龟壳计算
 	//////////////////////////////////////////////////////////////////////////
 	// 遍历已经生成的乌龟壳计算每个乌龟壳所有钢卷总重量、某流向钢卷总重量、有DHCR标记的钢卷总数、乌龟壳总长度
@@ -393,16 +392,7 @@ void TortoiseShell::DeleteBad()
 			end_located = tortoiseShell->m_main_groups.rbegin()->first.second;
 		tortoiseShell->m_main_groups.insert(make_pair(make_pair(end_located, end_located + group->roll_len), group));
 	}
-	s_mapSetOfTortoiseShell.insert(make_pair(s_mapSetOfTortoiseShell.size()+1, tortoiseShell));
-	// 检查乌龟壳里是否有空的钢卷组
-	for (map<int, TortoiseShell*>::iterator iter11 = s_mapSetOfTortoiseShell.begin(); iter11 != s_mapSetOfTortoiseShell.end(); iter11++)
-	{
-		for (map<pair<int, int>, Group*>::iterator iter22 = (*iter11).second->m_main_groups.begin(); iter22 != (*iter11).second->m_main_groups.end(); iter22++)
-		{
-			if (iter22->second->m_SteelCoil.size() == 0)
-				std::cout << "有钢卷组为空" << endl;
-		}
-	}
+	s_mapSetOfTortoiseShell.insert(make_pair(s_mapSetOfTortoiseShell.size()+1, tortoiseShell));	
 	////////////////////////////////////////////////////////////////////////////
 	#pragma endregion
 }
@@ -411,6 +401,8 @@ void TortoiseShell::showResult()
 {
 	int i = 0;
 	cout << "乌龟壳总数：  " << s_TortoiseShellCount << endl;
+	map<int, TortoiseShell*>::iterator iter = s_mapSetOfTortoiseShell.find(s_mapSetOfTortoiseShell.size());
+	s_mapSetOfTortoiseShell.erase(iter);
 	// 输出此时乌龟壳的编号、在乌龟壳里的钢卷组编号和钢卷组里钢卷的钢卷号
 	for (map<int, TortoiseShell*>::iterator iter2 = s_mapSetOfTortoiseShell.begin(); iter2 != s_mapSetOfTortoiseShell.end(); iter2++)
 	{
@@ -427,7 +419,7 @@ void TortoiseShell::showResult()
 	cout << "钢卷总数：   "<<i << endl;// 刚卷数
 	cout << "小刚卷组总数：	" << Group::s_mapSetOfsmallGroup.size() << endl;
 	cout << endl;
-	cout << "s_mapSetOfGroup集合里还剩 " << Group::s_mapSetOfGroup.size() << " 个钢卷组" << endl;
+	cout << "s_mapSetOfGroup集合里还剩 " << Group::s_mapSetOfGroup.size() << " 个钢卷组" << endl<<endl;
 	cout << "KPI=" << best_kpi << endl;
 }
 
@@ -475,8 +467,8 @@ void TortoiseShell::showResultFile()
 double TortoiseShell::computekpi(map<int, TortoiseShell*>&NEW_TortoiseShell)
 {
 	const double max_TortoiseShell_len = 30000;// 乌龟壳最大公里数
-	double flow10_wt = 0;
-	double assigned_wt = 0;
+	double flow10_wt=0 ;
+	double assigned_wt=0 ;
 	double assigned_DHCR = 0;
 	double rollingkm = 0;
 	double flow_rate = 0;
@@ -508,7 +500,7 @@ double TortoiseShell::computekpi(map<int, TortoiseShell*>&NEW_TortoiseShell)
 			}
 		}
 
-	}
+	}	
 	for (map<int, TortoiseShell*>::iterator iter = NEW_TortoiseShell.begin(); iter != NEW_TortoiseShell.end(); iter++)
 	{
 		TortoiseShell *tortoiseShell = iter->second;
@@ -520,9 +512,17 @@ double TortoiseShell::computekpi(map<int, TortoiseShell*>&NEW_TortoiseShell)
 	flow_rate = flow10_wt / allflow10_wt;																	// 流向匹配率
 	order_rate = assigned_wt / allsteelcCoil_wt;															// 合同计划兑现率
 	rollingkm_rate = (rollingkm / s_mapSetOfTortoiseShell.size()) / max_TortoiseShell_len;					// 轧制公里率
-	DHCR_rate = assigned_DHCR / m_DHCR;																		// DHCR比率
-	cout << flow_rate << "   " << order_rate << "    " << rollingkm_rate << "   " << DHCR_rate << endl;
+	DHCR_rate = assigned_DHCR / m_DHCR;																		// DHCR比率	
 	double KPI = flow_rate*0.3 + order_rate*0.3 + rollingkm_rate*0.2 + DHCR_rate*0.1;
+	cout << flow_rate << "   " << order_rate << "    " << rollingkm_rate << "   " << DHCR_rate <<"   "<<KPI<< endl;
+	for (map<int, TortoiseShell*>::iterator iter0 = NEW_TortoiseShell.begin(); iter0 != NEW_TortoiseShell.end(); iter0++)
+	{
+		 TortoiseShell *tortoiseShell = iter0->second;
+		 tortoiseShell->m_TortoiseShell_len1=0;
+		 tortoiseShell->m_TortoiseShell_WT1=0;
+		 tortoiseShell->m_TortoiseShellflow10_WT1=0;
+		 tortoiseShell->m_TortoiseShell_DHCR1=0;
+	}
 	return KPI;
 }
 
@@ -667,6 +667,173 @@ bool TortoiseShell::addMainGroup(Group *group)
 	// 更新乌龟壳实时长度
 	steelCoilNum += canSaveNum;
 	steelCoilLenth += group_new->roll_len;
+	if (coil_flag == 0)// 如果上一个是低温卷
+	{
+		//如果当前是低温卷
+		if (group->high_temp_flag == "0")
+		{
+			low_temp_coil_num += canSaveNum;
+		}
+		// 如果当前是高温卷
+		else
+		{
+			high_num++;
+			coil_flag = 1;
+			low_temp_coil_num = 0;
+			high_temp_coil_num = canSaveNum;
+		}
+	}
+	else// 如果上一个是高温卷
+	{
+		//如果当前是低温卷
+		if (group->high_temp_flag == "0")
+		{
+			coil_flag = 0;
+			low_temp_coil_num = canSaveNum;
+			high_temp_coil_num = 0;
+		}
+		// 如果当前是高温卷
+		else
+		{
+			high_temp_coil_num += canSaveNum;
+		}
+	}
+
+	return true;
+}
+
+bool TortoiseShell::addMainGroup2(Group *group)
+{
+	// 主体材硬约束
+	int MAX_NUM = 999;					// 最大块数
+	int MAX_KM = 2147483647;			// 最大公里数
+	int ROLL_WIDTH_MINUS = 100;			// 轧制宽度差
+	//int	HARD_GROUP_MINUS = 100;		// 硬度组差
+	int	SAME_WIDTH_NUM = 100;			// 同宽块数
+	int SAME_WIDTH_KM = 500000;			// 同宽轧制公里数
+	double SAME_WIDTH = 0;				// 同宽定义范围
+
+	// 如果乌龟壳已达到最大块数||已达到最大公里数||超过最大宽度差，则无法分配，返回false
+	if (steelCoilNum > MAX_NUM || steelCoilLenth > MAX_KM || m_main_groups.rbegin()->second->nom_roll_width - group->nom_roll_width >= ROLL_WIDTH_MINUS)
+		return false;
+
+	// 能放入的钢卷个数
+	int canSaveNum = group->m_SteelCoil.size();
+
+	// 计算同宽块数与公里数
+	int sameWidthNum = 0;
+	int sameWidthKm = 0;
+	// 反向迭代器遍历该钢卷组内的主体材部分
+	for (map<pair<int, int>, Group*>::reverse_iterator iter = m_main_groups.rbegin(); iter != m_main_groups.rend(); iter++)
+	{
+		Group* group2 = iter->second;
+		// 如果轧制宽度差小于同宽定义范围，则认为是同宽
+		if (group2->nom_roll_width - group->nom_roll_width <= SAME_WIDTH + 0.01)
+		{
+			// 更新同宽块数与公里数
+			sameWidthNum += group2->m_SteelCoil.size();
+			sameWidthKm += group2->roll_len;
+		}
+		else
+			break;
+	}
+	// 如果可以放入块数大于同宽剩余可放块数，则更新可放入块数
+	if (canSaveNum > SAME_WIDTH_NUM - sameWidthNum)
+		canSaveNum = SAME_WIDTH_NUM - sameWidthNum;
+	int partWidthKm = 0;// 记录要放入的同宽公里数
+	// 遍历即将放入的钢卷组
+	for (int i = 0; i < group->m_SteelCoil.size(); i++)
+	{
+		// 更新要放入的同宽公里数
+		partWidthKm += (*group->m_SteelCoil[i]).nom_roll_width;
+		// 如果要放入的同宽公里数大于剩余可放，则更新能放入的块数
+		if (partWidthKm > SAME_WIDTH_KM - sameWidthKm)
+		{
+			if (canSaveNum > i)
+				canSaveNum = i;
+			break;
+		}
+	}
+
+	// 根据高温卷低温卷约束参数计算最大放入块数
+	if (coil_flag == 0)// 如果上一个是低温卷
+	{
+		//如果当前是低温卷
+		if (group->high_temp_flag == "0")
+		{
+			// 更新能放入的块数
+			if (canSaveNum > (*group->m_SteelCoil.begin())->max_low_temp_coil_num - low_temp_coil_num)
+			{
+				canSaveNum = (*group->m_SteelCoil.begin())->max_low_temp_coil_num - low_temp_coil_num;
+			}
+		}
+		// 如果当前是高温卷
+		else
+		{
+			// 如果已有3段高温卷，则不可放
+			if (high_num == 3)
+				return false;
+			// 更新能放入的块数
+			if (canSaveNum > (*group->m_SteelCoil.begin())->max_high_temp_coil_num)
+			{
+				canSaveNum = (*group->m_SteelCoil.begin())->max_high_temp_coil_num;
+			}
+		}
+	}
+	else// 如果上一个是高温卷
+	{
+		//如果当前是低温卷
+		if (group->high_temp_flag == "0")
+		{
+			// 更新能放入的块数
+			if (canSaveNum > (*group->m_SteelCoil.begin())->max_low_temp_coil_num)
+			{
+				canSaveNum = (*group->m_SteelCoil.begin())->max_low_temp_coil_num;
+			}
+		}
+		// 如果当前是高温卷
+		else
+		{
+			// 更新能放入的块数
+			if (canSaveNum > (*group->m_SteelCoil.begin())->max_high_temp_coil_num - high_temp_coil_num)
+			{
+				canSaveNum = (*group->m_SteelCoil.begin())->max_high_temp_coil_num - high_temp_coil_num;
+			}
+		}
+	}
+
+	// 根据轧制位区间约束计算最大放入块数
+	int partZoneNum = steelCoilNum;		// 记录要放入的轧制位区间块数
+	int partZoneKm = steelCoilLenth;	// 记录要放入的轧制位区间公里数
+	// 遍历即将放入的钢卷组
+	for (int i = 0; i < group->m_SteelCoil.size(); i++)
+	{
+		// 如果要放入的钢卷大于轧制位区间约束，则不可放入
+		if (partZoneKm >(*group->m_SteelCoil[i]).zone_min_m || partZoneNum > (*group->m_SteelCoil[i]).zone_min_num)
+		{
+			if (canSaveNum > i)
+				canSaveNum = i;
+			break;
+		}
+		// 更新要放入的同宽公里数
+		partZoneNum++;
+		partZoneKm += (*group->m_SteelCoil[i]).nom_roll_width;
+	}
+
+	// 如果可放入钢卷数为0，则不可放入
+	if (canSaveNum == 0)
+		return false;
+
+	// 如果可放入的钢卷数小于钢卷组内的钢卷数，则不可放入
+	if (canSaveNum < group->m_SteelCoil.size())
+		return false;
+
+	// 否则，直接将整个钢卷组加入到乌龟壳中
+	// 将小钢卷组插入到当前乌龟壳的临时钢卷组变量中
+	m_main_groups.insert(make_pair(make_pair(steelCoilLenth, steelCoilLenth + group->roll_len), group));
+	// 更新乌龟壳实时长度
+	steelCoilNum += canSaveNum;
+	steelCoilLenth += group->roll_len;
 	if (coil_flag == 0)// 如果上一个是低温卷
 	{
 		//如果当前是低温卷
