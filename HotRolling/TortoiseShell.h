@@ -127,8 +127,12 @@ public:
 	bool addMainGroup2(Group *group);
 	//
 	// 摘要:
-	//     局域搜索算法
+	//     局域搜索算法，乌龟壳间交换
 	static void localsearch();
+	//
+	// 摘要:
+	//     局域搜索算法，乌龟壳内交换
+	static void localsearch2();
 	//////////////////////////////////////////////////////////////////////////
 	#pragma endregion
 
