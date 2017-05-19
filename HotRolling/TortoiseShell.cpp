@@ -39,6 +39,7 @@ TortoiseShell::TortoiseShell(Group *group)
 	this->m_TortoiseShell_WT1 = 0;
 	this->m_TortoiseShellflow10_WT1 = 0;
 	this->m_TortoiseShell_DHCR1 = 0;
+	this->penalty = 0;
 	//this->m_tang_len = 0;
 	// 排程过程中记录的变量
 	steelCoilNum = 0;
@@ -466,6 +467,7 @@ void TortoiseShell::showResultFile()
 
 double TortoiseShell::computekpi(map<int, TortoiseShell*>&NEW_TortoiseShell)
 {
+	// 变量定义
 	const double max_TortoiseShell_len = 30000;// 乌龟壳最大公里数
 	double flow10_wt=0 ;
 	double assigned_wt=0 ;
@@ -474,11 +476,22 @@ double TortoiseShell::computekpi(map<int, TortoiseShell*>&NEW_TortoiseShell)
 	double flow_rate = 0;
 	double DHCR_rate = 0;
 	double order_rate = 0;
+	double Scheduling_quality = 0;
 	double rollingkm_rate = 0;	
 	double m_TortoiseShell_len1 = 0;
 	double m_TortoiseShell_WT1 = 0;
 	double m_TortoiseShellflow10_WT1 = 0;
 	double m_TortoiseShell_DHCR1 = 0;
+	int THICK_FORWARD_penalty = 700;		// 厚度正跳罚分
+	int THICK_BACKWARD_penalty = 600;		// 厚度反跳罚分
+	int HARD_JUMP_panalty = 600;			// 硬度跳跃公差罚分
+	int WIDTH_FORWARD_penalty = 700;		// 宽度正跳罚分
+	int WIDTH_BACKWARD_penalty = 600;		// 宽度反跳罚分
+	int HEAT_TEMP_JUMP_penalty = 600;		// 出炉温度跳跃公差罚分
+	int AFFT_TEMP_JUMP_penalty = 700;		// 终轧温度跳跃公差罚分	
+	int COIL_TEMP_JUMP_penalty = 700;		// 卷取温度跳跃公差罚分
+	double Scheduling_quality_deno = 18000;	// 计算排程质量的分母
+	double all_penalty = 0;
 	// 计算排好乌龟壳的所有钢卷总重量、某流向钢卷总重量、有DHCR标记的钢卷总数、乌龟壳总长度
 	for (map<int, TortoiseShell*>::iterator iter = NEW_TortoiseShell.begin(); iter != NEW_TortoiseShell.end(); iter++)
 	{
@@ -509,12 +522,101 @@ double TortoiseShell::computekpi(map<int, TortoiseShell*>&NEW_TortoiseShell)
 		flow10_wt += tortoiseShell->m_TortoiseShellflow10_WT1;
 		assigned_DHCR += tortoiseShell->m_TortoiseShell_DHCR1;
 	}
+	// 计算罚分，即KPI中的排程质量.先遍历所有乌龟壳
+	for (map<int, TortoiseShell*>::iterator iter = NEW_TortoiseShell.begin(); iter != NEW_TortoiseShell.end(); iter++)
+	{
+		TortoiseShell *tortoiseShell = iter->second;
+		// 遍历乌龟壳内的钢卷组信息
+		for (map<pair<int, int>, Group*>::iterator iter2 = tortoiseShell->m_main_groups.begin(); iter2 != tortoiseShell->m_main_groups.end(); iter2++)
+		{
+			Group *group = iter2->second;
+			map<pair<int, int>, Group*>::iterator iter_after = iter2;
+			iter_after++;
+			if (iter_after != tortoiseShell->m_main_groups.end())
+			{
+				// 厚度罚分
+				if (iter_after->second->nom_roll_thick > iter2->second->nom_roll_thick)// 反跳
+				{
+					if (iter2->second->nom_roll_thick*0.5 < (iter_after->second->nom_roll_thick - iter2->second->nom_roll_thick) < iter2->second->nom_roll_thick*0.8)
+						tortoiseShell->penalty += 0.5*THICK_BACKWARD_penalty;
+					else if (iter2->second->nom_roll_thick*0.8 < (iter_after->second->nom_roll_thick - iter2->second->nom_roll_thick) < iter2->second->nom_roll_thick)
+						tortoiseShell->penalty += THICK_BACKWARD_penalty;
+				}
+				else if (iter_after->second->nom_roll_thick < iter2->second->nom_roll_thick)// 正跳
+				{
+					if (iter2->second->nom_roll_thick*0.5 < (iter2->second->nom_roll_thick - iter_after->second->nom_roll_thick) < iter2->second->nom_roll_thick*0.8)
+						tortoiseShell->penalty += 0.5*THICK_FORWARD_penalty;
+					else if (iter2->second->nom_roll_thick*0.8 < (iter2->second->nom_roll_thick - iter_after->second->nom_roll_thick) < iter2->second->nom_roll_thick)
+						tortoiseShell->penalty += THICK_FORWARD_penalty;
+				}
+				else
+					continue;
+				// 宽度罚分
+				if (iter_after->second->nom_roll_width > iter2->second->nom_roll_width)// 反跳
+				{
+					if (1< (iter_after->second->nom_roll_width - iter2->second->nom_roll_width) < 50)
+						tortoiseShell->penalty += 0.5*WIDTH_BACKWARD_penalty;
+					else if (50 < (iter_after->second->nom_roll_width - iter2->second->nom_roll_width) < 100)
+						tortoiseShell->penalty += WIDTH_BACKWARD_penalty;
+				}
+				else if (iter_after->second->nom_roll_width < iter2->second->nom_roll_width)// 正跳
+				{
+					if (50 < (iter2->second->nom_roll_width - iter_after->second->nom_roll_width) < 100)
+						tortoiseShell->penalty += 0.5*WIDTH_FORWARD_penalty;
+					else if (100< (iter2->second->nom_roll_width - iter_after->second->nom_roll_width) < 300)
+						tortoiseShell->penalty += WIDTH_FORWARD_penalty;
+				}
+				else
+					continue;
+				// 硬度公差罚分
+				if (abs(iter_after->second->nom_hard_group_code[0] - iter2->second->nom_hard_group_code[0])==1)
+					tortoiseShell->penalty += 0.5*HARD_JUMP_panalty;
+				else if (abs(iter_after->second->nom_hard_group_code[0] - iter2->second->nom_hard_group_code[0]) == 2 || abs(iter_after->second->nom_hard_group_code[0] - iter2->second->nom_hard_group_code[0]) == 3)
+					tortoiseShell->penalty += HARD_JUMP_panalty;				
+				// 出炉温度公差罚分
+				if (5 < abs(iter_after->second->nom_heat_temp - iter2->second->nom_heat_temp) < 10)
+					tortoiseShell->penalty += 0.5*HEAT_TEMP_JUMP_penalty;
+				else if (10 < abs(iter_after->second->nom_heat_temp - iter2->second->nom_heat_temp) < 99)
+					tortoiseShell->penalty += HEAT_TEMP_JUMP_penalty;
+				else
+					continue;				
+				// 终轧温度公差罚分
+				if (5 < abs(iter_after->second->nom_afft_temp - iter2->second->nom_afft_temp) < 10)
+					tortoiseShell->penalty += 0.5*AFFT_TEMP_JUMP_penalty;
+				else if (10 < abs(iter_after->second->nom_afft_temp - iter2->second->nom_afft_temp) < 99)
+					tortoiseShell->penalty += AFFT_TEMP_JUMP_penalty;
+				else
+					continue;
+				// 卷取温度公差罚分
+				if (5 < abs(iter_after->second->nom_coil_temp - iter2->second->nom_coil_temp) < 10)
+					tortoiseShell->penalty += 0.5*COIL_TEMP_JUMP_penalty;
+				else if (10 < abs(iter_after->second->nom_coil_temp - iter2->second->nom_coil_temp) < 99)
+					tortoiseShell->penalty += COIL_TEMP_JUMP_penalty;
+				else
+					continue;				
+			}
+			else
+				break;			
+		}
+		
+	}
+	int i = 1;
+	for (map<int, TortoiseShell*>::iterator iter = NEW_TortoiseShell.begin(); iter != NEW_TortoiseShell.end(); iter++)
+	{
+		TortoiseShell *tortoiseShell = iter->second;
+		all_penalty += tortoiseShell->penalty;
+		cout << "第"<<i<<"个乌龟壳的罚分为：" << tortoiseShell->penalty << endl;
+		i++;
+	}
+	cout << "总分：" << all_penalty << endl;
 	flow_rate = flow10_wt / allflow10_wt;																	// 流向匹配率
 	order_rate = assigned_wt / allsteelcCoil_wt;															// 合同计划兑现率
 	rollingkm_rate = (rollingkm / s_mapSetOfTortoiseShell.size()) / max_TortoiseShell_len;					// 轧制公里率
-	DHCR_rate = assigned_DHCR / m_DHCR;																		// DHCR比率	
-	double KPI = flow_rate*0.3 + order_rate*0.3 + rollingkm_rate*0.2 + DHCR_rate*0.1;
-	cout << flow_rate << "   " << order_rate << "    " << rollingkm_rate << "   " << DHCR_rate <<"   "<<KPI<< endl;
+	DHCR_rate = assigned_DHCR / m_DHCR;																		// DHCR比率
+	Scheduling_quality = all_penalty / Scheduling_quality_deno;												// 排程质量
+	double KPI = flow_rate*0.3 + order_rate*0.3 + rollingkm_rate*0.2 + DHCR_rate*0.1 -Scheduling_quality*0.1;
+	cout << "流向匹配率: " << flow_rate << "   " << "合同计划兑现率: " << order_rate << "    " << "轧制公里率: " << rollingkm_rate << "   " << "DHCR比率: " << DHCR_rate << "   " << "排程质量: " << Scheduling_quality<< "KPI: "<<KPI<< endl;
+	// 初始化每个乌龟壳的相关参数
 	for (map<int, TortoiseShell*>::iterator iter0 = NEW_TortoiseShell.begin(); iter0 != NEW_TortoiseShell.end(); iter0++)
 	{
 		 TortoiseShell *tortoiseShell = iter0->second;
@@ -522,6 +624,7 @@ double TortoiseShell::computekpi(map<int, TortoiseShell*>&NEW_TortoiseShell)
 		 tortoiseShell->m_TortoiseShell_WT1=0;
 		 tortoiseShell->m_TortoiseShellflow10_WT1=0;
 		 tortoiseShell->m_TortoiseShell_DHCR1=0;
+		 tortoiseShell->penalty = 0;		 
 	}
 	return KPI;
 }
@@ -881,6 +984,7 @@ double							TortoiseShell::m_DHCR = 0;
 double							TortoiseShell::allflow10_wt = 0;
 double							TortoiseShell::allsteelcCoil_wt = 0;
 double							TortoiseShell::best_kpi=0;
+int								TortoiseShell::all_penalty=0;
 map<pair<string, string>, string>		TortoiseShell::plantype = map<pair<string, string>, string>();
 ////////////////////////////////////////////////////////////////////////
 #pragma endregion

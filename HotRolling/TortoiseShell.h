@@ -36,6 +36,7 @@ class TortoiseShell
 #pragma region Variables
 
 public:// 乌龟壳参数
+	int									penalty;					// 乌龟壳罚分   
 	int									m_tortoiseShellName;		// 乌龟壳名称
 	double								m_TortoiseShell_len;		// 乌龟壳长度
 	double								m_TortoiseShell_WT;			// 乌龟壳重量
@@ -65,6 +66,8 @@ public:// 乌龟壳集合
 	static double						allflow10_wt;				// 流向10钢卷总重量
 	static double						allsteelcCoil_wt;			// 钢卷总重
 	static double						best_kpi;					// 最优kpi值
+	static int							all_penalty;				// 所有乌龟壳罚分总和
+
 public:
 	static map<pair<string, string>, string> plantype;				// 计划类型组合集合
 
@@ -127,11 +130,15 @@ public:
 	bool addMainGroup2(Group *group);
 	//
 	// 摘要:
-	//     局域搜索算法，乌龟壳间交换
+	//     局域搜索算法，乌龟壳之间的钢卷组互换（不包括垃圾桶）
 	static void localsearch();
 	//
 	// 摘要:
-	//     局域搜索算法，乌龟壳内交换
+	//     局域搜索算法，乌龟壳和垃圾桶的钢卷组互换
+	static void localsearch1();
+	//
+	// 摘要:
+	//     局域搜索算法，乌龟壳内部的钢卷组互换
 	static void localsearch2();
 	//////////////////////////////////////////////////////////////////////////
 	#pragma endregion

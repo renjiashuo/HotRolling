@@ -77,5 +77,11 @@
     <ClCompile Include="localsearch.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="localsearch1.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="localsearch2.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

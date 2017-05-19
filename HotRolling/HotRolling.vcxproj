@@ -30,6 +30,8 @@
     <ClCompile Include="datacheck.cpp" />
     <ClCompile Include="Group.cpp" />
     <ClCompile Include="localsearch.cpp" />
+    <ClCompile Include="localsearch1.cpp" />
+    <ClCompile Include="localsearch2.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="SteelCoil.cpp" />
     <ClCompile Include="TortoiseShell.cpp" />

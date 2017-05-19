@@ -141,17 +141,17 @@ SteelCoil::SteelCoil(string value1, string value2, double value3, double value4,
 
 }/*---------将七组同规格的钢卷分组放入指定vector里，再放入map----------*/
 
-void indata(map<pair<pair < pair<pair<pair<pair<pair<pair<pair<pair<pair<double, double>, string>, string>, int>, int>, int>, string>, int>, int>, int>, int>, vector<SteelCoil*>> &m_data, double a, double b, string c, string d, int e, int f, int g, string k,int i,int j,int m,int n, SteelCoil* h)
+void indata(map<pair<pair<pair < pair<pair<pair<pair<pair<pair<pair<pair<pair<double, double>, string>, string>, int>, int>, int>, string>, int>, int>, int>, int>, string>, vector<SteelCoil*>> &m_data, double a, double b, string c, string d, int e, int f, int g, string k, int i, int j, int m, int n,string p, SteelCoil* h)
 {
-	if (m_data.find(make_pair(make_pair(make_pair(make_pair(make_pair(make_pair(make_pair(make_pair(make_pair(make_pair(make_pair(a, b), c), d), e), f), g), k),i),j),m),n)) == m_data.end())
+	if (m_data.find(make_pair(make_pair(make_pair(make_pair(make_pair(make_pair(make_pair(make_pair(make_pair(make_pair(make_pair(make_pair(a, b), c), d), e), f), g), k),i),j),m),n),p)) == m_data.end())
 	{
 		vector<SteelCoil*> temp;
 		temp.push_back(h);
-		m_data.insert(make_pair(make_pair(make_pair(make_pair(make_pair(make_pair(make_pair(make_pair(make_pair(make_pair(make_pair(make_pair(a, b), c), d), e), f), g), k), i), j), m), n), temp));
+		m_data.insert(make_pair(make_pair(make_pair(make_pair(make_pair(make_pair(make_pair(make_pair(make_pair(make_pair(make_pair(make_pair(make_pair(a, b), c), d), e), f), g), k), i), j), m), n),p), temp));
 	}
 	else
 	{
-		m_data.find(make_pair(make_pair(make_pair(make_pair(make_pair(make_pair(make_pair(make_pair(make_pair(make_pair(make_pair(a, b), c), d), e), f), g), k), i), j), m), n))->second.push_back(h);
+		m_data.find(make_pair(make_pair(make_pair(make_pair(make_pair(make_pair(make_pair(make_pair(make_pair(make_pair(make_pair(make_pair(a, b), c), d), e), f), g), k), i), j), m), n),p))->second.push_back(h);
 	}
 }
 
@@ -178,7 +178,7 @@ void SteelCoil::SteelCoilgroup()
 					, rs.Get<int>(72), rs.Get<int>(73), rs.Get<int>(74), rs.Get<int>(75), rs.Get<int>(76), rs.Get<int>(77), rs.Get<int>(78), rs.Get<int>(79), rs.Get<int>(82), rs.Get<int>(83), rs.Get<int>(84), rs.Get<int>(85), rs.Get<int>(86), rs.Get<ostring>(1), rs.Get<ostring>(2), rs.Get<ostring>(3),
 					rs.Get<ostring>(4), rs.Get<ostring>(5), rs.Get<ostring>(6), rs.Get<ostring>(7), rs.Get<ostring>(8), rs.Get<double>(17));
 
-				indata(SteelCoil::s_SteelCoil, -rs.Get<double>(49), rs.Get<double>(48), rs.Get<ostring>(55), rs.Get<ostring>(21), rs.Get<int>(50), rs.Get<int>(51), rs.Get<int>(52), rs.Get<ostring>(80), rs.Get<int>(83), rs.Get<int>(84), rs.Get<int>(85), rs.Get<int>(86), PRESteelCoil);
+				indata(SteelCoil::s_SteelCoil, -rs.Get<double>(49), rs.Get<double>(48), rs.Get<ostring>(55), rs.Get<ostring>(21), rs.Get<int>(50), rs.Get<int>(51), rs.Get<int>(52), rs.Get<ostring>(80), rs.Get<int>(83), rs.Get<int>(84), rs.Get<int>(85), rs.Get<int>(86), rs.Get<ostring>(53), PRESteelCoil);
 			}
 			else
 			{
@@ -189,15 +189,15 @@ void SteelCoil::SteelCoilgroup()
 					, rs.Get<int>(72), rs.Get<int>(73), rs.Get<int>(74), rs.Get<int>(75), rs.Get<int>(76), rs.Get<int>(77), rs.Get<int>(78), rs.Get<int>(79), rs.Get<int>(82), rs.Get<int>(83), rs.Get<int>(84), rs.Get<int>(85), rs.Get<int>(86), rs.Get<ostring>(1), rs.Get<ostring>(2), rs.Get<ostring>(3),
 					rs.Get<ostring>(4), rs.Get<ostring>(5), rs.Get<ostring>(6), rs.Get<ostring>(7), rs.Get<ostring>(8), rs.Get<double>(17));
 
-				indata(SteelCoil::s_SteelCoil, -rs.Get<double>(49), rs.Get<double>(48), rs.Get<ostring>(55), rs.Get<ostring>(21), rs.Get<int>(50), rs.Get<int>(51), rs.Get<int>(52), rs.Get<ostring>(80), rs.Get<int>(83), rs.Get<int>(84), rs.Get<int>(85), rs.Get<int>(86), nonPRE_DHCRSteelCoil);
+				indata(SteelCoil::s_SteelCoil, -rs.Get<double>(49), rs.Get<double>(48), rs.Get<ostring>(55), rs.Get<ostring>(21), rs.Get<int>(50), rs.Get<int>(51), rs.Get<int>(52), rs.Get<ostring>(80), rs.Get<int>(83), rs.Get<int>(84), rs.Get<int>(85), rs.Get<int>(86), rs.Get<ostring>(53), nonPRE_DHCRSteelCoil);
 			}
 		}
 		
 		/*-----------输出每个钢卷组内的钢卷--------------*/
 		
-		for (map<pair<pair < pair<pair<pair<pair<pair<pair<pair<pair<pair<double, double>, string>, string>, int>, int>, int>, string>, int>, int>, int>, int>, vector<SteelCoil*>>::iterator iter = s_SteelCoil.begin(); iter != s_SteelCoil.end(); iter++)
+		for (map<pair<pair<pair < pair<pair<pair<pair<pair<pair<pair<pair<pair<double, double>, string>, string>, int>, int>, int>, string>, int>, int>, int>, int>,string>, vector<SteelCoil*>>::iterator iter = s_SteelCoil.begin(); iter != s_SteelCoil.end(); iter++)
 		{
-			cout << -(*iter).first.first.first.first.first.first.first.first.first.first.first.first << endl;
+			cout << -(*iter).first.first.first.first.first.first.first.first.first.first.first.first.first << endl;
 			for (vector<SteelCoil*>::iterator iter1 = iter->second.begin(); iter1 != iter->second.end(); iter1++)
 			{
 				cout << (*iter1)->mat_no << endl;
@@ -233,7 +233,7 @@ catch (exception &ex)
 #pragma region SteelCoil静态变量
 //////////////////////////////////////////////////////////////////////////
 int					SteelCoil::s_SteelCoilCount = 0;
-map<pair<pair < pair<pair<pair<pair<pair<pair<pair<pair<pair<double, double>, string>, string>, int>, int>, int>, string>, int>, int>, int>, int>, vector<SteelCoil*>>    SteelCoil::s_SteelCoil = map<pair<pair < pair<pair<pair<pair<pair<pair<pair<pair<pair<double, double>, string>, string>, int>, int>, int>, string>, int>, int>, int>, int>, vector<SteelCoil*>>();
+map<pair<pair<pair < pair<pair<pair<pair<pair<pair<pair<pair<pair<double, double>, string>, string>, int>, int>, int>, string>, int>, int>, int>, int>, string>, vector<SteelCoil*>>    SteelCoil::s_SteelCoil = map<pair<pair<pair < pair<pair<pair<pair<pair<pair<pair<pair<pair<double, double>, string>, string>, int>, int>, int>, string>, int>, int>, int>, int>, string>, vector<SteelCoil*>>();
 
 ////////////////////////////////////////////////////////////////////////
 #pragma endregion

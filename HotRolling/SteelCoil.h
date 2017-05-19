@@ -126,7 +126,7 @@ public:// 钢卷参数
 	//string					TRNP_TIME;				// 运输时间
 
 public:// 钢卷集合(宽度，厚度，计划类型 ，钢级，出炉，终轧，卷取温度，高温标记,区间最大块数，区间最小块数，区间最大米数，区间最小米数)
-	static map<pair<pair < pair<pair<pair<pair<pair<pair<pair<pair<pair<double, double>, string>, string>, int>, int>, int>,string>,int>,int>,int>,int>, vector<SteelCoil*>>      s_SteelCoil;		//钢卷组map集合
+	static map<pair<pair<pair < pair<pair<pair<pair<pair<pair<pair<pair<pair<double, double>, string>, string>, int>, int>, int>,string>,int>,int>,int>,int>,string>, vector<SteelCoil*>>      s_SteelCoil;		//钢卷组map集合
 	
 	static int								s_SteelCoilCount;				    //钢卷个数
 

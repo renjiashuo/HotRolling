@@ -1,20 +1,9 @@
-﻿生成启动时间为 2017/5/17 23:25:54。
+﻿生成启动时间为 2017/5/18 15:02:06。
      1>项目“C:\Users\wsgbcsc\Documents\GitHub\HotRolling\HotRolling\HotRolling.vcxproj”在节点 2 上(Build 个目标)。
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /IC:\Users\wsgbcsc\Documents\GitHub\HotRolling\HotRolling\include /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt localsearch.cpp
-         localsearch.cpp
-     1>c:\users\wsgbcsc\documents\github\hotrolling\hotrolling\localsearch.cpp(40): warning C4018: “<”: 有符号/无符号不匹配
-     1>c:\users\wsgbcsc\documents\github\hotrolling\hotrolling\localsearch.cpp(56): warning C4018: “<”: 有符号/无符号不匹配
-     1>c:\users\wsgbcsc\documents\github\hotrolling\hotrolling\localsearch.cpp(70): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
-     1>c:\users\wsgbcsc\documents\github\hotrolling\hotrolling\localsearch.cpp(75): warning C4018: “<=”: 有符号/无符号不匹配
-     1>c:\users\wsgbcsc\documents\github\hotrolling\hotrolling\localsearch.cpp(111): warning C4244: “初始化”: 从“double”转换到“int”，可能丢失数据
-     1>c:\users\wsgbcsc\documents\github\hotrolling\hotrolling\localsearch.cpp(124): warning C4018: “<”: 有符号/无符号不匹配
-     1>c:\users\wsgbcsc\documents\github\hotrolling\hotrolling\localsearch.cpp(132): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
-     1>c:\users\wsgbcsc\documents\github\hotrolling\hotrolling\localsearch.cpp(315): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
-     1>c:\users\wsgbcsc\documents\github\hotrolling\hotrolling\localsearch.cpp(379): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
-     1>c:\users\wsgbcsc\documents\github\hotrolling\hotrolling\localsearch.cpp(511): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
-     1>c:\users\wsgbcsc\documents\github\hotrolling\hotrolling\localsearch.cpp(17): warning C4101: “Another_Position_No”: 未引用的局部变量
-     1>c:\users\wsgbcsc\documents\github\hotrolling\hotrolling\localsearch.cpp(675): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /IC:\Users\wsgbcsc\Documents\GitHub\HotRolling\HotRolling\include /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt localsearch2.cpp
+         localsearch2.cpp
+     1>c:\users\wsgbcsc\documents\github\hotrolling\hotrolling\localsearch2.cpp(71): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
      1>c:\program files (x86)\microsoft visual studio 12.0\vc\include\utility(157): warning C4244: “初始化”: 从“double”转换到“int”，可能丢失数据
                  c:\program files (x86)\microsoft visual studio 12.0\vc\include\utility(157): 参见对正在编译的函数 模板 实例化“std::pair<int,int>::pair<int,double,void>(std::pair<int,double> &&)”的引用
                  c:\program files (x86)\microsoft visual studio 12.0\vc\include\utility(157): 参见对正在编译的函数 模板 实例化“std::pair<int,int>::pair<int,double,void>(std::pair<int,double> &&)”的引用
@@ -84,7 +73,7 @@
                      _Kty=std::pair<int,int>
          ,            _Ty=Group *
                  ]
-                 c:\users\wsgbcsc\documents\github\hotrolling\hotrolling\localsearch.cpp(313): 参见对正在编译的函数 模板 实例化“std::pair<std::_Tree_iterator<std::_Tree_val<std::_Tree_simple_types<std::pair<const _Kty,_Ty>>>>,bool> std::_Tree<std::_Tmap_traits<_Kty,_Ty,_Pr,_Alloc,false>>::insert<std::pair<std::pair<int,double>,Group *>>(_Valty &&)”的引用
+                 c:\users\wsgbcsc\documents\github\hotrolling\hotrolling\localsearch2.cpp(54): 参见对正在编译的函数 模板 实例化“std::pair<std::_Tree_iterator<std::_Tree_val<std::_Tree_simple_types<std::pair<const _Kty,_Ty>>>>,bool> std::_Tree<std::_Tmap_traits<_Kty,_Ty,_Pr,_Alloc,false>>::insert<std::pair<std::pair<int,double>,Group *>>(_Valty &&)”的引用
                  with
                  [
                      _Kty=std::pair<int,int>
@@ -93,7 +82,7 @@
          ,            _Alloc=std::allocator<std::pair<const std::pair<int,int>,Group *>>
          ,            _Valty=std::pair<std::pair<int,double>,Group *>
                  ]
-                 c:\users\wsgbcsc\documents\github\hotrolling\hotrolling\localsearch.cpp(313): 参见对正在编译的函数 模板 实例化“std::pair<std::_Tree_iterator<std::_Tree_val<std::_Tree_simple_types<std::pair<const _Kty,_Ty>>>>,bool> std::_Tree<std::_Tmap_traits<_Kty,_Ty,_Pr,_Alloc,false>>::insert<std::pair<std::pair<int,double>,Group *>>(_Valty &&)”的引用
+                 c:\users\wsgbcsc\documents\github\hotrolling\hotrolling\localsearch2.cpp(54): 参见对正在编译的函数 模板 实例化“std::pair<std::_Tree_iterator<std::_Tree_val<std::_Tree_simple_types<std::pair<const _Kty,_Ty>>>>,bool> std::_Tree<std::_Tmap_traits<_Kty,_Ty,_Pr,_Alloc,false>>::insert<std::pair<std::pair<int,double>,Group *>>(_Valty &&)”的引用
                  with
                  [
                      _Kty=std::pair<int,int>
@@ -106,6 +95,8 @@
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\wsgbcsc\Documents\GitHub\HotRolling\Debug\HotRolling.exe" /INCREMENTAL /NOLOGO /LIBPATH:C:\Users\wsgbcsc\Documents\GitHub\HotRolling\HotRolling\lib32 ociliba.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\wsgbcsc\Documents\GitHub\HotRolling\Debug\HotRolling.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\wsgbcsc\Documents\GitHub\HotRolling\Debug\HotRolling.lib" /MACHINE:X86 Debug\datacheck.obj
          Debug\Group.obj
          Debug\localsearch.obj
+         Debug\localsearch1.obj
+         Debug\localsearch2.obj
          Debug\main.obj
          Debug\SteelCoil.obj
          Debug\TortoiseShell.obj
@@ -114,4 +105,4 @@
 
 生成成功。
 
-已用时间 00:00:04.24
+已用时间 00:00:04.64
