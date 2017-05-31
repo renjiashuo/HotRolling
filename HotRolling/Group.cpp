@@ -126,7 +126,7 @@ Group::Group(Group *group, double lonth)
 			// 更新新钢卷组的重量
 			slab_wt += steelCoil->slab_wt;
 			// 更新原钢卷组的重量
-			group->slab_wt += steelCoil->slab_wt;
+			group->slab_wt -= steelCoil->slab_wt;
 			// 转移钢卷
 			this->m_SteelCoil.insert(this->m_SteelCoil.end(), iter, iter+1);
 			iter = group->m_SteelCoil.erase(iter);

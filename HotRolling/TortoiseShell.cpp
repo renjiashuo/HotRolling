@@ -467,6 +467,7 @@ void TortoiseShell::showResultFile()
 
 double TortoiseShell::computekpi(map<int, TortoiseShell*>&NEW_TortoiseShell)
 {
+	calculateRollingFinishTime();
 	// 变量定义
 	const double max_TortoiseShell_len = 30000;// 乌龟壳最大公里数
 	double flow10_wt=0 ;
@@ -605,17 +606,19 @@ double TortoiseShell::computekpi(map<int, TortoiseShell*>&NEW_TortoiseShell)
 	{
 		TortoiseShell *tortoiseShell = iter->second;
 		all_penalty += tortoiseShell->penalty;
-		cout << "第"<<i<<"个乌龟壳的罚分为：" << tortoiseShell->penalty << endl;
+		//cout << "第"<<i<<"个乌龟壳的罚分为：" << tortoiseShell->penalty << endl;
 		i++;
 	}
-	cout << "总分：" << all_penalty << endl;
+	//cout << "总分：" << all_penalty << endl;
 	flow_rate = flow10_wt / allflow10_wt;																	// 流向匹配率
 	order_rate = assigned_wt / allsteelcCoil_wt;															// 合同计划兑现率
 	rollingkm_rate = (rollingkm / s_mapSetOfTortoiseShell.size()) / max_TortoiseShell_len;					// 轧制公里率
 	DHCR_rate = assigned_DHCR / m_DHCR;																		// DHCR比率
 	Scheduling_quality = all_penalty / Scheduling_quality_deno;												// 排程质量
-	double KPI = flow_rate*0.3 + order_rate*0.3 + rollingkm_rate*0.2 + DHCR_rate*0.1 -Scheduling_quality*0.1;
-	cout << "流向匹配率: " << flow_rate << "   " << "合同计划兑现率: " << order_rate << "    " << "轧制公里率: " << rollingkm_rate << "   " << "DHCR比率: " << DHCR_rate << "   " << "排程质量: " << Scheduling_quality<< "KPI: "<<KPI<< endl;
+	//double KPI = flow_rate*0.3 + order_rate*0.3 + rollingkm_rate*0.2 + DHCR_rate*0.1 -Scheduling_quality*0.1;
+	double KPI = flow_rate*0.1 + order_rate*0.1 + rollingkm_rate*0.5 + DHCR_rate*0.1 - Scheduling_quality*0.2;
+	cout << "流向匹配率: " << flow_rate << "   " << "合同计划兑现率: " << order_rate << "    " << "轧制公里率: " << rollingkm_rate << "   " << "DHCR比率: " << DHCR_rate << "   " << "排程质量: " << Scheduling_quality<< endl;
+	cout << " KPI: " << KPI << endl;
 	// 初始化每个乌龟壳的相关参数
 	for (map<int, TortoiseShell*>::iterator iter0 = NEW_TortoiseShell.begin(); iter0 != NEW_TortoiseShell.end(); iter0++)
 	{
@@ -970,6 +973,29 @@ bool TortoiseShell::addMainGroup2(Group *group)
 	}
 
 	return true;
+}
+
+void TortoiseShell::calculateRollingFinishTime()
+{
+	double nowTime = 0;
+	// 遍历乌龟壳
+	for (map<int, TortoiseShell*>::iterator iter = s_mapSetOfTortoiseShell.begin(); iter != s_mapSetOfTortoiseShell.end(); iter++)
+	{
+		TortoiseShell *tortoiseShell = iter->second;
+		// 遍历乌龟壳内的钢卷组
+		for (map<pair<int, int>, Group*>::iterator iter2 = tortoiseShell->m_main_groups.begin(); iter2 != tortoiseShell->m_main_groups.end(); iter2++)
+		{
+			Group *group = iter2->second;
+			// 遍历钢卷组内的钢卷
+			for (vector<SteelCoil*>::iterator iter3 = group->m_SteelCoil.begin(); iter3 != group->m_SteelCoil.end(); iter3++)
+			{
+				SteelCoil *steelCoil = *iter3;
+				steelCoil->roll_begin_time_double = nowTime;
+				nowTime += steelCoil->roll_time;
+				steelCoil->roll_end_time_double = nowTime;
+			}
+		}
+	}
 }
 
 ////////////////////////////////////////////////////////////////////////

@@ -140,6 +140,14 @@ public:
 	// 摘要:
 	//     局域搜索算法，乌龟壳内部的钢卷组互换
 	static void localsearch2();
+	//
+	// 摘要:
+	//     局域搜索算法，往乌龟壳里插钢卷组
+	static void localsearch3();
+	//
+	// 摘要:
+	//     计算每个钢卷轧制完成的时间
+	static void calculateRollingFinishTime();
 	//////////////////////////////////////////////////////////////////////////
 	#pragma endregion
 

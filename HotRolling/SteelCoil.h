@@ -130,6 +130,10 @@ public:// ¸Ö¾í¼¯ºÏ(¿í¶È£¬ºñ¶È£¬¼Æ»®ÀàĞÍ £¬¸Ö¼¶£¬³öÂ¯£¬ÖÕÔş£¬¾íÈ¡ÎÂ¶È£¬¸ßÎÂ±ê¼Ç,Ç
 	
 	static int								s_SteelCoilCount;				    //¸Ö¾í¸öÊı
 
+public:// ÅÅ²ú½á¹û±äÁ¿
+	double						roll_begin_time_double;		// ÔşÖÆ¿ªÊ¼Ê±¿Ì
+	double						roll_end_time_double;		// ÔşÖÆ½áÊøÊ±¿Ì
+
 #pragma endregion
 
 

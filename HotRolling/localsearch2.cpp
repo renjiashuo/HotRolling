@@ -10,8 +10,8 @@ void TortoiseShell::localsearch2()
 	pair<int, TortoiseShell*> trash = make_pair(s_mapSetOfTortoiseShell.rbegin()->first, s_mapSetOfTortoiseShell.rbegin()->second);
 	s_mapSetOfTortoiseShell.erase(s_mapSetOfTortoiseShell.rbegin()->first);
 	// 遍历乌龟壳
-	//for (map<int, TortoiseShell*>::iterator iter = s_mapSetOfTortoiseShell.begin(); iter != s_mapSetOfTortoiseShell.end();)
-	for (map<int, TortoiseShell*>::iterator iter = s_mapSetOfTortoiseShell.begin(); iter != --s_mapSetOfTortoiseShell.end();)
+	for (map<int, TortoiseShell*>::iterator iter = s_mapSetOfTortoiseShell.begin(); iter != s_mapSetOfTortoiseShell.end();)
+	//for (map<int, TortoiseShell*>::iterator iter = s_mapSetOfTortoiseShell.begin(); iter != --s_mapSetOfTortoiseShell.end();)
 	{
 		TortoiseShell *tortoiseShell = iter->second;
 		map<pair<int, int>, Group*>	 groups_backups = tortoiseShell->m_main_groups; // 乌龟壳内钢卷组顺序备份

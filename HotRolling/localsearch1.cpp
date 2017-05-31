@@ -13,12 +13,14 @@ void TortoiseShell::localsearch1()
 	int Chosen_Position_Start;					//定义 Chosen_Position_Start       为选中的钢卷组的 起始 公里数
 	int Chosen_Position_End;					//定义 Chosen_Position_End         为选中的 终止 公里数
 	int Chosen_Width = 0;						//定义 Chosen_Width                为选取的钢卷组的宽度
+	int Chosen_Len = 0;
 
 	int Another_Position_No;					//定义 Another_Position_No          为选第二个钢卷组的位置号
 	int Another_Shell;							//定义 Another_Shell                为第二个乌龟壳的编号
 	int Another_Position_Start = 0;			//定义 Another_Position_Start       为第二个shell的轧制公里数起始	
 	int Another_Position_End = 0;				//定义 Another_Position_End         为第二个shell的轧制公里数终止
 	int Another_Width = 0;						//定义 Another_Width                为第二个乌龟壳的钢卷组的宽度
+	int Another_Len = 0;
 
 	vector <int> vec_Chosen_Position_Start;		//定义 Group_Position_Start        容器存放选中的乌龟壳的所有group的 起始 位置
 	vector <int> vec_Chosen_Position_End;		//定义 Group_Position_Start        容器存放选中的乌龟壳的所有group的 终止 位置
@@ -68,74 +70,60 @@ void TortoiseShell::localsearch1()
 			/**********获取钢卷组宽度（Chosen_Width）**********/
 			map<pair<int, int>, Group*> ::iterator iterChosen = s_mapSetOfTortoiseShell[Chosen_Shell]->m_main_groups.find(make_pair(Chosen_Position_Start, Chosen_Position_End));
 			Chosen_Width = iterChosen->second->nom_roll_width;
+			Chosen_Len = iterChosen->second->roll_len;
 			// 获取第一个选取的钢卷组的计划类型
 			string Chosen_plan_type = iterChosen->second->plan_type;
 			/**************************************************/
 #pragma endregion
-				// 将第二个乌龟壳固定，为乌龟壳集合的最后一个乌龟壳，即垃圾桶
-				Another_Shell = s_mapSetOfTortoiseShell.size();
-				cout << "\t\tAnother_Shell:" << Another_Shell << endl;
+			// 将第二个乌龟壳固定，为乌龟壳集合的最后一个乌龟壳，即垃圾桶
+			Another_Shell = s_mapSetOfTortoiseShell.size();
+			cout << "\t\tAnother_Shell:" << Another_Shell << endl;
 #pragma region 选取AnotherShell，Another_Shell的编号与Chosen_Shell不同
-				//Another_Shell = (rand() % s_mapSetOfTortoiseShell.size()) + 1;
-				//while (Another_Shell == Chosen_Shell)
-				//{
-				//	Another_Shell = (rand() % s_mapSetOfTortoiseShell.size()) + 1;
-				//}
+			//Another_Shell = (rand() % s_mapSetOfTortoiseShell.size()) + 1;
+			//while (Another_Shell == Chosen_Shell)
+			//{
+			//	Another_Shell = (rand() % s_mapSetOfTortoiseShell.size()) + 1;
+			//}
 #pragma endregion
 #pragma region 获取 Another_Shell 的所有位置信息，并放入 map 中 <map_Another_Position>
 
 
-				vec_Another_Position_Start.clear();
-				vec_Another_Position_End.clear();
-				/************获取Another_Shell所有位置信息**********/
-				map<pair<int, int>, Group*> ::iterator iterAnother_Position = s_mapSetOfTortoiseShell[Another_Shell]->m_main_groups.begin();
-				for (; iterAnother_Position != s_mapSetOfTortoiseShell[Another_Shell]->m_main_groups.end(); iterAnother_Position++)
-				{
-					vec_Another_Position_Start.push_back(iterAnother_Position->first.first);
-					vec_Another_Position_End.push_back(iterAnother_Position->first.second);
-				}
+			vec_Another_Position_Start.clear();
+			vec_Another_Position_End.clear();
+			/************获取Another_Shell所有位置信息**********/
+			map<pair<int, int>, Group*> ::iterator iterAnother_Position = s_mapSetOfTortoiseShell[Another_Shell]->m_main_groups.begin();
+			for (; iterAnother_Position != s_mapSetOfTortoiseShell[Another_Shell]->m_main_groups.end(); iterAnother_Position++)
+			{
+				vec_Another_Position_Start.push_back(iterAnother_Position->first.first);
+				vec_Another_Position_End.push_back(iterAnother_Position->first.second);
+			}
+			/**************************************************/
+#pragma endregion
+
+			map_Candidate_Group.clear();
+#pragma region 在 Another_Shell 中找到相似宽度的Another_Group，并随机选取一个钢卷组
+			int Another_Position_No;
+			for (Another_Position_No = 0; Another_Position_No < vec_Another_Position_Start.size(); Another_Position_No++)
+			{
+				cout << "\t\t\tAnother_Position_No:" << Another_Position_No << endl;
+				temp.clear();
+				temp1.clear();
+				m_temp.clear();
+				m_temp1.clear();
+				//Another_Position_No = (rand() % map_Candidate_Group.size());							//随机选取候选map中的Group
+				//Another_Width = vec_Another_Position_Start[Another_Position_No].second->nom_roll_width;		//获取宽度信息	
+				//Another_Len = map_Candidate_Group[Another_Position_No].second->roll_len;
+				Another_Position_Start = vec_Another_Position_Start[Another_Position_No];			//获取位置信息
+				Another_Position_End = vec_Another_Position_End[Another_Position_No];
+				map<pair<int, int>, Group*> ::iterator iterAnother = s_mapSetOfTortoiseShell[Another_Shell]->m_main_groups.find(make_pair(Another_Position_Start, Another_Position_End));
+				Another_Width = iterAnother->second->nom_roll_width;
+				Another_Len = iterAnother->second->roll_len;
+				// 获取钢卷组计划类型
+				string Another_plan_type = iterAnother->second->plan_type;
 				/**************************************************/
 #pragma endregion
-
-				map_Candidate_Group.clear();
-#pragma region 在 Another_Shell 中找到相似宽度的Another_Group，并随机选取一个钢卷组
-				/********在第二个乌龟壳找到相似宽度的钢卷组********/
-				//1.搜寻所有宽度符合要求的Group，存入候选 map <map_Candidate_Group>
-				//2.在所有候选Group中随机选出Group并获取 宽度、起止位置信息
-				//3.与Chosen_Group匹配（合适就交换看看，不合适就进行下一代）//要不要多给几次机会
-				/*1*/
-				int AG_NO = 0;
-				map<pair<int, int>, Group*> ::iterator iterCandidate = s_mapSetOfTortoiseShell[Another_Shell]->m_main_groups.begin();
-				for (; iterCandidate != s_mapSetOfTortoiseShell[Another_Shell]->m_main_groups.end(); iterCandidate++)
+				if (abs(Another_Width - Chosen_Width) <= D_value * Chosen_Width)
 				{
-					int Another_Group_Width = iterCandidate->second->nom_roll_width;
-					// 如果这两个组宽度相差D_value，则为与之前匹配的目标,放入候选map
-					if (abs(Another_Group_Width - Chosen_Width) <= D_value * Chosen_Width)
-					{
-						map_Candidate_Group.insert(make_pair(AG_NO, make_pair(make_pair(iterCandidate->first.first, iterCandidate->first.second), iterCandidate->second)));
-						AG_NO++;
-					}
-				}
-
-				if (map_Candidate_Group.size() == 0)	//如果候选map是空的，说明没有找到可匹配的Group，进行下一代
-					continue;
-				// 随机选取一个钢卷组
-				int Another_Candidate_No;
-				for (Another_Candidate_No = 0; Another_Candidate_No < map_Candidate_Group.size(); Another_Candidate_No++)
-				{
-					cout << "\t\t\tAnother_Candidate_No:" << Another_Candidate_No << endl;
-					temp.clear();
-					temp1.clear();
-					m_temp.clear();
-					m_temp1.clear();
-					//Another_Candidate_No = (rand() % map_Candidate_Group.size());							//随机选取候选map中的Group
-					Another_Width = map_Candidate_Group[Another_Candidate_No].second->nom_roll_width;		//获取宽度信息	
-					Another_Position_Start = map_Candidate_Group[Another_Candidate_No].first.first;			//获取位置信息
-					Another_Position_End = map_Candidate_Group[Another_Candidate_No].first.second;
-					// 获取钢卷组计划类型
-					string Another_plan_type = map_Candidate_Group[Another_Candidate_No].second->plan_type;
-					/**************************************************/
-#pragma endregion
 
 #pragma region 判断硬约束是否满足,检查该钢卷如果放入，有没有相邻冲突，如果有，则不能放入该乌龟壳
 					// 将Chosen_Shell里的选中钢卷组放入一个中间map里，并在Chosen_Shell里删除它			 		 
@@ -327,6 +315,7 @@ void TortoiseShell::localsearch1()
 							// 如果分配成功，继续下一个钢卷组
 							if (!mark)
 								break;
+
 						}
 						//如果分配不成功，则还原，下一次迭代
 						if (iter5 != m_temp.end())
@@ -388,6 +377,8 @@ void TortoiseShell::localsearch1()
 									// 如果分配成功，继续下一个钢卷组
 									if (!mark)
 										break;
+
+
 								}
 								if (iter6 != m_temp1.end())
 								{
@@ -402,18 +393,38 @@ void TortoiseShell::localsearch1()
 								else
 								{
 									// 计算所得解的KPI,首先要把未分配钢卷组的那个乌龟壳删掉，计算完KPI之后再把这个乌龟壳放入乌龟壳集合里
-									/*map<int, TortoiseShell*> temp2;
+									map<int, TortoiseShell*> temp2;
 									map<int, TortoiseShell*>::iterator iter7 = s_mapSetOfTortoiseShell.find(s_mapSetOfTortoiseShell.size());
 									temp2.insert(make_pair(iter7->first, iter7->second));
 									s_mapSetOfTortoiseShell.erase(iter7);
-									map<int, TortoiseShell*>::iterator iter07 = temp2.begin();*/
+									map<int, TortoiseShell*>::iterator iter07 = temp2.begin();
 									double temp_kpi = computekpi(s_mapSetOfTortoiseShell);
 									// 如果kpi更优，则把解放入最优乌龟壳集合里，并把kpi值赋给best_kpi
 									if (temp_kpi > best_kpi)
 									{
 										best_kpi = temp_kpi;
+										// 更新盛放钢卷组首末位置的map容器
+										vec_Another_Position_Start.clear();
+										vec_Another_Position_End.clear();
+										vec_Chosen_Position_Start.clear();
+										vec_Chosen_Position_End.clear();
+										map<pair<int, int>, Group*> ::iterator iter_refresh = s_mapSetOfTortoiseShell[Chosen_Shell]->m_main_groups.begin();
+										for (; iter_refresh != s_mapSetOfTortoiseShell[Chosen_Shell]->m_main_groups.end(); iter_refresh++)
+										{
+											vec_Chosen_Position_Start.push_back(iter_refresh->first.first);	//存放选中的乌龟壳的所有钢卷组起始位置
+											vec_Chosen_Position_End.push_back(iter_refresh->first.second);	//存放选中的乌龟壳的所有钢卷组终止位置
+										}
+										Chosen_Position_Start = vec_Chosen_Position_Start[Chosen_Position_No];
+										Chosen_Position_End = vec_Chosen_Position_End[Chosen_Position_No];
+										map<pair<int, int>, Group*> ::iterator iter_refresh1 = s_mapSetOfTortoiseShell[Another_Shell]->m_main_groups.begin();
+										for (; iter_refresh1 != s_mapSetOfTortoiseShell[Another_Shell]->m_main_groups.end(); iter_refresh1++)
+										{
+											vec_Another_Position_Start.push_back(iter_refresh1->first.first);
+											vec_Another_Position_End.push_back(iter_refresh1->first.second);
+										}
+
 										// 插入未分配钢卷组的乌龟壳
-										//s_mapSetOfTortoiseShell.insert(make_pair(iter07->first, iter07->second));
+										s_mapSetOfTortoiseShell.insert(make_pair(iter07->first, iter07->second));
 										continue;
 									}
 									// 否则，继续迭代
@@ -425,7 +436,7 @@ void TortoiseShell::localsearch1()
 										s_mapSetOfTortoiseShell[Another_Shell]->m_main_groups.clear();
 										swap(s_mapSetOfTortoiseShell[Another_Shell]->m_main_groups, m_temp1_second);
 										// 插入未分配钢卷组的乌龟壳
-										//s_mapSetOfTortoiseShell.insert(make_pair(iter07->first, iter07->second));
+										s_mapSetOfTortoiseShell.insert(make_pair(iter07->first, iter07->second));
 
 										continue;
 									}
@@ -436,18 +447,37 @@ void TortoiseShell::localsearch1()
 							else
 							{
 								// 计算所得解的KPI,首先要把未分配钢卷组的那个乌龟壳删掉，计算完KPI之后再把这个乌龟壳放入乌龟壳集合里
-								/*map<int, TortoiseShell*> temp2;
+								map<int, TortoiseShell*> temp2;
 								map<int, TortoiseShell*>::iterator iter7 = s_mapSetOfTortoiseShell.find(s_mapSetOfTortoiseShell.size());
 								temp2.insert(make_pair(iter7->first, iter7->second));
 								s_mapSetOfTortoiseShell.erase(iter7);
-								map<int, TortoiseShell*>::iterator iter07 = temp2.begin();*/
+								map<int, TortoiseShell*>::iterator iter07 = temp2.begin();
 								double temp_kpi = computekpi(s_mapSetOfTortoiseShell);
 								// 如果kpi更优，则把解放入最优乌龟壳集合里，并把kpi值赋给best_kpi
 								if (temp_kpi > best_kpi)
 								{
 									best_kpi = temp_kpi;
+									// 更新盛放钢卷组首末位置的map容器
+									vec_Another_Position_Start.clear();
+									vec_Another_Position_End.clear();
+									vec_Chosen_Position_Start.clear();
+									vec_Chosen_Position_End.clear();
+									map<pair<int, int>, Group*> ::iterator iter_refresh = s_mapSetOfTortoiseShell[Chosen_Shell]->m_main_groups.begin();
+									for (; iter_refresh != s_mapSetOfTortoiseShell[Chosen_Shell]->m_main_groups.end(); iter_refresh++)
+									{
+										vec_Chosen_Position_Start.push_back(iter_refresh->first.first);	//存放选中的乌龟壳的所有钢卷组起始位置
+										vec_Chosen_Position_End.push_back(iter_refresh->first.second);	//存放选中的乌龟壳的所有钢卷组终止位置
+									}
+									Chosen_Position_Start = vec_Chosen_Position_Start[Chosen_Position_No];
+									Chosen_Position_End = vec_Chosen_Position_End[Chosen_Position_No];
+									map<pair<int, int>, Group*> ::iterator iter_refresh1 = s_mapSetOfTortoiseShell[Another_Shell]->m_main_groups.begin();
+									for (; iter_refresh1 != s_mapSetOfTortoiseShell[Another_Shell]->m_main_groups.end(); iter_refresh1++)
+									{
+										vec_Another_Position_Start.push_back(iter_refresh1->first.first);
+										vec_Another_Position_End.push_back(iter_refresh1->first.second);
+									}
 									// 插入未分配钢卷组的乌龟壳
-									//s_mapSetOfTortoiseShell.insert(make_pair(iter07->first, iter07->second));
+									s_mapSetOfTortoiseShell.insert(make_pair(iter07->first, iter07->second));
 									continue;
 								}
 								// 否则，继续迭代
@@ -459,7 +489,7 @@ void TortoiseShell::localsearch1()
 									s_mapSetOfTortoiseShell[Another_Shell]->m_main_groups.clear();
 									swap(s_mapSetOfTortoiseShell[Another_Shell]->m_main_groups, m_temp1_second);
 									// 插入未分配钢卷组的乌龟壳
-									//s_mapSetOfTortoiseShell.insert(make_pair(iter07->first, iter07->second));
+									s_mapSetOfTortoiseShell.insert(make_pair(iter07->first, iter07->second));
 
 									continue;
 								}
@@ -536,18 +566,37 @@ void TortoiseShell::localsearch1()
 							else
 							{
 								// 计算所得解的KPI,首先要把未分配钢卷组的那个乌龟壳删掉，计算完KPI之后再把这个乌龟壳放入乌龟壳集合里
-								/*map<int, TortoiseShell*> temp2;
+								map<int, TortoiseShell*> temp2;
 								map<int, TortoiseShell*>::iterator iter7 = s_mapSetOfTortoiseShell.find(s_mapSetOfTortoiseShell.size());
 								temp2.insert(make_pair(iter7->first, iter7->second));
 								s_mapSetOfTortoiseShell.erase(iter7);
-								map<int, TortoiseShell*>::iterator iter07 = temp2.begin();*/
+								map<int, TortoiseShell*>::iterator iter07 = temp2.begin();
 								double temp_kpi = computekpi(s_mapSetOfTortoiseShell);
 								// 如果kpi更优，则把解放入最优乌龟壳集合里，并把kpi值赋给best_kpi
 								if (temp_kpi > best_kpi)
 								{
 									best_kpi = temp_kpi;
+									// 更新盛放钢卷组首末位置的map容器
+									vec_Another_Position_Start.clear();
+									vec_Another_Position_End.clear();
+									vec_Chosen_Position_Start.clear();
+									vec_Chosen_Position_End.clear();
+									map<pair<int, int>, Group*> ::iterator iter_refresh = s_mapSetOfTortoiseShell[Chosen_Shell]->m_main_groups.begin();
+									for (; iter_refresh != s_mapSetOfTortoiseShell[Chosen_Shell]->m_main_groups.end(); iter_refresh++)
+									{
+										vec_Chosen_Position_Start.push_back(iter_refresh->first.first);	//存放选中的乌龟壳的所有钢卷组起始位置
+										vec_Chosen_Position_End.push_back(iter_refresh->first.second);	//存放选中的乌龟壳的所有钢卷组终止位置
+									}
+									Chosen_Position_Start = vec_Chosen_Position_Start[Chosen_Position_No];
+									Chosen_Position_End = vec_Chosen_Position_End[Chosen_Position_No];
+									map<pair<int, int>, Group*> ::iterator iter_refresh1 = s_mapSetOfTortoiseShell[Another_Shell]->m_main_groups.begin();
+									for (; iter_refresh1 != s_mapSetOfTortoiseShell[Another_Shell]->m_main_groups.end(); iter_refresh1++)
+									{
+										vec_Another_Position_Start.push_back(iter_refresh1->first.first);
+										vec_Another_Position_End.push_back(iter_refresh1->first.second);
+									}
 									// 插入未分配钢卷组的乌龟壳
-									//s_mapSetOfTortoiseShell.insert(make_pair(iter07->first, iter07->second));
+									s_mapSetOfTortoiseShell.insert(make_pair(iter07->first, iter07->second));
 									continue;
 								}
 								// 否则，继续迭代
@@ -559,7 +608,7 @@ void TortoiseShell::localsearch1()
 									s_mapSetOfTortoiseShell[Another_Shell]->m_main_groups.clear();
 									swap(s_mapSetOfTortoiseShell[Another_Shell]->m_main_groups, m_temp1_second);
 									// 插入未分配钢卷组的乌龟壳
-									//s_mapSetOfTortoiseShell.insert(make_pair(iter07->first, iter07->second));
+									s_mapSetOfTortoiseShell.insert(make_pair(iter07->first, iter07->second));
 									continue;
 								}
 							}
@@ -569,18 +618,37 @@ void TortoiseShell::localsearch1()
 						else
 						{
 							// 计算所得解的KPI,首先要把未分配钢卷组的那个乌龟壳删掉，计算完KPI之后再把这个乌龟壳放入乌龟壳集合里
-							/*map<int, TortoiseShell*> temp2;
+							map<int, TortoiseShell*> temp2;
 							map<int, TortoiseShell*>::iterator iter7 = s_mapSetOfTortoiseShell.find(s_mapSetOfTortoiseShell.size());
 							temp2.insert(make_pair(iter7->first, iter7->second));
 							s_mapSetOfTortoiseShell.erase(iter7);
-							map<int, TortoiseShell*>::iterator iter07 = temp2.begin();*/
+							map<int, TortoiseShell*>::iterator iter07 = temp2.begin();
 							double temp_kpi = computekpi(s_mapSetOfTortoiseShell);
 							// 如果kpi更优，则把解放入最优乌龟壳集合里，并把kpi值赋给best_kpi
 							if (temp_kpi > best_kpi)
 							{
 								best_kpi = temp_kpi;
+								// 更新盛放钢卷组首末位置的map容器
+								vec_Another_Position_Start.clear();
+								vec_Another_Position_End.clear();
+								vec_Chosen_Position_Start.clear();
+								vec_Chosen_Position_End.clear();
+								map<pair<int, int>, Group*> ::iterator iter_refresh = s_mapSetOfTortoiseShell[Chosen_Shell]->m_main_groups.begin();
+								for (; iter_refresh != s_mapSetOfTortoiseShell[Chosen_Shell]->m_main_groups.end(); iter_refresh++)
+								{
+									vec_Chosen_Position_Start.push_back(iter_refresh->first.first);	//存放选中的乌龟壳的所有钢卷组起始位置
+									vec_Chosen_Position_End.push_back(iter_refresh->first.second);	//存放选中的乌龟壳的所有钢卷组终止位置
+								}
+								Chosen_Position_Start = vec_Chosen_Position_Start[Chosen_Position_No];
+								Chosen_Position_End = vec_Chosen_Position_End[Chosen_Position_No];
+								map<pair<int, int>, Group*> ::iterator iter_refresh1 = s_mapSetOfTortoiseShell[Another_Shell]->m_main_groups.begin();
+								for (; iter_refresh1 != s_mapSetOfTortoiseShell[Another_Shell]->m_main_groups.end(); iter_refresh1++)
+								{
+									vec_Another_Position_Start.push_back(iter_refresh1->first.first);
+									vec_Another_Position_End.push_back(iter_refresh1->first.second);
+								}
 								// 插入未分配钢卷组的乌龟壳
-								//s_mapSetOfTortoiseShell.insert(make_pair(iter07->first, iter07->second));
+								s_mapSetOfTortoiseShell.insert(make_pair(iter07->first, iter07->second));
 								continue;
 							}
 							// 否则，继续迭代
@@ -592,7 +660,7 @@ void TortoiseShell::localsearch1()
 								s_mapSetOfTortoiseShell[Another_Shell]->m_main_groups.clear();
 								swap(s_mapSetOfTortoiseShell[Another_Shell]->m_main_groups, m_temp1_second);
 								// 插入未分配钢卷组的乌龟壳
-								//s_mapSetOfTortoiseShell.insert(make_pair(iter07->first, iter07->second));
+								s_mapSetOfTortoiseShell.insert(make_pair(iter07->first, iter07->second));
 								continue;
 							}
 						}
@@ -601,7 +669,9 @@ void TortoiseShell::localsearch1()
 
 #pragma endregion
 				}
-			
+				else
+					continue;
+			}
 		}
 	}
 #pragma endregion
