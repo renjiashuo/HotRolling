@@ -40,16 +40,17 @@ public:// 乌龟壳参数
 	int									m_tortoiseShellName;		// 乌龟壳名称
 	double								m_TortoiseShell_len;		// 乌龟壳长度
 	double								m_TortoiseShell_WT;			// 乌龟壳重量
-	double								m_TortoiseShellflow10_WT;	// 乌龟壳重流向10钢卷重量
+	//double								m_TortoiseShellflow10_WT;	// 乌龟壳重流向10钢卷重量
 	double								m_TortoiseShell_DHCR;		// 乌龟壳DHCR个数
 	double								m_TortoiseShell_len1;		// 乌龟壳长度(后)
 	double								m_TortoiseShell_WT1;		// 乌龟壳重量(后)
 	double								m_TortoiseShellflow10_WT1;	// 乌龟壳重流向10钢卷重量(后)
-	double								m_TortoiseShell_DHCR1;		// 乌龟壳DHCR个数(后)		
+	double								m_TortoiseShell_DHCR1;		// 乌龟壳DHCR个数(后)	
+	
 	//double							m_tang_len;					// 分配到乌龟壳里的烫辊材长度			
 	map<pair<int, int>, Group*>			m_pre_groups;				// 乌龟壳内烫辊材钢卷组信息，key.first，key.second(存钢卷组的位置)，value为钢卷组
 	map<pair<int, int>, Group*>			m_main_groups;				// 乌龟壳内主体材钢卷组信息，key.first，key.second(存钢卷组的位置)，value为钢卷组
-	
+	map<pair<int, int>, SteelCoil*>		m_main_SteelCoil;			// 以钢卷为单位存放乌龟壳里的钢卷
 public:// 排程过程中记录变量
 	int									steelCoilNum;				// 乌龟壳内钢卷数
 	int									steelCoilLenth;				// 乌龟壳目前公里数
@@ -63,13 +64,14 @@ public:// 乌龟壳集合
 	static int							s_TortoiseShellCount;		// 乌龟壳个数
 	static double						allTortoiseShell_len;		// 所有乌龟壳总长度
 	static double						m_DHCR;						// 有DHCR标记钢卷总数
-	static double						allflow10_wt;				// 流向10钢卷总重量
+	//static double						allflow10_wt;				// 流向10钢卷总重量
 	static double						allsteelcCoil_wt;			// 钢卷总重
 	static double						best_kpi;					// 最优kpi值
 	static int							all_penalty;				// 所有乌龟壳罚分总和
-
 public:
 	static map<pair<string, string>, string> plantype;				// 计划类型组合集合
+	static map<pair<double, string>, double> flowrule;				// 数据表中流向设定集合
+	static map<pair<double, string>, double> actualflow;			// 排程结束后流向集合
 
 #pragma endregion
 
@@ -122,6 +124,10 @@ public:
 	static void showResultFile();	
 	//
 	// 摘要:
+	//     结果输出到文本。
+	static void showResultSQL();
+	//
+	// 摘要:
 	//     向乌龟壳的最后添加一个主体材，分配成功返回true，分配失败返回false，允许拆分钢卷组。
 	bool addMainGroup(Group *group);
 	//
@@ -146,8 +152,20 @@ public:
 	static void localsearch3();
 	//
 	// 摘要:
+	//     局域搜索算法，乌龟壳间钢卷互换
+	static void localsearch4();
+	//
+	// 摘要:
 	//     计算每个钢卷轧制完成的时间
 	static void calculateRollingFinishTime();
+	//
+	// 摘要:
+	//     DatetimeToString
+	static string DatetimeToString(time_t time);
+	//
+	// 摘要:
+	//     StringToDatetime
+	static time_t StringToDatetime(string str);
 	//////////////////////////////////////////////////////////////////////////
 	#pragma endregion
 

@@ -33,6 +33,7 @@
     <ClCompile Include="localsearch1.cpp" />
     <ClCompile Include="localsearch2.cpp" />
     <ClCompile Include="localsearch3.cpp" />
+    <ClCompile Include="localsearch4.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="SteelCoil.cpp" />
     <ClCompile Include="TortoiseShell.cpp" />
@@ -72,6 +73,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>C:\Users\wsgbcsc\Documents\GitHub\HotRolling\HotRolling\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>

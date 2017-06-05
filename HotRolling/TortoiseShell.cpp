@@ -33,13 +33,14 @@ TortoiseShell::TortoiseShell(Group *group)
 	this->m_tortoiseShellName = s_TortoiseShellCount;
 	this->m_TortoiseShell_len = 0;
 	this->m_TortoiseShell_WT = 0;
-	this->m_TortoiseShellflow10_WT = 0;
+	//this->m_TortoiseShellflow10_WT = 0;
 	this->m_TortoiseShell_DHCR = 0;
 	this->m_TortoiseShell_len1 = 0;
 	this->m_TortoiseShell_WT1 = 0;
 	this->m_TortoiseShellflow10_WT1 = 0;
 	this->m_TortoiseShell_DHCR1 = 0;
 	this->penalty = 0;
+	
 	//this->m_tang_len = 0;
 	// 排程过程中记录的变量
 	steelCoilNum = 0;
@@ -328,8 +329,8 @@ void TortoiseShell::FinishShell()
 				SteelCoil *steelCoil = *iter3;
 				tortoiseShell->m_TortoiseShell_len += steelCoil->roll_len;
 				tortoiseShell->m_TortoiseShell_WT += steelCoil->slab_wt;
-				if (steelCoil->flow == "10")
-					tortoiseShell->m_TortoiseShellflow10_WT += steelCoil->slab_wt;
+				/*if (steelCoil->flow == "10")
+					tortoiseShell->m_TortoiseShellflow10_WT += steelCoil->slab_wt;*/
 				if (steelCoil->nom_hot_send_flag == "1")
 					tortoiseShell->m_TortoiseShell_DHCR++;
 			}
@@ -341,7 +342,7 @@ void TortoiseShell::FinishShell()
 	{
 		allTortoiseShell_len += (*iter).second->m_TortoiseShell_len;
 		allsteelcCoil_wt += (*iter).second->m_TortoiseShell_WT;
-		allflow10_wt += (*iter).second->m_TortoiseShellflow10_WT;
+		//allflow10_wt += (*iter).second->m_TortoiseShellflow10_WT;
 		m_DHCR += (*iter).second->m_TortoiseShell_DHCR;		
 	}
 	//////////////////////////////////////////////////////////////////////////
@@ -465,12 +466,101 @@ void TortoiseShell::showResultFile()
 	}
 }
 
+void TortoiseShell::showResultSQL()
+{
+	try
+	{
+		Environment::Initialize();// 环境初始化
+		Connection con(" 127.0.0.1/orcl", "scott", "tiger");// 连接数据库（IP地址/服务名，“用户名”，“密码“）
+		Statement st(con);// 创建数据集
+		ostring rowid;
+		st.Execute("Delete from TIPHR25 where 1=1");// 删除表中所有数据
+		//st.Execute("insert into TIPHR25 (MOD_STAMP_NO ,IPS_LOT_NO ,PLAN_NO ,MAT_NO ) values(2,3,5,4)");
+		string str1 = "insert into TIPHR25 (MOD_STAMP_NO ,IPS_LOT_NO ,PLAN_NO ,MAT_NO, PLAN_EXEC_SEQ_NO, PLAN_BACKLOG_CODE, ROLL_SEQ_NO, PLAN_START_TIME, WORK_TYPE ) values(";
+		string str2 = ")";
+		string tNowStr = "20170421080000";
+		time_t tNow = StringToDatetime(tNowStr);
+		for (map<int, TortoiseShell*>::iterator iter = s_mapSetOfTortoiseShell.begin(); iter != s_mapSetOfTortoiseShell.end(); iter++)
+		{
+			int tortoiseShellNo = iter->first;
+			TortoiseShell *tortoiseShell = iter->second;
+			int seqNo = 1;
+			for (map<pair<int, int>, Group*>::iterator iter2 = tortoiseShell->m_main_groups.begin(); iter2 != tortoiseShell->m_main_groups.end(); iter2++)
+			{
+				Group *group = iter2->second;
+				for (vector<SteelCoil*>::iterator iter3 = group->m_SteelCoil.begin(); iter3 != group->m_SteelCoil.end(); iter3++)
+				{
+					SteelCoil *steelCoil = *iter3;
+					// 模型邮戳号
+					string str_MOD_STAMP_NO = "1";
+					// 应用批次号
+					int int_IPS_LOT_NO = (int)steelCoil->roll_end_time_double / (24 * 60);
+					char char_IPS_LOT_NO[10];
+					sprintf(char_IPS_LOT_NO, "%d", int_IPS_LOT_NO);
+					string str_IPS_LOT_NO = char_IPS_LOT_NO;
+					// 计划号
+					char char_PLAN_NO[10];
+					sprintf(char_PLAN_NO, "%d", tortoiseShellNo);
+					string str_PLAN_NO = char_PLAN_NO;
+					// 材料号
+					string str_MAT_NO = steelCoil->mat_no;
+					// 计划执行顺序号
+					string str_PLAN_EXEC_SEQ_NO = str_PLAN_NO;
+					// 计划工序代码
+					string str_PLAN_BACKLOG_CODE = steelCoil->next_whole_backlog_code;
+					// 轧制顺序号
+					int int_ROLL_SEQ_NO = seqNo++;
+					char char_ROLL_SEQ_NO[10];
+					sprintf(char_ROLL_SEQ_NO, "%d", int_ROLL_SEQ_NO);
+					string str_ROLL_SEQ_NO = char_ROLL_SEQ_NO;
+					// 计划开始时刻
+					int int_PLAN_START_TIME = steelCoil->roll_begin_time_double * 60;
+					string str_PLAN_START_TIME = DatetimeToString(int_PLAN_START_TIME + tNow);
+					// 工件类型
+					string str_WORK_TYPE = steelCoil->work_type;
+					// 数据库语句完成
+					string str = str1 + str_MOD_STAMP_NO + "," + str_IPS_LOT_NO + "," + str_PLAN_NO + ",'" + str_MAT_NO + "'," + str_PLAN_EXEC_SEQ_NO + ",'" + str_PLAN_BACKLOG_CODE + "'," + str_ROLL_SEQ_NO + ",'" + str_PLAN_START_TIME + "'," + str_WORK_TYPE + str2;
+					st.Execute(str);
+				}
+			}
+		}
+		con.Commit();
+	}
+	catch (exception &ex)
+	{
+		cout << ex.what() << endl;
+	}
+	Environment::Cleanup();
+}
+
 double TortoiseShell::computekpi(map<int, TortoiseShell*>&NEW_TortoiseShell)
 {
 	calculateRollingFinishTime();
+	// 读取热轧计划模型输入流向设定表
+	try
+	{
+		Environment::Initialize();// 环境初始化
+		Connection con(" 127.0.0.1/orcl", "scott", "tiger");// 连接数据库（IP地址/服务名，“用户名”，“密码“）
+		Statement st(con);// 创建数据集
+		ostring rowid;
+		st.Execute("select * from TIPHR22");// 选择表
+		Resultset rs = st.GetResultset();
+		
+		while (rs.Next())
+		{
+			pair<double, string> temp;
+			temp = make_pair(rs.Get<double>(10), rs.Get<ostring>(11));
+			flowrule.insert(make_pair(temp, rs.Get<double>(14)));
+		}
+	}
+	catch (exception &ex)
+	{
+		cout << ex.what() << endl;
+	}
+	Environment::Cleanup();
 	// 变量定义
 	const double max_TortoiseShell_len = 30000;// 乌龟壳最大公里数
-	double flow10_wt=0 ;
+	//double flow10_wt=0 ;
 	double assigned_wt=0 ;
 	double assigned_DHCR = 0;
 	double rollingkm = 0;
@@ -492,7 +582,14 @@ double TortoiseShell::computekpi(map<int, TortoiseShell*>&NEW_TortoiseShell)
 	int AFFT_TEMP_JUMP_penalty = 700;		// 终轧温度跳跃公差罚分	
 	int COIL_TEMP_JUMP_penalty = 700;		// 卷取温度跳跃公差罚分
 	double Scheduling_quality_deno = 18000;	// 计算排程质量的分母
-	double all_penalty = 0;
+	double all_penalty = 0;	
+	double flowrateall = 0;
+	// 计算流向匹配率
+	for (int i = 1; i <= actualflow.size() / 2; i++)
+	{
+		double flowrate = (actualflow.find(make_pair(i, "10"))->second / flowrule.find(make_pair(i, "10"))->second + actualflow.find(make_pair(i, "11"))->second / flowrule.find(make_pair(i, "11"))->second) / 2;
+		flowrateall += flowrate;
+	}
 	// 计算排好乌龟壳的所有钢卷总重量、某流向钢卷总重量、有DHCR标记的钢卷总数、乌龟壳总长度
 	for (map<int, TortoiseShell*>::iterator iter = NEW_TortoiseShell.begin(); iter != NEW_TortoiseShell.end(); iter++)
 	{
@@ -507,8 +604,8 @@ double TortoiseShell::computekpi(map<int, TortoiseShell*>&NEW_TortoiseShell)
 				SteelCoil *steelCoil = *iter3;
 				tortoiseShell->m_TortoiseShell_len1 += steelCoil->roll_len;
 				tortoiseShell->m_TortoiseShell_WT1 += steelCoil->slab_wt;
-				if (steelCoil->flow == "10")
-					tortoiseShell->m_TortoiseShellflow10_WT1 += steelCoil->slab_wt;
+				/*if (steelCoil->flow == "10")
+					tortoiseShell->m_TortoiseShellflow10_WT1 += steelCoil->slab_wt;*/
 				if (steelCoil->nom_hot_send_flag == "1")
 					tortoiseShell->m_TortoiseShell_DHCR1++;
 			}
@@ -520,9 +617,16 @@ double TortoiseShell::computekpi(map<int, TortoiseShell*>&NEW_TortoiseShell)
 		TortoiseShell *tortoiseShell = iter->second;
 		rollingkm += tortoiseShell->m_TortoiseShell_len1;
 		assigned_wt += tortoiseShell->m_TortoiseShell_WT1;
-		flow10_wt += tortoiseShell->m_TortoiseShellflow10_WT1;
+		//flow10_wt += tortoiseShell->m_TortoiseShellflow10_WT1;
 		assigned_DHCR += tortoiseShell->m_TortoiseShell_DHCR1;
 	}
+
+	//////////////////////////////////////////////////////////////////////////
+	// 测试
+	if (assigned_wt > allsteelcCoil_wt)
+		system("pause");
+	//////////////////////////////////////////////////////////////////////////
+
 	// 计算罚分，即KPI中的排程质量.先遍历所有乌龟壳
 	for (map<int, TortoiseShell*>::iterator iter = NEW_TortoiseShell.begin(); iter != NEW_TortoiseShell.end(); iter++)
 	{
@@ -538,16 +642,16 @@ double TortoiseShell::computekpi(map<int, TortoiseShell*>&NEW_TortoiseShell)
 				// 厚度罚分
 				if (iter_after->second->nom_roll_thick > iter2->second->nom_roll_thick)// 反跳
 				{
-					if (iter2->second->nom_roll_thick*0.5 < (iter_after->second->nom_roll_thick - iter2->second->nom_roll_thick) < iter2->second->nom_roll_thick*0.8)
+					if (iter2->second->nom_roll_thick*0.5 < (iter_after->second->nom_roll_thick - iter2->second->nom_roll_thick) && (iter_after->second->nom_roll_thick - iter2->second->nom_roll_thick) < iter2->second->nom_roll_thick*0.8)
 						tortoiseShell->penalty += 0.5*THICK_BACKWARD_penalty;
-					else if (iter2->second->nom_roll_thick*0.8 < (iter_after->second->nom_roll_thick - iter2->second->nom_roll_thick) < iter2->second->nom_roll_thick)
+					else if (iter2->second->nom_roll_thick*0.8 < (iter_after->second->nom_roll_thick - iter2->second->nom_roll_thick) && (iter_after->second->nom_roll_thick - iter2->second->nom_roll_thick) < iter2->second->nom_roll_thick)
 						tortoiseShell->penalty += THICK_BACKWARD_penalty;
 				}
 				else if (iter_after->second->nom_roll_thick < iter2->second->nom_roll_thick)// 正跳
 				{
-					if (iter2->second->nom_roll_thick*0.5 < (iter2->second->nom_roll_thick - iter_after->second->nom_roll_thick) < iter2->second->nom_roll_thick*0.8)
+					if (iter2->second->nom_roll_thick*0.5 < (iter2->second->nom_roll_thick - iter_after->second->nom_roll_thick) && (iter2->second->nom_roll_thick - iter_after->second->nom_roll_thick)< iter2->second->nom_roll_thick*0.8)
 						tortoiseShell->penalty += 0.5*THICK_FORWARD_penalty;
-					else if (iter2->second->nom_roll_thick*0.8 < (iter2->second->nom_roll_thick - iter_after->second->nom_roll_thick) < iter2->second->nom_roll_thick)
+					else if (iter2->second->nom_roll_thick*0.8 < (iter2->second->nom_roll_thick - iter_after->second->nom_roll_thick) && (iter2->second->nom_roll_thick - iter_after->second->nom_roll_thick) < iter2->second->nom_roll_thick)
 						tortoiseShell->penalty += THICK_FORWARD_penalty;
 				}
 				else
@@ -555,16 +659,16 @@ double TortoiseShell::computekpi(map<int, TortoiseShell*>&NEW_TortoiseShell)
 				// 宽度罚分
 				if (iter_after->second->nom_roll_width > iter2->second->nom_roll_width)// 反跳
 				{
-					if (1< (iter_after->second->nom_roll_width - iter2->second->nom_roll_width) < 50)
+					if (1< (iter_after->second->nom_roll_width - iter2->second->nom_roll_width) && (iter_after->second->nom_roll_width - iter2->second->nom_roll_width)< 50)
 						tortoiseShell->penalty += 0.5*WIDTH_BACKWARD_penalty;
-					else if (50 < (iter_after->second->nom_roll_width - iter2->second->nom_roll_width) < 100)
+					else if (50 < (iter_after->second->nom_roll_width - iter2->second->nom_roll_width) && (iter_after->second->nom_roll_width - iter2->second->nom_roll_width) < 100)
 						tortoiseShell->penalty += WIDTH_BACKWARD_penalty;
 				}
 				else if (iter_after->second->nom_roll_width < iter2->second->nom_roll_width)// 正跳
 				{
-					if (50 < (iter2->second->nom_roll_width - iter_after->second->nom_roll_width) < 100)
+					if (50 < (iter2->second->nom_roll_width - iter_after->second->nom_roll_width) && (iter2->second->nom_roll_width - iter_after->second->nom_roll_width) < 100)
 						tortoiseShell->penalty += 0.5*WIDTH_FORWARD_penalty;
-					else if (100< (iter2->second->nom_roll_width - iter_after->second->nom_roll_width) < 300)
+					else if (100< (iter2->second->nom_roll_width - iter_after->second->nom_roll_width) && (iter2->second->nom_roll_width - iter_after->second->nom_roll_width)< 300)
 						tortoiseShell->penalty += WIDTH_FORWARD_penalty;
 				}
 				else
@@ -575,23 +679,23 @@ double TortoiseShell::computekpi(map<int, TortoiseShell*>&NEW_TortoiseShell)
 				else if (abs(iter_after->second->nom_hard_group_code[0] - iter2->second->nom_hard_group_code[0]) == 2 || abs(iter_after->second->nom_hard_group_code[0] - iter2->second->nom_hard_group_code[0]) == 3)
 					tortoiseShell->penalty += HARD_JUMP_panalty;				
 				// 出炉温度公差罚分
-				if (5 < abs(iter_after->second->nom_heat_temp - iter2->second->nom_heat_temp) < 10)
+				if (5 < abs(iter_after->second->nom_heat_temp - iter2->second->nom_heat_temp) && abs(iter_after->second->nom_heat_temp - iter2->second->nom_heat_temp) < 10)
 					tortoiseShell->penalty += 0.5*HEAT_TEMP_JUMP_penalty;
-				else if (10 < abs(iter_after->second->nom_heat_temp - iter2->second->nom_heat_temp) < 99)
+				else if (10 < abs(iter_after->second->nom_heat_temp - iter2->second->nom_heat_temp) && abs(iter_after->second->nom_heat_temp - iter2->second->nom_heat_temp) < 99)
 					tortoiseShell->penalty += HEAT_TEMP_JUMP_penalty;
 				else
 					continue;				
 				// 终轧温度公差罚分
-				if (5 < abs(iter_after->second->nom_afft_temp - iter2->second->nom_afft_temp) < 10)
+				if (5 < abs(iter_after->second->nom_afft_temp - iter2->second->nom_afft_temp) && abs(iter_after->second->nom_afft_temp - iter2->second->nom_afft_temp)< 10)
 					tortoiseShell->penalty += 0.5*AFFT_TEMP_JUMP_penalty;
-				else if (10 < abs(iter_after->second->nom_afft_temp - iter2->second->nom_afft_temp) < 99)
+				else if (10 < abs(iter_after->second->nom_afft_temp - iter2->second->nom_afft_temp) && abs(iter_after->second->nom_afft_temp - iter2->second->nom_afft_temp) < 99)
 					tortoiseShell->penalty += AFFT_TEMP_JUMP_penalty;
 				else
 					continue;
 				// 卷取温度公差罚分
-				if (5 < abs(iter_after->second->nom_coil_temp - iter2->second->nom_coil_temp) < 10)
+				if (5 < abs(iter_after->second->nom_coil_temp - iter2->second->nom_coil_temp) && abs(iter_after->second->nom_coil_temp - iter2->second->nom_coil_temp) < 10)
 					tortoiseShell->penalty += 0.5*COIL_TEMP_JUMP_penalty;
-				else if (10 < abs(iter_after->second->nom_coil_temp - iter2->second->nom_coil_temp) < 99)
+				else if (10 < abs(iter_after->second->nom_coil_temp - iter2->second->nom_coil_temp) && abs(iter_after->second->nom_coil_temp - iter2->second->nom_coil_temp) < 99)
 					tortoiseShell->penalty += COIL_TEMP_JUMP_penalty;
 				else
 					continue;				
@@ -609,14 +713,15 @@ double TortoiseShell::computekpi(map<int, TortoiseShell*>&NEW_TortoiseShell)
 		//cout << "第"<<i<<"个乌龟壳的罚分为：" << tortoiseShell->penalty << endl;
 		i++;
 	}
-	//cout << "总分：" << all_penalty << endl;
-	flow_rate = flow10_wt / allflow10_wt;																	// 流向匹配率
+	
+	
+	flow_rate = flowrateall/(actualflow.size()/2);															// 流向匹配率
 	order_rate = assigned_wt / allsteelcCoil_wt;															// 合同计划兑现率
 	rollingkm_rate = (rollingkm / s_mapSetOfTortoiseShell.size()) / max_TortoiseShell_len;					// 轧制公里率
 	DHCR_rate = assigned_DHCR / m_DHCR;																		// DHCR比率
 	Scheduling_quality = all_penalty / Scheduling_quality_deno;												// 排程质量
-	//double KPI = flow_rate*0.3 + order_rate*0.3 + rollingkm_rate*0.2 + DHCR_rate*0.1 -Scheduling_quality*0.1;
-	double KPI = flow_rate*0.1 + order_rate*0.1 + rollingkm_rate*0.5 + DHCR_rate*0.1 - Scheduling_quality*0.2;
+	double KPI = flow_rate*0.3 + order_rate*0.3 + rollingkm_rate*0.2 + DHCR_rate*0.1 -Scheduling_quality*0.1;
+	//double KPI = flow_rate*0.1 + order_rate*0.1 + rollingkm_rate*0.5 + DHCR_rate*0.1 - Scheduling_quality*0.2;
 	cout << "流向匹配率: " << flow_rate << "   " << "合同计划兑现率: " << order_rate << "    " << "轧制公里率: " << rollingkm_rate << "   " << "DHCR比率: " << DHCR_rate << "   " << "排程质量: " << Scheduling_quality<< endl;
 	cout << " KPI: " << KPI << endl;
 	// 初始化每个乌龟壳的相关参数
@@ -977,7 +1082,7 @@ bool TortoiseShell::addMainGroup2(Group *group)
 
 void TortoiseShell::calculateRollingFinishTime()
 {
-	double nowTime = 0;
+	double nowTime = 0;	
 	// 遍历乌龟壳
 	for (map<int, TortoiseShell*>::iterator iter = s_mapSetOfTortoiseShell.begin(); iter != s_mapSetOfTortoiseShell.end(); iter++)
 	{
@@ -988,14 +1093,122 @@ void TortoiseShell::calculateRollingFinishTime()
 			Group *group = iter2->second;
 			// 遍历钢卷组内的钢卷
 			for (vector<SteelCoil*>::iterator iter3 = group->m_SteelCoil.begin(); iter3 != group->m_SteelCoil.end(); iter3++)
+			
 			{
 				SteelCoil *steelCoil = *iter3;
 				steelCoil->roll_begin_time_double = nowTime;
 				nowTime += steelCoil->roll_time;
-				steelCoil->roll_end_time_double = nowTime;
+				steelCoil->roll_end_time_double = nowTime;								
 			}
 		}
 	}
+	// 根据计算好的轧制时间，计算天数(向上取整)
+	int day = ceil(nowTime / (24 * 60));	
+	int i = 1;
+	nowTime = 0;
+	double WT_10 = 0;
+	double WT_11 = 0;
+		// 遍历乌龟壳
+		for (map<int, TortoiseShell*>::iterator iter = s_mapSetOfTortoiseShell.begin(); iter != s_mapSetOfTortoiseShell.end(); iter++)
+		{
+			TortoiseShell *tortoiseShell = iter->second;
+			// 遍历乌龟壳内的钢卷组
+			for (map<pair<int, int>, Group*>::iterator iter2 = tortoiseShell->m_main_groups.begin(); iter2 != tortoiseShell->m_main_groups.end(); iter2++)
+			{
+				Group *group = iter2->second;
+				// 遍历钢卷组内的钢卷
+				for (vector<SteelCoil*>::iterator iter3 = group->m_SteelCoil.begin(); iter3 != group->m_SteelCoil.end(); iter3++)
+				{
+					SteelCoil *steelCoil = *iter3;
+					steelCoil->roll_begin_time_double = nowTime;
+					nowTime += steelCoil->roll_time;
+					steelCoil->roll_end_time_double = nowTime;
+					for (; i <= day;)
+					{
+						if (nowTime >= (i - 1) * 1440 && nowTime <= i * 1440)
+						{
+							if (steelCoil->flow == "10")
+								WT_10 += steelCoil->slab_wt;
+							else
+								WT_11 += steelCoil->slab_wt;
+							break;
+						}
+						else
+						{
+							actualflow.insert(make_pair(make_pair(i, "10"), WT_10));
+							actualflow.insert(make_pair(make_pair(i, "11"), WT_11));
+							WT_10 = 0;
+							WT_11 = 0;
+							i++;
+							continue;
+						}						
+					}					
+				}
+			}
+		}
+		// 将不足一天的各流向的钢卷重量插入map
+		{
+			actualflow.insert(make_pair(make_pair(i, "10"), WT_10));
+			actualflow.insert(make_pair(make_pair(i, "11"), WT_11));
+		}
+	}
+
+string TortoiseShell::DatetimeToString(time_t time)
+{
+	tm *tm_ = localtime(&time);                // 将time_t格式转换为tm结构体
+	int year, month, day, hour, minute, second;// 定义时间的各个int临时变量。
+	year = tm_->tm_year + 1900;                // 临时变量，年，由于tm结构体存储的是从1900年开始的时间，所以临时变量int为tm_year加上1900。
+	month = tm_->tm_mon + 1;                   // 临时变量，月，由于tm结构体的月份存储范围为0-11，所以临时变量int为tm_mon加上1。
+	day = tm_->tm_mday;                        // 临时变量，日。
+	hour = tm_->tm_hour;                       // 临时变量，时。
+	minute = tm_->tm_min;                      // 临时变量，分。
+	second = tm_->tm_sec;                      // 临时变量，秒。
+	char yearStr[5], monthStr[3], dayStr[3], hourStr[3], minuteStr[3], secondStr[3];// 定义时间的各个char*变量。
+	sprintf(yearStr, "%d", year);              // 年。
+	sprintf(monthStr, "%d", month);            // 月。
+	sprintf(dayStr, "%d", day);                // 日。
+	sprintf(hourStr, "%d", hour);              // 时。
+	if (hourStr[1] == '\0')                  // 如果分为一位，如5，则需要转换字符串为两位，如05。
+	{
+		hourStr[2] = '\0';
+		hourStr[1] = hourStr[0];
+		hourStr[0] = '0';
+	}
+	sprintf(minuteStr, "%d", minute);          // 分。
+	if (minuteStr[1] == '\0')                  // 如果分为一位，如5，则需要转换字符串为两位，如05。
+	{
+		minuteStr[2] = '\0';
+		minuteStr[1] = minuteStr[0];
+		minuteStr[0] = '0';
+	}
+	sprintf(secondStr, "%d", second);          // 秒。
+	if (secondStr[1] == '\0')                  // 如果秒为一位，如5，则需要转换字符串为两位，如05。
+	{
+		secondStr[2] = '\0';
+		secondStr[1] = secondStr[0];
+		secondStr[0] = '0';
+	}
+	char s[20];                                // 定义总日期时间char*变量。
+	sprintf(s, "%s%s%s%s%s%s", yearStr, monthStr, dayStr, hourStr, minuteStr, secondStr);// 将年月日时分秒合并。
+	string str(s);                             // 定义string变量，并将总日期时间char*变量作为构造函数的参数传入。
+	return str;                                // 返回转换日期时间后的string变量。
+}
+
+time_t TortoiseShell::StringToDatetime(string str)
+{
+	char *cha = (char*)str.data();             // 将string转换成char*。
+	tm tm_;                                    // 定义tm结构体。
+	int year, month, day, hour, minute, second;// 定义时间的各个int临时变量。
+	sscanf(cha, "%4d%2d%2d%2d%2d%2d", &year, &month, &day, &hour, &minute, &second);// 将string存储的日期时间，转换为int临时变量。
+	tm_.tm_year = year - 1900;                 // 年，由于tm结构体存储的是从1900年开始的时间，所以tm_year为int临时变量减去1900。
+	tm_.tm_mon = month - 1;                    // 月，由于tm结构体的月份存储范围为0-11，所以tm_mon为int临时变量减去1。
+	tm_.tm_mday = day;                         // 日。
+	tm_.tm_hour = hour;                        // 时。
+	tm_.tm_min = minute;                       // 分。
+	tm_.tm_sec = second;                       // 秒。
+	tm_.tm_isdst = 0;                          // 非夏令时。
+	time_t t_ = mktime(&tm_);                  // 将tm结构体转换成time_t格式。
+	return t_;                                 // 返回值。 
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -1007,10 +1220,11 @@ map<int, TortoiseShell*>		TortoiseShell::s_mapSetOfTortoiseShell = map<int, Tort
 int								TortoiseShell::s_TortoiseShellCount = 0;
 double							TortoiseShell::allTortoiseShell_len = 0;
 double							TortoiseShell::m_DHCR = 0;
-double							TortoiseShell::allflow10_wt = 0;
 double							TortoiseShell::allsteelcCoil_wt = 0;
 double							TortoiseShell::best_kpi=0;
 int								TortoiseShell::all_penalty=0;
 map<pair<string, string>, string>		TortoiseShell::plantype = map<pair<string, string>, string>();
+map<pair<double, string>, double>		TortoiseShell::flowrule = map<pair<double, string>, double>();
+map<pair<double, string>, double>		TortoiseShell::actualflow = map<pair<double,string>,double >() ;
 ////////////////////////////////////////////////////////////////////////
 #pragma endregion

@@ -119,10 +119,15 @@ void TortoiseShell::localsearch3()
 						// 否则放入成功，计算KPI
 						else
 						{
+							// 先删除垃圾桶
+							pair<int, TortoiseShell*> trash = make_pair(s_mapSetOfTortoiseShell.rbegin()->first, s_mapSetOfTortoiseShell.rbegin()->second);
+							s_mapSetOfTortoiseShell.erase(s_mapSetOfTortoiseShell.rbegin()->first);
 							double temp_kpi = computekpi(s_mapSetOfTortoiseShell);
 							temp.insert(make_pair(temp_kpi, tortoiseShell));
 							tortoiseShell->m_main_groups.clear();
 							tortoiseShell->m_main_groups = groups_backups;
+							// 重新放入垃圾桶
+							s_mapSetOfTortoiseShell.insert(trash);
 							continue;
 						}
 
@@ -201,10 +206,15 @@ void TortoiseShell::localsearch3()
 						// 否则放入成功，计算KPI
 						else
 						{
+							// 先删除垃圾桶
+							pair<int, TortoiseShell*> trash = make_pair(s_mapSetOfTortoiseShell.rbegin()->first, s_mapSetOfTortoiseShell.rbegin()->second);
+							s_mapSetOfTortoiseShell.erase(s_mapSetOfTortoiseShell.rbegin()->first);
 							double temp_kpi = computekpi(s_mapSetOfTortoiseShell);
 							temp.insert(make_pair(temp_kpi, tortoiseShell));
 							tortoiseShell->m_main_groups.clear();
 							tortoiseShell->m_main_groups = groups_backups;
+							// 重新放入垃圾桶
+							s_mapSetOfTortoiseShell.insert(trash);
 							continue;
 						}
 					}					
@@ -283,6 +293,9 @@ void TortoiseShell::localsearch3()
 				}
 				else
 				{
+					// 先删除垃圾桶
+					pair<int, TortoiseShell*> trash = make_pair(s_mapSetOfTortoiseShell.rbegin()->first, s_mapSetOfTortoiseShell.rbegin()->second);
+					s_mapSetOfTortoiseShell.erase(s_mapSetOfTortoiseShell.rbegin()->first);
 					double temp_kpi = computekpi(s_mapSetOfTortoiseShell);
 					temp.insert(make_pair(temp_kpi, tortoiseShell));
 					tortoiseShell->m_main_groups.clear();
@@ -297,6 +310,8 @@ void TortoiseShell::localsearch3()
 						else
 							continue;
 					}
+					// 重新放入垃圾桶
+					s_mapSetOfTortoiseShell.insert(trash);
 					continue;
 				}
 				
