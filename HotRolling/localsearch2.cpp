@@ -102,11 +102,13 @@ void TortoiseShell::localsearch2()
 				// 否则，说明localsearch成功，计算kpi并比较是否接受
 				else
 				{
-					double temp_kpi = computekpi(s_mapSetOfTortoiseShell);
+					double temp_kpi = computekpi();
 					// 如果kpi更优，则把解放入最优乌龟壳集合里，并把kpi值赋给best_kpi
 					if (temp_kpi > best_kpi)
 					{
 						best_kpi = temp_kpi;
+						cout << "流向匹配率: " << flow_rate << "   " << "合同计划兑现率: " << order_rate << "    " << "轧制公里率: " << rollingkm_rate << "   " << "DHCR比率: " << DHCR_rate << "   " << "排程质量: " << Scheduling_quality << endl;
+						cout << " KPI: " << best_kpi << endl;
 						groups_backups.clear();
 						groups_backups = tortoiseShell->m_main_groups;
 						mark = true;
@@ -123,7 +125,7 @@ void TortoiseShell::localsearch2()
 			}
 			if (mark)
 				break;
-		}
+		}		
 		if (!mark)
 			++iter;
 	}

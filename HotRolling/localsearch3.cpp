@@ -122,7 +122,7 @@ void TortoiseShell::localsearch3()
 							// 先删除垃圾桶
 							pair<int, TortoiseShell*> trash = make_pair(s_mapSetOfTortoiseShell.rbegin()->first, s_mapSetOfTortoiseShell.rbegin()->second);
 							s_mapSetOfTortoiseShell.erase(s_mapSetOfTortoiseShell.rbegin()->first);
-							double temp_kpi = computekpi(s_mapSetOfTortoiseShell);
+							double temp_kpi = computekpi();
 							temp.insert(make_pair(temp_kpi, tortoiseShell));
 							tortoiseShell->m_main_groups.clear();
 							tortoiseShell->m_main_groups = groups_backups;
@@ -209,7 +209,7 @@ void TortoiseShell::localsearch3()
 							// 先删除垃圾桶
 							pair<int, TortoiseShell*> trash = make_pair(s_mapSetOfTortoiseShell.rbegin()->first, s_mapSetOfTortoiseShell.rbegin()->second);
 							s_mapSetOfTortoiseShell.erase(s_mapSetOfTortoiseShell.rbegin()->first);
-							double temp_kpi = computekpi(s_mapSetOfTortoiseShell);
+							double temp_kpi = computekpi();
 							temp.insert(make_pair(temp_kpi, tortoiseShell));
 							tortoiseShell->m_main_groups.clear();
 							tortoiseShell->m_main_groups = groups_backups;
@@ -284,6 +284,8 @@ void TortoiseShell::localsearch3()
 						if (iter7->first > best_kpi)
 						{
 							best_kpi = iter7->first;
+							cout << "流向匹配率: " << flow_rate << "   " << "合同计划兑现率: " << order_rate << "    " << "轧制公里率: " << rollingkm_rate << "   " << "DHCR比率: " << DHCR_rate << "   " << "排程质量: " << Scheduling_quality << endl;
+							cout << " KPI: " << best_kpi << endl;
 							s_mapSetOfTortoiseShell[Chosen_Shell] = iter7->second;
 						}
 						else
@@ -296,7 +298,7 @@ void TortoiseShell::localsearch3()
 					// 先删除垃圾桶
 					pair<int, TortoiseShell*> trash = make_pair(s_mapSetOfTortoiseShell.rbegin()->first, s_mapSetOfTortoiseShell.rbegin()->second);
 					s_mapSetOfTortoiseShell.erase(s_mapSetOfTortoiseShell.rbegin()->first);
-					double temp_kpi = computekpi(s_mapSetOfTortoiseShell);
+					double temp_kpi = computekpi();
 					temp.insert(make_pair(temp_kpi, tortoiseShell));
 					tortoiseShell->m_main_groups.clear();
 					tortoiseShell->m_main_groups = groups_backups;
@@ -305,6 +307,8 @@ void TortoiseShell::localsearch3()
 						if (iter7->first > best_kpi)
 						{
 							best_kpi = iter7->first;
+							cout << "流向匹配率: " << flow_rate << "   " << "合同计划兑现率: " << order_rate << "    " << "轧制公里率: " << rollingkm_rate << "   " << "DHCR比率: " << DHCR_rate << "   " << "排程质量: " << Scheduling_quality << endl;
+							cout << " KPI: " << best_kpi << endl;
 							s_mapSetOfTortoiseShell[Chosen_Shell] = iter7->second;
 						}
 						else
@@ -313,8 +317,7 @@ void TortoiseShell::localsearch3()
 					// 重新放入垃圾桶
 					s_mapSetOfTortoiseShell.insert(trash);
 					continue;
-				}
-				
+				}				
 			}
 		}
 	}

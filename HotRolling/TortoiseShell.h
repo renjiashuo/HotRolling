@@ -46,7 +46,7 @@ public:// 乌龟壳参数
 	double								m_TortoiseShell_WT1;		// 乌龟壳重量(后)
 	double								m_TortoiseShellflow10_WT1;	// 乌龟壳重流向10钢卷重量(后)
 	double								m_TortoiseShell_DHCR1;		// 乌龟壳DHCR个数(后)	
-	
+
 	//double							m_tang_len;					// 分配到乌龟壳里的烫辊材长度			
 	map<pair<int, int>, Group*>			m_pre_groups;				// 乌龟壳内烫辊材钢卷组信息，key.first，key.second(存钢卷组的位置)，value为钢卷组
 	map<pair<int, int>, Group*>			m_main_groups;				// 乌龟壳内主体材钢卷组信息，key.first，key.second(存钢卷组的位置)，value为钢卷组
@@ -63,11 +63,16 @@ public:// 乌龟壳集合
 	static map<int, TortoiseShell*>		s_mapSetOfTortoiseShell;	// 乌龟壳的map集合，key为乌龟壳代码，value为乌龟壳
 	static int							s_TortoiseShellCount;		// 乌龟壳个数
 	static double						allTortoiseShell_len;		// 所有乌龟壳总长度
-	static double						m_DHCR;						// 有DHCR标记钢卷总数
+	//static double						m_DHCR;						// 有DHCR标记钢卷总数
 	//static double						allflow10_wt;				// 流向10钢卷总重量
 	static double						allsteelcCoil_wt;			// 钢卷总重
 	static double						best_kpi;					// 最优kpi值
 	static int							all_penalty;				// 所有乌龟壳罚分总和
+	static double						flow_rate ;
+	static double						DHCR_rate ;
+	static double						order_rate ;
+	static double						Scheduling_quality ;
+	static double						rollingkm_rate ;
 public:
 	static map<pair<string, string>, string> plantype;				// 计划类型组合集合
 	static map<pair<double, string>, double> flowrule;				// 数据表中流向设定集合
@@ -113,7 +118,7 @@ public:
 	//
 	// 摘要:
 	//     计算KPI。
-	static double computekpi(map<int, TortoiseShell*> &NEW_TortoiseShell);
+	static double computekpi();
 	//
 	// 摘要:
 	//     结果控制台展示。

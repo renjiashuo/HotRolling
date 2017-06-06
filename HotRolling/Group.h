@@ -88,6 +88,10 @@ public:
 	// 摘要:
 	//     析构函数。
 	~Group();
+	//
+	// 摘要:
+	//     indata。
+	static void indata(map<int, Group*>&m_data, int a, Group* b);
 	
 	//////////////////////////////////////////////////////////////////////////
 #pragma endregion

@@ -57,6 +57,9 @@
     <ClInclude Include="tangguncai.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="readdate.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Group.cpp">
@@ -87,6 +90,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="localsearch4.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="readdate.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

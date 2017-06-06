@@ -125,7 +125,7 @@ public:// 钢卷参数
 	//string					ROLL_START_FLAG;		// 开轧标记
 	//string					TRNP_TIME;				// 运输时间
 
-public:// 钢卷集合(宽度，厚度，计划类型 ，钢级，出炉，终轧，卷取温度，高温标记,区间最大块数，区间最小块数，区间最大米数，区间最小米数)
+public:// 钢卷集合(宽度，厚度，计划类型 ，钢级，出炉，终轧，卷取温度，高温标记,区间最大块数，区间最小块数，区间最大米数，区间最小米数，硬度)
 	static map<pair<pair<pair < pair<pair<pair<pair<pair<pair<pair<pair<pair<double, double>, string>, string>, int>, int>, int>,string>,int>,int>,int>,int>,string>, vector<SteelCoil*>>      s_SteelCoil;		//钢卷组map集合
 	
 	static int								s_SteelCoilCount;				    //钢卷个数
@@ -145,7 +145,7 @@ public:
 	//
 	// 摘要:
 	//      根据读取的数据，按计划类型,钢级,厚度,宽度,出炉温度,终轧温度,卷取温度进行钢卷组处理。
-	static void SteelCoilgroup();
+	static void SteelCoilgroup(Statement &st);
 	//
 	// 摘要:
 	//     构造函数。
@@ -159,6 +159,10 @@ public:
 	// 摘要:
 	//     析构函数。
 	~SteelCoil();
+	//
+	// 摘要:
+	//     indata。
+	static void indata(map<pair<pair<pair < pair<pair<pair<pair<pair<pair<pair<pair<pair<double, double>, string>, string>, int>, int>, int>, string>, int>, int>, int>, int>, string>, vector<SteelCoil*>> &m_data, double a, double b, string c, string d, int e, int f, int g, string k, int i, int j, int m, int n, string p, SteelCoil* h);
 
 //////////////////////////////////////////////////////////////////////////
 #pragma endregion

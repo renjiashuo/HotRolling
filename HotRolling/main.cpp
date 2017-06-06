@@ -2,9 +2,10 @@
 #include "SteelCoil.h"
 #include "Group.h"
 #include "TortoiseShell.h"
+#include "readdate.h"
 
 int main()
-{	
+{
 	clock_t startTime, finishTime;
 	double totalTime;
 	startTime = clock();
@@ -18,19 +19,20 @@ int main()
 
 	//////////////////////////////////////////////////////////////////////////
 
-	SteelCoil::SteelCoilgroup();	// 初始化钢卷数据
-	Group::vec_group();				// 初始化钢卷组数据
+	ReadDate::readdate();			// 读取数据库并初始化
+	Group::vec_group();			// 初始化钢卷组数据
 	TortoiseShell::InitShell();		// 初始化乌龟壳
 	TortoiseShell::FinishShell();	// 完成乌龟壳初始解
 	TortoiseShell::DeleteBad();		// 删除过小的乌龟壳	
-	TortoiseShell::localsearch();		// 优化算法
+	TortoiseShell::localsearch();	// 优化算法
 	TortoiseShell::localsearch1();	// 优化算法
 	TortoiseShell::localsearch2();	// 优化算法
 	TortoiseShell::localsearch3();	// 优化算法
 	//TortoiseShell::localsearch4();	// 优化算法
-	TortoiseShell::showResult();	// 输出到控制台
+	//TortoiseShell::showResult();	// 输出到控制台
+	TortoiseShell::computekpi();	// 输出最优KPI
 	TortoiseShell::showResultFile();// 结果输出到文本
-	TortoiseShell::computekpi(TortoiseShell::s_mapSetOfTortoiseShell);// 输出最优KPI
+	TortoiseShell::showResultSQL();	// 结果输出到SQL
 
 	finishTime = clock();
 	totalTime = (double)(finishTime - startTime) / CLOCKS_PER_SEC;

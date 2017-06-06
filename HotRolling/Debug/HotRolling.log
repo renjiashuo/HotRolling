@@ -1,6 +1,9 @@
-﻿生成启动时间为 2017/6/5 16:58:43。
+﻿生成启动时间为 2017/6/6 15:45:34。
      1>项目“C:\Users\wsgbcsc\Documents\GitHub\HotRolling\HotRolling\HotRolling.vcxproj”在节点 2 上(Build 个目标)。
-     1>Link:
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /IC:\Users\wsgbcsc\Documents\GitHub\HotRolling\HotRolling\include /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _CRT_SECURE_NO_WARNINGS /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt main.cpp
+         main.cpp
+       Link:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\wsgbcsc\Documents\GitHub\HotRolling\Debug\HotRolling.exe" /INCREMENTAL /NOLOGO /LIBPATH:C:\Users\wsgbcsc\Documents\GitHub\HotRolling\HotRolling\lib32 ociliba.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\wsgbcsc\Documents\GitHub\HotRolling\Debug\HotRolling.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\wsgbcsc\Documents\GitHub\HotRolling\Debug\HotRolling.lib" /MACHINE:X86 Debug\datacheck.obj
          Debug\Group.obj
          Debug\localsearch.obj
@@ -9,6 +12,7 @@
          Debug\localsearch3.obj
          Debug\localsearch4.obj
          Debug\main.obj
+         Debug\readdate.obj
          Debug\SteelCoil.obj
          Debug\TortoiseShell.obj
          HotRolling.vcxproj -> C:\Users\wsgbcsc\Documents\GitHub\HotRolling\Debug\HotRolling.exe
@@ -16,4 +20,4 @@
 
 生成成功。
 
-已用时间 00:00:01.60
+已用时间 00:00:04.50

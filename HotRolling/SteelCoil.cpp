@@ -133,15 +133,9 @@ SteelCoil::SteelCoil(string value1, string value2, double value3, double value4,
 	slab_thick = value90;
 	
 
-
-
-
-
-
-
 }/*---------将七组同规格的钢卷分组放入指定vector里，再放入map----------*/
 
-void indata(map<pair<pair<pair < pair<pair<pair<pair<pair<pair<pair<pair<pair<double, double>, string>, string>, int>, int>, int>, string>, int>, int>, int>, int>, string>, vector<SteelCoil*>> &m_data, double a, double b, string c, string d, int e, int f, int g, string k, int i, int j, int m, int n,string p, SteelCoil* h)
+void SteelCoil::indata(map<pair<pair<pair < pair<pair<pair<pair<pair<pair<pair<pair<pair<double, double>, string>, string>, int>, int>, int>, string>, int>, int>, int>, int>, string>, vector<SteelCoil*>> &m_data, double a, double b, string c, string d, int e, int f, int g, string k, int i, int j, int m, int n,string p, SteelCoil* h)
 {
 	if (m_data.find(make_pair(make_pair(make_pair(make_pair(make_pair(make_pair(make_pair(make_pair(make_pair(make_pair(make_pair(make_pair(a, b), c), d), e), f), g), k),i),j),m),n),p)) == m_data.end())
 	{
@@ -155,14 +149,8 @@ void indata(map<pair<pair<pair < pair<pair<pair<pair<pair<pair<pair<pair<pair<do
 	}
 }
 
-void SteelCoil::SteelCoilgroup()
-{
-	try
-	{
-		Environment::Initialize();//环境初始化
-		Connection con(" 127.0.0.1/orcl", "scott", "tiger");//连接数据库（IP地址/服务名，“用户名”，“密码“）
-		Statement st(con);//创建数据集
-		ostring rowid;
+void SteelCoil::SteelCoilgroup(Statement &st)
+{		
 		st.Execute("select * from TIPHRM01 t order by nom_roll_width DESC");//选择表
 		Resultset rs = st.GetResultset();
 		
@@ -209,13 +197,7 @@ void SteelCoil::SteelCoilgroup()
 		cout << endl ;
 
 		/*-------------输出每个钢卷组内的钢卷---------------*/	
-	}
-
-catch (exception &ex)
-	{
-		cout << ex.what() << endl;
-	}
-	Environment::Cleanup();	
+	
 }
 
 #pragma region 辅助函数

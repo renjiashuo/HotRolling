@@ -137,7 +137,7 @@ Group::Group(Group *group, double lonth)
 	Group::s_mapSetOfsmallGroup.insert(make_pair(this->group_no, this));
 }
 
-void indata(map<int, Group*>&m_data, int a, Group* b)
+void Group::indata(map<int, Group*>&m_data, int a, Group* b)
 {
 	m_data.insert(make_pair(a, b));
 }

@@ -41,7 +41,7 @@ void TortoiseShell::localsearch1()
 #pragma region  迭代过程
 	for (Chosen_Shell = 1; Chosen_Shell < s_mapSetOfTortoiseShell.size(); Chosen_Shell++)
 	{
-		cout << "Chosen_Shell:" << Chosen_Shell << endl;
+		//cout << "Chosen_Shell:" << Chosen_Shell << endl;
 		vec_Chosen_Position_Start.clear();
 		vec_Chosen_Position_End.clear();
 #pragma region 随机选取 Chosen_Shell，获取其所有宽度，放入 Vector 中 <vec_Chosen_Position>     
@@ -57,7 +57,7 @@ void TortoiseShell::localsearch1()
 #pragma endregion
 		for (Chosen_Position_No = 0; Chosen_Position_No < vec_Chosen_Position_Start.size(); Chosen_Position_No++)
 		{
-			cout << "\tChosen_Position_No:" << Chosen_Position_No << endl;
+			//cout << "\tChosen_Position_No:" << Chosen_Position_No << endl;
 #pragma region 随机获取第 Chosen_Position_No 块钢卷组的 Chosen_Position 信息
 			/**********获取Chosen_Position所有位置信息*********/
 			//Chosen_Position_No = (rand() % (vec_Chosen_Position_Start.size()));
@@ -77,7 +77,7 @@ void TortoiseShell::localsearch1()
 #pragma endregion
 			// 将第二个乌龟壳固定，为乌龟壳集合的最后一个乌龟壳，即垃圾桶
 			Another_Shell = s_mapSetOfTortoiseShell.size();
-			cout << "\t\tAnother_Shell:" << Another_Shell << endl;
+			//cout << "\t\tAnother_Shell:" << Another_Shell << endl;
 #pragma region 选取AnotherShell，Another_Shell的编号与Chosen_Shell不同
 			//Another_Shell = (rand() % s_mapSetOfTortoiseShell.size()) + 1;
 			//while (Another_Shell == Chosen_Shell)
@@ -86,8 +86,6 @@ void TortoiseShell::localsearch1()
 			//}
 #pragma endregion
 #pragma region 获取 Another_Shell 的所有位置信息，并放入 map 中 <map_Another_Position>
-
-
 			vec_Another_Position_Start.clear();
 			vec_Another_Position_End.clear();
 			/************获取Another_Shell所有位置信息**********/
@@ -105,7 +103,7 @@ void TortoiseShell::localsearch1()
 			int Another_Position_No;
 			for (Another_Position_No = 0; Another_Position_No < vec_Another_Position_Start.size(); Another_Position_No++)
 			{
-				cout << "\t\t\tAnother_Position_No:" << Another_Position_No << endl;
+				//cout << "\t\t\tAnother_Position_No:" << Another_Position_No << endl;
 				temp.clear();
 				temp1.clear();
 				m_temp.clear();
@@ -260,7 +258,8 @@ void TortoiseShell::localsearch1()
 							break;
 					}
 					if (iterAnother2 != s_mapSetOfTortoiseShell[Another_Shell]->m_main_groups.end())
-						continue;
+						//continue;
+						break;
 
 					//////////////////////////////////////////////////////////////////////////
 #pragma endregion
@@ -398,11 +397,13 @@ void TortoiseShell::localsearch1()
 									temp2.insert(make_pair(iter7->first, iter7->second));
 									s_mapSetOfTortoiseShell.erase(iter7);
 									map<int, TortoiseShell*>::iterator iter07 = temp2.begin();
-									double temp_kpi = computekpi(s_mapSetOfTortoiseShell);
+									double temp_kpi = computekpi();
 									// 如果kpi更优，则把解放入最优乌龟壳集合里，并把kpi值赋给best_kpi
 									if (temp_kpi > best_kpi)
 									{
 										best_kpi = temp_kpi;
+										cout << "流向匹配率: " << flow_rate << "   " << "合同计划兑现率: " << order_rate << "    " << "轧制公里率: " << rollingkm_rate << "   " << "DHCR比率: " << DHCR_rate << "   " << "排程质量: " << Scheduling_quality << endl;
+										cout << " KPI: " << best_kpi << endl;
 										// 更新盛放钢卷组首末位置的map容器
 										vec_Another_Position_Start.clear();
 										vec_Another_Position_End.clear();
@@ -452,11 +453,13 @@ void TortoiseShell::localsearch1()
 								temp2.insert(make_pair(iter7->first, iter7->second));
 								s_mapSetOfTortoiseShell.erase(iter7);
 								map<int, TortoiseShell*>::iterator iter07 = temp2.begin();
-								double temp_kpi = computekpi(s_mapSetOfTortoiseShell);
+								double temp_kpi = computekpi();
 								// 如果kpi更优，则把解放入最优乌龟壳集合里，并把kpi值赋给best_kpi
 								if (temp_kpi > best_kpi)
 								{
 									best_kpi = temp_kpi;
+									cout << "流向匹配率: " << flow_rate << "   " << "合同计划兑现率: " << order_rate << "    " << "轧制公里率: " << rollingkm_rate << "   " << "DHCR比率: " << DHCR_rate << "   " << "排程质量: " << Scheduling_quality << endl;
+									cout << " KPI: " << best_kpi << endl;
 									// 更新盛放钢卷组首末位置的map容器
 									vec_Another_Position_Start.clear();
 									vec_Another_Position_End.clear();
@@ -571,11 +574,13 @@ void TortoiseShell::localsearch1()
 								temp2.insert(make_pair(iter7->first, iter7->second));
 								s_mapSetOfTortoiseShell.erase(iter7);
 								map<int, TortoiseShell*>::iterator iter07 = temp2.begin();
-								double temp_kpi = computekpi(s_mapSetOfTortoiseShell);
+								double temp_kpi = computekpi();
 								// 如果kpi更优，则把解放入最优乌龟壳集合里，并把kpi值赋给best_kpi
 								if (temp_kpi > best_kpi)
 								{
 									best_kpi = temp_kpi;
+									cout << "流向匹配率: " << flow_rate << "   " << "合同计划兑现率: " << order_rate << "    " << "轧制公里率: " << rollingkm_rate << "   " << "DHCR比率: " << DHCR_rate << "   " << "排程质量: " << Scheduling_quality << endl;
+									cout << " KPI: " << best_kpi << endl;
 									// 更新盛放钢卷组首末位置的map容器
 									vec_Another_Position_Start.clear();
 									vec_Another_Position_End.clear();
@@ -623,11 +628,13 @@ void TortoiseShell::localsearch1()
 							temp2.insert(make_pair(iter7->first, iter7->second));
 							s_mapSetOfTortoiseShell.erase(iter7);
 							map<int, TortoiseShell*>::iterator iter07 = temp2.begin();
-							double temp_kpi = computekpi(s_mapSetOfTortoiseShell);
+							double temp_kpi = computekpi();
 							// 如果kpi更优，则把解放入最优乌龟壳集合里，并把kpi值赋给best_kpi
 							if (temp_kpi > best_kpi)
 							{
 								best_kpi = temp_kpi;
+								cout << "流向匹配率: " << flow_rate << "   " << "合同计划兑现率: " << order_rate << "    " << "轧制公里率: " << rollingkm_rate << "   " << "DHCR比率: " << DHCR_rate << "   " << "排程质量: " << Scheduling_quality << endl;
+								cout << " KPI: " << best_kpi << endl;
 								// 更新盛放钢卷组首末位置的map容器
 								vec_Another_Position_Start.clear();
 								vec_Another_Position_End.clear();

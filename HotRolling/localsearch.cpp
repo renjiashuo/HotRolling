@@ -8,7 +8,7 @@ using namespace std;
 void TortoiseShell::localsearch()
 {
 #pragma region Variables
-	int Chosen_Position_No;					//定义 Chosen_Position_No          为选中的钢卷组的位置号
+	int Chosen_Position_No;						//定义 Chosen_Position_No          为选中的钢卷组的位置号
 	int Chosen_Shell;							//定义 Chosen_Shell                为随机抓取的shell编号
 	int Chosen_Position_Start;					//定义 Chosen_Position_Start       为选中的钢卷组的 起始 公里数
 	int Chosen_Position_End;					//定义 Chosen_Position_End         为选中的 终止 公里数
@@ -17,27 +17,29 @@ void TortoiseShell::localsearch()
 
 	int Another_Position_No;					//定义 Another_Position_No          为选第二个钢卷组的位置号
 	int Another_Shell;							//定义 Another_Shell                为第二个乌龟壳的编号
-	int Another_Position_Start = 0;			//定义 Another_Position_Start       为第二个shell的轧制公里数起始	
+	int Another_Position_Start = 0;				//定义 Another_Position_Start       为第二个shell的轧制公里数起始	
 	int Another_Position_End = 0;				//定义 Another_Position_End         为第二个shell的轧制公里数终止
 	int Another_Width = 0;						//定义 Another_Width                为第二个乌龟壳的钢卷组的宽度
+	double D_value = 0.1;						//定义相似宽度为相差+/- 10%
 	int Another_Len = 0;
 
 	vector <int> vec_Chosen_Position_Start;		//定义 Group_Position_Start        容器存放选中的乌龟壳的所有group的 起始 位置
 	vector <int> vec_Chosen_Position_End;		//定义 Group_Position_Start        容器存放选中的乌龟壳的所有group的 终止 位置
 	vector <int> vec_Another_Position_Start;	//定义 map_Another_Position_Start  容器存放选第二个乌龟壳的所有group的 起始 位置
 	vector <int> vec_Another_Position_End;		//定义 map_Another_Position_End    容器存放选第二个乌龟壳的所有group的 终止 位置
-	//map<序号,[起始公里数，终止公里数，Group*] >
-	map<int, pair< pair< int, int >, Group* >>	map_Candidate_Group;
+	
+	//map<int, pair< pair< int, int >, Group* >>	map_Candidate_Group;
 	map<pair<int, int>, Group*>			m_temp;							// 临时容器，优化时，判断轧制位区间等用。
 	map<pair<int, int>, Group*>			m_temp1;						// 临时容器，优化时，判断轧制位区间等用。
 	map<pair<int, int>, Group*>			temp;							// 存放Chosen_Shell里选中的钢卷组
 	map<pair<int, int>, Group*>			temp1;							// 存放Another_Shell里选中的钢卷组
-#pragma endregion
+
 
 	// 设置迭代最大代数
 	//int Max_Gen = 1000;
 	//srand((unsigned)time(NULL));			//设置时间种子
-	double D_value = 0.1;					//定义相似宽度为相差+/- 10%
+#pragma endregion
+
 #pragma region  迭代过程
 	//选择第一个乌龟壳
 	for (Chosen_Shell = 1; Chosen_Shell < s_mapSetOfTortoiseShell.size() - 1; Chosen_Shell++)
@@ -77,10 +79,11 @@ void TortoiseShell::localsearch()
 			string Chosen_plan_type = iterChosen->second->plan_type;
 			/**************************************************/
 #pragma endregion
+#pragma region 选取AnotherShell，Another_Shell的编号与Chosen_Shell不同
 			for (Another_Shell = Chosen_Shell + 1; Another_Shell <= s_mapSetOfTortoiseShell.size() - 1; Another_Shell++)
 			{
 				//cout << "\t\tAnother_Shell:" << Another_Shell << endl;
-#pragma region 选取AnotherShell，Another_Shell的编号与Chosen_Shell不同
+
 				//Another_Shell = (rand() % s_mapSetOfTortoiseShell.size()) + 1;
 				//while (Another_Shell == Chosen_Shell)
 				//{
@@ -283,7 +286,7 @@ void TortoiseShell::localsearch()
 						}
 						if (iterAnother2 != s_mapSetOfTortoiseShell[Another_Shell]->m_main_groups.end())
 							continue;
-
+							//break;
 						//////////////////////////////////////////////////////////////////////////
 #pragma endregion
 
@@ -420,11 +423,13 @@ void TortoiseShell::localsearch()
 										temp2.insert(make_pair(iter7->first, iter7->second));
 										s_mapSetOfTortoiseShell.erase(iter7);
 										map<int, TortoiseShell*>::iterator iter07 = temp2.begin();
-										double temp_kpi = computekpi(s_mapSetOfTortoiseShell);
+										double temp_kpi = computekpi();
 										// 如果kpi更优，则把解放入最优乌龟壳集合里，并把kpi值赋给best_kpi
 										if (temp_kpi > best_kpi)
 										{
 											best_kpi = temp_kpi;
+											cout << "流向匹配率: " << flow_rate << "   " << "合同计划兑现率: " << order_rate << "    " << "轧制公里率: " << rollingkm_rate << "   " << "DHCR比率: " << DHCR_rate << "   " << "排程质量: " << Scheduling_quality << endl;
+											cout << " KPI: " << best_kpi << endl;
 											// 更新盛放钢卷组首末位置的map容器
 											vec_Another_Position_Start.clear();
 											vec_Another_Position_End.clear();
@@ -474,11 +479,13 @@ void TortoiseShell::localsearch()
 									temp2.insert(make_pair(iter7->first, iter7->second));
 									s_mapSetOfTortoiseShell.erase(iter7);
 									map<int, TortoiseShell*>::iterator iter07 = temp2.begin();
-									double temp_kpi = computekpi(s_mapSetOfTortoiseShell);
+									double temp_kpi = computekpi();
 									// 如果kpi更优，则把解放入最优乌龟壳集合里，并把kpi值赋给best_kpi
 									if (temp_kpi > best_kpi)
 									{
 										best_kpi = temp_kpi;
+										cout << "流向匹配率: " << flow_rate << "   " << "合同计划兑现率: " << order_rate << "    " << "轧制公里率: " << rollingkm_rate << "   " << "DHCR比率: " << DHCR_rate << "   " << "排程质量: " << Scheduling_quality << endl;
+										cout << " KPI: " << best_kpi << endl;
 										// 更新盛放钢卷组首末位置的map容器
 										vec_Another_Position_Start.clear();
 										vec_Another_Position_End.clear();
@@ -593,11 +600,13 @@ void TortoiseShell::localsearch()
 									temp2.insert(make_pair(iter7->first, iter7->second));
 									s_mapSetOfTortoiseShell.erase(iter7);
 									map<int, TortoiseShell*>::iterator iter07 = temp2.begin();
-									double temp_kpi = computekpi(s_mapSetOfTortoiseShell);
+									double temp_kpi = computekpi();
 									// 如果kpi更优，则把解放入最优乌龟壳集合里，并把kpi值赋给best_kpi
 									if (temp_kpi > best_kpi)
 									{
 										best_kpi = temp_kpi;
+										cout << "流向匹配率: " << flow_rate << "   " << "合同计划兑现率: " << order_rate << "    " << "轧制公里率: " << rollingkm_rate << "   " << "DHCR比率: " << DHCR_rate << "   " << "排程质量: " << Scheduling_quality << endl;
+										cout << " KPI: " << best_kpi << endl;
 										// 更新盛放钢卷组首末位置的map容器
 										vec_Another_Position_Start.clear();
 										vec_Another_Position_End.clear();
@@ -645,11 +654,13 @@ void TortoiseShell::localsearch()
 								temp2.insert(make_pair(iter7->first, iter7->second));
 								s_mapSetOfTortoiseShell.erase(iter7);
 								map<int, TortoiseShell*>::iterator iter07 = temp2.begin();
-								double temp_kpi = computekpi(s_mapSetOfTortoiseShell);
+								double temp_kpi = computekpi();
 								// 如果kpi更优，则把解放入最优乌龟壳集合里，并把kpi值赋给best_kpi
 								if (temp_kpi > best_kpi)
 								{
 									best_kpi = temp_kpi;
+									cout << "流向匹配率: " << flow_rate << "   " << "合同计划兑现率: " << order_rate << "    " << "轧制公里率: " << rollingkm_rate << "   " << "DHCR比率: " << DHCR_rate << "   " << "排程质量: " << Scheduling_quality << endl;
+									cout << " KPI: " << best_kpi << endl;
 									// 更新盛放钢卷组首末位置的map容器
 									vec_Another_Position_Start.clear();
 									vec_Another_Position_End.clear();
