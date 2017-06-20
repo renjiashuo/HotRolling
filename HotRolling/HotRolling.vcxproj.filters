@@ -60,6 +60,9 @@
     <ClInclude Include="readdate.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="TortoiseShell_rule.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Group.cpp">
@@ -93,6 +96,15 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="readdate.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="tangguncai.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="TortoiseShell_rule.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="zhuticai.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

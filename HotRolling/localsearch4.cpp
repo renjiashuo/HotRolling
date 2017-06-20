@@ -79,7 +79,7 @@ void TortoiseShell::localsearch4()
 					end1 = iter1->first.second;
 					string plan_type1 = An_steelcoil->plan_type;
 					Another_width = An_steelcoil->nom_roll_width;
-					if (abs(Chosen_width - Another_width) < D_value * Chosen_width)
+					if (fabs(Chosen_width - Another_width) < D_value * Chosen_width)
 					{
 						// 判断交换钢卷之后，是否互斥,先判断第二个乌龟壳选中的钢卷是否和第一个乌龟壳里的所有钢卷互斥
 						map<pair<int, int>, SteelCoil*>::iterator iter2 = tortoiseShell->m_main_SteelCoil.begin();
@@ -115,7 +115,7 @@ void TortoiseShell::localsearch4()
 						tortoiseShell->m_main_SteelCoil.insert(make_pair(make_pair(start, end), An_steelcoil));
 						An_tortoiseShell->m_main_SteelCoil.insert(make_pair(make_pair(start1, end1), steelcoil));
 						// 重组钢卷组，首先是第一个乌龟壳，将十三个属性一样的钢卷进行钢卷组化
-						map<pair<pair<pair < pair<pair<pair<pair<pair<pair<pair<pair<pair<double, double>, string>, string>, int>, int>, int>, string>, int>, int>, int>, int>, string>, vector<SteelCoil*>> temp_groups;
+						map<pair<pair<pair < pair<pair<pair<pair<pair<pair<pair<pair<pair<double, double>, string>, string>, int>, int>, int>, string>, int>, int>, int>, int>, string>, vector<SteelCoil*> > temp_groups;
 						map<pair<int, int>, SteelCoil*>::iterator iter6 = tortoiseShell->m_main_SteelCoil.begin();
 						for (; iter6 != tortoiseShell->m_main_SteelCoil.end(); iter6++)
 						{
@@ -125,14 +125,14 @@ void TortoiseShell::localsearch4()
 						// 给钢卷组编号
 						int i = 1;
 						map<int, Group*> temp_groups1;// 第一个乌龟壳的新钢卷组集合
-						for (map<pair<pair<pair < pair<pair<pair<pair<pair<pair<pair<pair<pair<double, double>, string>, string>, int>, int>, int>, string>, int>, int>, int>, int>, string>, vector<SteelCoil*>>::iterator iter7 = temp_groups.begin(); iter7 != temp_groups.end(); iter7++)
+						for (map<pair<pair<pair < pair<pair<pair<pair<pair<pair<pair<pair<pair<double, double>, string>, string>, int>, int>, int>, string>, int>, int>, int>, int>, string>, vector<SteelCoil*> >::iterator iter7 = temp_groups.begin(); iter7 != temp_groups.end(); iter7++)
 						{
 							Group* group1 = new Group(i, -(*iter7).first.first.first.first.first.first.first.first.first.first.first.first.first, (*iter7).first.first.first.first.first.first.first.first.first.first.first.first.second, (*iter7).first.first.first.first.first.first.first.first.first.first.first.second, (*iter7).first.first.first.first.first.first.first.first.first.first.second, (*iter7).first.first.first.first.first.first.first.first.first.second, (*iter7).first.first.first.first.first.first.first.first.second, (*iter7).first.first.first.first.first.first.first.second, (*iter7).first.first.first.first.first.first.second, (*iter7).first.first.first.first.first.second, (*iter7).first.first.first.first.second, (*iter7).first.first.first.second, (*iter7).first.first.second, (*iter7).first.second, iter7->second);
 							Group::indata(temp_groups1, i, group1);
 							i++;
 						}
 						// 第二个乌龟壳
-						map<pair<pair<pair < pair<pair<pair<pair<pair<pair<pair<pair<pair<double, double>, string>, string>, int>, int>, int>, string>, int>, int>, int>, int>, string>, vector<SteelCoil*>> temp_groups2;
+						map<pair<pair<pair < pair<pair<pair<pair<pair<pair<pair<pair<pair<double, double>, string>, string>, int>, int>, int>, string>, int>, int>, int>, int>, string>, vector<SteelCoil*> > temp_groups2;
 						map<pair<int, int>, SteelCoil*>::iterator iter8 = An_tortoiseShell->m_main_SteelCoil.begin();
 						for (; iter8 != An_tortoiseShell->m_main_SteelCoil.end(); iter8++)
 						{
@@ -142,7 +142,7 @@ void TortoiseShell::localsearch4()
 						// 给钢卷组编号
 						int j = 1;
 						map<int, Group*> temp_groups3;// 第二个乌龟壳的新钢卷组集合
-						for (map<pair<pair<pair < pair<pair<pair<pair<pair<pair<pair<pair<pair<double, double>, string>, string>, int>, int>, int>, string>, int>, int>, int>, int>, string>, vector<SteelCoil*>>::iterator iter9 = temp_groups2.begin(); iter9 != temp_groups2.end(); iter9++)
+						for (map<pair<pair<pair < pair<pair<pair<pair<pair<pair<pair<pair<pair<double, double>, string>, string>, int>, int>, int>, string>, int>, int>, int>, int>, string>, vector<SteelCoil*> >::iterator iter9 = temp_groups2.begin(); iter9 != temp_groups2.end(); iter9++)
 						{
 							Group* group2 = new Group(j, -(*iter9).first.first.first.first.first.first.first.first.first.first.first.first.first, (*iter9).first.first.first.first.first.first.first.first.first.first.first.first.second, (*iter9).first.first.first.first.first.first.first.first.first.first.first.second, (*iter9).first.first.first.first.first.first.first.first.first.first.second, (*iter9).first.first.first.first.first.first.first.first.first.second, (*iter9).first.first.first.first.first.first.first.first.second, (*iter9).first.first.first.first.first.first.first.second, (*iter9).first.first.first.first.first.first.second, (*iter9).first.first.first.first.first.second, (*iter9).first.first.first.first.second, (*iter9).first.first.first.second, (*iter9).first.first.second, (*iter9).first.second, iter9->second);
 							Group::indata(temp_groups3, j, group2);
@@ -188,7 +188,7 @@ void TortoiseShell::localsearch4()
 							groupInTurn.pop();
 							// 如果不满足这些硬约束，那么不可行
 							if (plantype.find(make_pair(groupLast->plan_type, groupNext->plan_type))->second == "0"
-								|| abs((*groupLast->m_SteelCoil.begin())->nom_roll_thick - (*groupNext->m_SteelCoil.rbegin())->nom_roll_thick) > (*groupNext->m_SteelCoil.begin())->thick_forward_max
+								|| fabs((*groupLast->m_SteelCoil.begin())->nom_roll_thick - (*groupNext->m_SteelCoil.rbegin())->nom_roll_thick) > (*groupNext->m_SteelCoil.begin())->thick_forward_max
 								|| abs((*groupLast->m_SteelCoil.begin())->nom_heat_temp - (*groupNext->m_SteelCoil.rbegin())->nom_heat_temp) > (*groupNext->m_SteelCoil.begin())->heat_temp_jump_max
 								|| abs((*groupLast->m_SteelCoil.begin())->nom_afft_temp - (*groupNext->m_SteelCoil.rbegin())->nom_afft_temp) > (*groupNext->m_SteelCoil.begin())->afft_temp_jump_max
 								|| abs((*groupLast->m_SteelCoil.begin())->nom_coil_temp - (*groupNext->m_SteelCoil.rbegin())->nom_coil_temp) > (*groupNext->m_SteelCoil.begin())->coil_temp_jump_max
@@ -255,7 +255,7 @@ void TortoiseShell::localsearch4()
 								groupInTurn1.pop();
 								// 如果不满足这些硬约束，那么不可行
 								if (plantype.find(make_pair(groupLast->plan_type, groupNext->plan_type))->second == "0"
-									|| abs((*groupLast->m_SteelCoil.begin())->nom_roll_thick - (*groupNext->m_SteelCoil.rbegin())->nom_roll_thick) > (*groupNext->m_SteelCoil.begin())->thick_forward_max
+									|| fabs((*groupLast->m_SteelCoil.begin())->nom_roll_thick - (*groupNext->m_SteelCoil.rbegin())->nom_roll_thick) > (*groupNext->m_SteelCoil.begin())->thick_forward_max
 									|| abs((*groupLast->m_SteelCoil.begin())->nom_heat_temp - (*groupNext->m_SteelCoil.rbegin())->nom_heat_temp) > (*groupNext->m_SteelCoil.begin())->heat_temp_jump_max
 									|| abs((*groupLast->m_SteelCoil.begin())->nom_afft_temp - (*groupNext->m_SteelCoil.rbegin())->nom_afft_temp) > (*groupNext->m_SteelCoil.begin())->afft_temp_jump_max
 									|| abs((*groupLast->m_SteelCoil.begin())->nom_coil_temp - (*groupNext->m_SteelCoil.rbegin())->nom_coil_temp) > (*groupNext->m_SteelCoil.begin())->coil_temp_jump_max

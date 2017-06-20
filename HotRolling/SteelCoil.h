@@ -17,8 +17,6 @@
 #pragma once
 
 #include "global.h"
-#include "ocilib.hpp"
-using namespace ocilib;
 
 #pragma region 声明
 //////////////////////////////////////////////////////////////////////////
@@ -120,13 +118,19 @@ public:// 钢卷参数
 	int							zone_min_num;			// 区间最小块数
 	int							zone_max_m;				// 区间最大米数
 	int							zone_min_m;				// 区间最小米数
-	//long						IPS_LOT_NO;				// 应用批次号
-	//short						SAME_WIDTH_KM;			// 同宽轧制公里数
-	//string					ROLL_START_FLAG;		// 开轧标记
-	//string					TRNP_TIME;				// 运输时间
+	long						IPS_LOT_NO;				// 应用批次号
+	short						SAME_WIDTH_KM;			// 同宽轧制公里数
+	string						ROLL_START_FLAG;		// 开轧标记
+	string						TRNP_TIME;				// 运输时间
+	string						PLAN_CLASS;				// 计划分类
+	string						PLAN_MAKER;				// 计划责任者
+	int							WIDTH_REVERSE_MAX;		// 轧制宽度反跳最大值
+	int							WIDTH_REVERSE_MIN;		// 轧制宽度反跳最小值
+	string						MERGE_FLOW_CODE;		// 归并流向代码
+	int							ABN_LV;					// 优先级
 
 public:// 钢卷集合(宽度，厚度，计划类型 ，钢级，出炉，终轧，卷取温度，高温标记,区间最大块数，区间最小块数，区间最大米数，区间最小米数，硬度)
-	static map<pair<pair<pair < pair<pair<pair<pair<pair<pair<pair<pair<pair<double, double>, string>, string>, int>, int>, int>,string>,int>,int>,int>,int>,string>, vector<SteelCoil*>>      s_SteelCoil;		//钢卷组map集合
+	static map<pair<pair<pair < pair<pair<pair<pair<pair<pair<pair<pair<pair<double, double>, string>, string>, int>, int>, int>,string>,int>,int>,int>,int>,string>, vector<SteelCoil*> >      s_SteelCoil;		//钢卷组map集合
 	
 	static int								s_SteelCoilCount;				    //钢卷个数
 
@@ -154,7 +158,7 @@ public:
 		string value32, string value33, string value34, string value35, string value36, string value37, string value38, string value39, string value40, int value41, int value42, string value43, string value44, string value45, string value46,
 		string value47, string value48, bool value49, int value50, double value51, int value52, string value53, int value54, string value55, string value56, double value57, double value58, double value59, double value60, int value61,
 		int value62, int value63, int value64, int value65, int value66, int value67, int value68, int value69, int value70, int value71, int value72, int value73, int value74, int value75, int value76,
-		int value77, string value82, string value83, string value84, string value85, string value86, string value87, string value88, string value89, double value90);
+		int value77, string value82, string value83, string value84, string value85, string value86, string value87, string value88, string value89, double value90, long value91, short value92, string value93, string value94, string value95, string value96, int value97, int value98, string value99, int value100);
 	//
 	// 摘要:
 	//     析构函数。
@@ -162,7 +166,7 @@ public:
 	//
 	// 摘要:
 	//     indata。
-	static void indata(map<pair<pair<pair < pair<pair<pair<pair<pair<pair<pair<pair<pair<double, double>, string>, string>, int>, int>, int>, string>, int>, int>, int>, int>, string>, vector<SteelCoil*>> &m_data, double a, double b, string c, string d, int e, int f, int g, string k, int i, int j, int m, int n, string p, SteelCoil* h);
+	static void indata(map<pair<pair<pair < pair<pair<pair<pair<pair<pair<pair<pair<pair<double, double>, string>, string>, int>, int>, int>, string>, int>, int>, int>, int>, string>, vector<SteelCoil*> > &m_data, double a, double b, string c, string d, int e, int f, int g, string k, int i, int j, int m, int n, string p, SteelCoil* h);
 
 //////////////////////////////////////////////////////////////////////////
 #pragma endregion

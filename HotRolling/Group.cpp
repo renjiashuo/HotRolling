@@ -145,7 +145,7 @@ void Group::indata(map<int, Group*>&m_data, int a, Group* b)
 void Group::vec_group()
 {
 	int i = 1;
-	for (map<pair<pair<pair < pair<pair<pair<pair<pair<pair<pair<pair<pair<double, double>, string>, string>, int>, int>, int>, string>, int>, int>, int>, int>,string>, vector<SteelCoil*>>::iterator iter = SteelCoil::s_SteelCoil.begin(); iter != SteelCoil::s_SteelCoil.end(); iter++)
+	for (map<pair<pair<pair < pair<pair<pair<pair<pair<pair<pair<pair<pair<double, double>, string>, string>, int>, int>, int>, string>, int>, int>, int>, int>,string>, vector<SteelCoil*> >::iterator iter = SteelCoil::s_SteelCoil.begin(); iter != SteelCoil::s_SteelCoil.end(); iter++)
 	{
 		Group* newgroup1 = new Group(i, -(*iter).first.first.first.first.first.first.first.first.first.first.first.first.first, (*iter).first.first.first.first.first.first.first.first.first.first.first.first.second, (*iter).first.first.first.first.first.first.first.first.first.first.first.second, (*iter).first.first.first.first.first.first.first.first.first.first.second, (*iter).first.first.first.first.first.first.first.first.first.second, (*iter).first.first.first.first.first.first.first.first.second, (*iter).first.first.first.first.first.first.first.second, (*iter).first.first.first.first.first.first.second, (*iter).first.first.first.first.first.second, (*iter).first.first.first.first.second, (*iter).first.first.first.second, (*iter).first.first.second, (*iter).first.second, iter->second);
 		indata(Group::s_mapSetOfGroup, i, newgroup1);

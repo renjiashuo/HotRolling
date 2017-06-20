@@ -20,6 +20,9 @@
 #include "SteelCoil.h"
 #include "Group.h"
 #include "TortoiseShell.h"
+#include "TortoiseShell_rule.h"
+#include "zhuticai.h"
+#include "tangguncai.h"
 
 #pragma region 声明
 //////////////////////////////////////////////////////////////////////////
@@ -46,6 +49,10 @@ public:
 	// 摘要:
 	//     读取数据。
 	static void readdate();
+	//
+	// 摘要:
+	//     结果输出到数据库。
+	static void showResultSQL();
 
 	//////////////////////////////////////////////////////////////////////////
 #pragma endregion

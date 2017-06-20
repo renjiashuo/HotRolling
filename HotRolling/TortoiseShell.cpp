@@ -148,7 +148,9 @@ void TortoiseShell::InitShell()
 		if (group->m_SteelCoil.size() == 0)
 		{
 			delete group;
-			iter = Group::s_mapSetOfGroup.erase(iter);
+			map<int, Group*>::iterator iter_temp = iter;
+			++iter;
+			Group::s_mapSetOfGroup.erase(iter_temp);
 		}
 		// 如果大钢卷组不为空，则指向下一个
 		else
@@ -163,7 +165,7 @@ void TortoiseShell::FinishShell()
 	#pragma region 遍历钢卷组的map集合
 	//////////////////////////////////////////////////////////////////////////
 	const double samewidth_limit = 500000.0;			// 同宽公里数限制
-	const double max_TortoiseShell_len = 50000;		// 乌龟壳最大公里（假设）	
+	const double max_TortoiseShell_len = 50000;			// 乌龟壳最大公里（假设）	
 	for (map<int, Group*>::iterator iter = Group::s_mapSetOfGroup.begin(); iter != Group::s_mapSetOfGroup.end();)
 	{
 		// 准备放入的钢卷组及其计划类型
@@ -173,7 +175,9 @@ void TortoiseShell::FinishShell()
 		if (group->m_SteelCoil.size() == 0)
 		{
 			delete group;
-			iter = Group::s_mapSetOfGroup.erase(iter);
+			map<int, Group*>::iterator iter_temp = iter;
+			++iter;
+			Group::s_mapSetOfGroup.erase(iter_temp);
 			continue;
 		}
 		// 遍历已有乌龟壳
@@ -285,7 +289,9 @@ void TortoiseShell::FinishShell()
 		if (group->m_SteelCoil.size() == 0)
 		{
 			delete group;
-			iter = Group::s_mapSetOfGroup.erase(iter);
+			map<int, Group*>::iterator iter_temp = iter;
+			++iter;
+			Group::s_mapSetOfGroup.erase(iter_temp);
 		}
 	}
 	//////////////////////////////////////////////////////////////////////////
@@ -345,10 +351,14 @@ void TortoiseShell::DeleteBad()
 		{
 			Group *group = iter2->second;
 			// 将删除的钢卷组放入map集合里
-			Group::s_least.insert(make_pair(Group::s_least.size()+1, group));			
-			iter2 = tortoiseShell->m_main_groups.erase(iter2);
-		}		
-		iter = s_mapSetOfTortoiseShell.erase(iter);		
+			Group::s_least.insert(make_pair(Group::s_least.size()+1, group));
+			map<pair<int, int>, Group*>::iterator iter_temp = iter2;
+			++iter2;
+			tortoiseShell->m_main_groups.erase(iter_temp);
+		}
+		map<int, TortoiseShell*>::iterator iter_temp = iter;
+		++iter;
+		s_mapSetOfTortoiseShell.erase(iter_temp);
 		s_TortoiseShellCount--;
 	}
 	// 删除乌龟壳之后，更新乌龟壳代码
@@ -408,112 +418,43 @@ void TortoiseShell::showResult()
 
 void TortoiseShell::showResultFile()
 {
-	string filename_result = "result.csv";
-	ofstream fout(filename_result);
-	fout << "钢卷号," << "流向," << "切断时间," << "必做标记," << "计划类型," << "额定轧制厚度," << "额定轧制宽度," << "额定出炉温度," << "额定终轧温度," << "额定卷取温度," << "计划号," << "高温标记" << endl;
-	// 遍历乌龟壳
-	for (map<int, TortoiseShell*>::iterator iter = s_mapSetOfTortoiseShell.begin(); iter != s_mapSetOfTortoiseShell.end(); iter++)
-	{
-		// 乌龟壳
-		TortoiseShell *tortoiseShell = iter->second;
-		int tortoiseShellNo = iter->first;
-		fout << tortoiseShellNo << endl;
-		// 遍历乌龟壳内的钢卷组
-		for (map<pair<int, int>, Group*>::iterator iter2 = tortoiseShell->m_main_groups.begin(); iter2 != tortoiseShell->m_main_groups.end(); iter2++)
-		{
-			// 钢卷组
-			Group *group = iter2->second;
-			// 遍历板坯组内的钢卷
-			for (vector<SteelCoil*>::iterator iter3 = group->m_SteelCoil.begin(); iter3 != group->m_SteelCoil.end(); iter3++)
-			{
-				// 钢卷
-				SteelCoil *steelCoil = *iter3;
-				string	mat_no = steelCoil->mat_no;						// 钢卷号
-				string	flow = steelCoil->flow;							// 流向
-				string	fin_cut_time = steelCoil->fin_cut_time;				// 切断时间
-				//bool		must_do_flag = steelCoil->must_do_flag;				// 必做标记
-				bool		must_do_flag = 0;				// 必做标记
-				string	plan_type = steelCoil->plan_type;					// 计划类型
-				double	nom_roll_thick = steelCoil->nom_roll_thick;			// 额定轧制厚度
-				double	nom_roll_width = steelCoil->nom_roll_width;			// 额定轧制宽度
-				int		nom_heat_temp = steelCoil->nom_heat_temp;			// 额定出炉温度
-				int		nom_afft_temp = steelCoil->nom_afft_temp;			// 额定终轧温度
-				int		nom_coil_temp = steelCoil->nom_coil_temp;			// 额定卷取温度
-				string	plan_no = steelCoil->plan_no;						// 计划号
-				string  high_temp_flag = steelCoil->high_temp_flag;			// 高温标记
-				fout << mat_no << "," << flow << "," << fin_cut_time << "," << (int)must_do_flag << "," << plan_type << "," << nom_roll_thick << "," << nom_roll_width << "," << nom_heat_temp << "," << nom_afft_temp << "," << nom_coil_temp << "," << plan_no << "," << high_temp_flag << endl;
-			}
-		}
-	}
-}
-
-void TortoiseShell::showResultSQL()
-{
-	try
-	{
-		Environment::Initialize();//环境初始化
-		Connection con("127.0.0.1/orcl", "scott", "tiger");//连接数据库（IP地址/服务名，“用户名”，“密码“）
-		Statement st(con);//创建数据集
-		st.Execute("Delete from TIPHR25 where 1=1");// 删除表中所有数据
-		//st.Execute("insert into TIPHR25 (MOD_STAMP_NO ,IPS_LOT_NO ,PLAN_NO ,MAT_NO ) values(2,3,5,4)");
-		string str1 = "insert into TIPHR25 (MOD_STAMP_NO ,IPS_LOT_NO ,PLAN_NO ,MAT_NO, PLAN_EXEC_SEQ_NO, PLAN_BACKLOG_CODE, ROLL_SEQ_NO, PLAN_START_TIME,PLAN_END_TIME, WORK_TYPE ) values(";
-		string str2 = ")";
-		string tNowStr = "20170421080000";
-		time_t tNow = StringToDatetime(tNowStr);
-		for (map<int, TortoiseShell*>::iterator iter = s_mapSetOfTortoiseShell.begin(); iter != s_mapSetOfTortoiseShell.end(); iter++)
-		{
-			int tortoiseShellNo = iter->first;
-			TortoiseShell *tortoiseShell = iter->second;
-			int seqNo = 1;
-			for (map<pair<int, int>, Group*>::iterator iter2 = tortoiseShell->m_main_groups.begin(); iter2 != tortoiseShell->m_main_groups.end(); iter2++)
-			{
-				Group *group = iter2->second;
-				for (vector<SteelCoil*>::iterator iter3 = group->m_SteelCoil.begin(); iter3 != group->m_SteelCoil.end(); iter3++)
-				{
-					SteelCoil *steelCoil = *iter3;
-					// 模型邮戳号
-					string str_MOD_STAMP_NO = "1";
-					// 应用批次号
-					int int_IPS_LOT_NO = (int)steelCoil->roll_end_time_double / (24 * 60);
-					char char_IPS_LOT_NO[10];
-					sprintf(char_IPS_LOT_NO, "%d", int_IPS_LOT_NO);
-					string str_IPS_LOT_NO = char_IPS_LOT_NO;
-					// 计划号
-					char char_PLAN_NO[10];
-					sprintf(char_PLAN_NO, "%d", tortoiseShellNo);
-					string str_PLAN_NO = char_PLAN_NO;
-					// 材料号
-					string str_MAT_NO = steelCoil->mat_no;
-					// 计划执行顺序号
-					string str_PLAN_EXEC_SEQ_NO = str_PLAN_NO;
-					// 计划工序代码
-					string str_PLAN_BACKLOG_CODE = steelCoil->next_whole_backlog_code;
-					// 轧制顺序号
-					int int_ROLL_SEQ_NO = seqNo++;
-					char char_ROLL_SEQ_NO[10];
-					sprintf(char_ROLL_SEQ_NO, "%d", int_ROLL_SEQ_NO);
-					string str_ROLL_SEQ_NO = char_ROLL_SEQ_NO;
-					// 计划开始时刻
-					int int_PLAN_START_TIME = steelCoil->roll_begin_time_double * 60;
-					string str_PLAN_START_TIME = DatetimeToString(int_PLAN_START_TIME + tNow);
-					// 计划结束时刻
-					int int_PLAN_END_TIME = steelCoil->roll_end_time_double * 60;
-					string str_PLAN_END_TIME = DatetimeToString(int_PLAN_END_TIME + tNow);
-					// 工件类型
-					string str_WORK_TYPE = steelCoil->work_type;
-					// 数据库语句完成
-					string str = str1 + str_MOD_STAMP_NO + "," + str_IPS_LOT_NO + "," + str_PLAN_NO + ",'" + str_MAT_NO + "'," + str_PLAN_EXEC_SEQ_NO + ",'" + str_PLAN_BACKLOG_CODE + "'," + str_ROLL_SEQ_NO + ",'" + str_PLAN_START_TIME + "','" + str_PLAN_END_TIME + "'," + str_WORK_TYPE + str2;
-					st.Execute(str);
-				}
-			}
-		}
-		con.Commit();	// 提交数据库更改
-	}
-	catch (exception &ex)
-	{
-		cout << ex.what() << endl;
-	}
-	Environment::Cleanup();
+	//string filename_result = "result.csv";
+	//ofstream fout(filename_result);
+	//fout << "钢卷号," << "流向," << "切断时间," << "必做标记," << "计划类型," << "额定轧制厚度," << "额定轧制宽度," << "额定出炉温度," << "额定终轧温度," << "额定卷取温度," << "计划号," << "高温标记" << endl;
+	//// 遍历乌龟壳
+	//for (map<int, TortoiseShell*>::iterator iter = s_mapSetOfTortoiseShell.begin(); iter != s_mapSetOfTortoiseShell.end(); iter++)
+	//{
+	//	// 乌龟壳
+	//	TortoiseShell *tortoiseShell = iter->second;
+	//	int tortoiseShellNo = iter->first;
+	//	fout << tortoiseShellNo << endl;
+	//	// 遍历乌龟壳内的钢卷组
+	//	for (map<pair<int, int>, Group*>::iterator iter2 = tortoiseShell->m_main_groups.begin(); iter2 != tortoiseShell->m_main_groups.end(); iter2++)
+	//	{
+	//		// 钢卷组
+	//		Group *group = iter2->second;
+	//		// 遍历板坯组内的钢卷
+	//		for (vector<SteelCoil*>::iterator iter3 = group->m_SteelCoil.begin(); iter3 != group->m_SteelCoil.end(); iter3++)
+	//		{
+	//			// 钢卷
+	//			SteelCoil *steelCoil = *iter3;
+	//			string	mat_no = steelCoil->mat_no;						// 钢卷号
+	//			string	flow = steelCoil->flow;							// 流向
+	//			string	fin_cut_time = steelCoil->fin_cut_time;				// 切断时间
+	//			//bool		must_do_flag = steelCoil->must_do_flag;				// 必做标记
+	//			bool		must_do_flag = 0;				// 必做标记
+	//			string	plan_type = steelCoil->plan_type;					// 计划类型
+	//			double	nom_roll_thick = steelCoil->nom_roll_thick;			// 额定轧制厚度
+	//			double	nom_roll_width = steelCoil->nom_roll_width;			// 额定轧制宽度
+	//			int		nom_heat_temp = steelCoil->nom_heat_temp;			// 额定出炉温度
+	//			int		nom_afft_temp = steelCoil->nom_afft_temp;			// 额定终轧温度
+	//			int		nom_coil_temp = steelCoil->nom_coil_temp;			// 额定卷取温度
+	//			string	plan_no = steelCoil->plan_no;						// 计划号
+	//			string  high_temp_flag = steelCoil->high_temp_flag;			// 高温标记
+	//			fout << mat_no << "," << flow << "," << fin_cut_time << "," << (int)must_do_flag << "," << plan_type << "," << nom_roll_thick << "," << nom_roll_width << "," << nom_heat_temp << "," << nom_afft_temp << "," << nom_coil_temp << "," << plan_no << "," << high_temp_flag << endl;
+	//		}
+	//	}
+	//}
 }
 
 double TortoiseShell::computekpi()
@@ -538,7 +479,7 @@ double TortoiseShell::computekpi()
 	int HEAT_TEMP_JUMP_penalty = 600;		// 出炉温度跳跃公差罚分
 	int AFFT_TEMP_JUMP_penalty = 700;		// 终轧温度跳跃公差罚分	
 	int COIL_TEMP_JUMP_penalty = 700;		// 卷取温度跳跃公差罚分
-	double Scheduling_quality_deno = 10000;	// 计算排程质量的分母
+	double Scheduling_quality_deno = 15000;	// 计算排程质量的分母
 	double all_penalty = 0;	
 	double flowrateall = 0;
 	// 计算流向匹配率
@@ -607,7 +548,7 @@ double TortoiseShell::computekpi()
 						tortoiseShell->penalty += THICK_FORWARD_penalty;
 				}
 				else
-					continue;
+					tortoiseShell->penalty += 0;
 				// 宽度罚分
 				if (iter_after->second->nom_roll_width > iter2->second->nom_roll_width)// 反跳
 				{
@@ -624,33 +565,35 @@ double TortoiseShell::computekpi()
 						tortoiseShell->penalty += WIDTH_FORWARD_penalty;
 				}
 				else
-					continue;
+					tortoiseShell->penalty += 0;
 				// 硬度公差罚分
 				if (abs(iter_after->second->nom_hard_group_code[0] - iter2->second->nom_hard_group_code[0])==1)
 					tortoiseShell->penalty += 0.5*HARD_JUMP_panalty;
 				else if (abs(iter_after->second->nom_hard_group_code[0] - iter2->second->nom_hard_group_code[0]) == 2 || abs(iter_after->second->nom_hard_group_code[0] - iter2->second->nom_hard_group_code[0]) == 3)
-					tortoiseShell->penalty += HARD_JUMP_panalty;				
+					tortoiseShell->penalty += HARD_JUMP_panalty;
+				else
+					tortoiseShell->penalty += 0;
 				// 出炉温度公差罚分
 				if (5 < abs(iter_after->second->nom_heat_temp - iter2->second->nom_heat_temp) && abs(iter_after->second->nom_heat_temp - iter2->second->nom_heat_temp) < 10)
 					tortoiseShell->penalty += 0.5*HEAT_TEMP_JUMP_penalty;
 				else if (10 < abs(iter_after->second->nom_heat_temp - iter2->second->nom_heat_temp) && abs(iter_after->second->nom_heat_temp - iter2->second->nom_heat_temp) < 99)
 					tortoiseShell->penalty += HEAT_TEMP_JUMP_penalty;
 				else
-					continue;				
+					tortoiseShell->penalty += 0;
 				// 终轧温度公差罚分
 				if (5 < abs(iter_after->second->nom_afft_temp - iter2->second->nom_afft_temp) && abs(iter_after->second->nom_afft_temp - iter2->second->nom_afft_temp)< 10)
 					tortoiseShell->penalty += 0.5*AFFT_TEMP_JUMP_penalty;
 				else if (10 < abs(iter_after->second->nom_afft_temp - iter2->second->nom_afft_temp) && abs(iter_after->second->nom_afft_temp - iter2->second->nom_afft_temp) < 99)
 					tortoiseShell->penalty += AFFT_TEMP_JUMP_penalty;
 				else
-					continue;
+					tortoiseShell->penalty += 0;
 				// 卷取温度公差罚分
 				if (5 < abs(iter_after->second->nom_coil_temp - iter2->second->nom_coil_temp) && abs(iter_after->second->nom_coil_temp - iter2->second->nom_coil_temp) < 10)
 					tortoiseShell->penalty += 0.5*COIL_TEMP_JUMP_penalty;
 				else if (10 < abs(iter_after->second->nom_coil_temp - iter2->second->nom_coil_temp) && abs(iter_after->second->nom_coil_temp - iter2->second->nom_coil_temp) < 99)
 					tortoiseShell->penalty += COIL_TEMP_JUMP_penalty;
 				else
-					continue;				
+					tortoiseShell->penalty += 0;
 			}
 			else
 				break;			

@@ -129,10 +129,6 @@ public:
 	static void showResultFile();	
 	//
 	// 摘要:
-	//     结果输出到文本。
-	static void showResultSQL();
-	//
-	// 摘要:
 	//     向乌龟壳的最后添加一个主体材，分配成功返回true，分配失败返回false，允许拆分钢卷组。
 	bool addMainGroup(Group *group);
 	//

@@ -27,7 +27,7 @@ void TortoiseShell::localsearch1()
 	vector <int> vec_Another_Position_Start;	//定义 map_Another_Position_Start  容器存放选第二个乌龟壳的所有group的 起始 位置
 	vector <int> vec_Another_Position_End;		//定义 map_Another_Position_End    容器存放选第二个乌龟壳的所有group的 终止 位置
 	//map<序号,[起始公里数，终止公里数，Group*] >
-	map<int, pair< pair< int, int >, Group* >>	map_Candidate_Group;
+	map<int, pair< pair< int, int >, Group* > >	map_Candidate_Group;
 	map<pair<int, int>, Group*>			m_temp;							// 临时容器，优化时，判断轧制位区间等用。
 	map<pair<int, int>, Group*>			m_temp1;						// 临时容器，优化时，判断轧制位区间等用。
 	map<pair<int, int>, Group*>			temp;							// 存放Chosen_Shell里选中的钢卷组
@@ -127,7 +127,9 @@ void TortoiseShell::localsearch1()
 					// 将Chosen_Shell里的选中钢卷组放入一个中间map里，并在Chosen_Shell里删除它			 		 
 					map<pair<int, int>, Group*> ::iterator iter = s_mapSetOfTortoiseShell[Chosen_Shell]->m_main_groups.find(make_pair(Chosen_Position_Start, Chosen_Position_End));
 					temp.insert(make_pair(make_pair(iter->first.first, iter->first.second), iter->second));
-					iter = s_mapSetOfTortoiseShell[Chosen_Shell]->m_main_groups.erase(iter);
+					map<pair<int, int>, Group*> ::iterator iter_temp = iter;
+					++iter;
+					s_mapSetOfTortoiseShell[Chosen_Shell]->m_main_groups.erase(iter_temp);
 
 					// 将Another_Shell里选中的钢卷组放入Chosen_Shell里，键值不改变，只改变value值
 					map<pair<int, int>, Group*> ::iterator iter1 = s_mapSetOfTortoiseShell[Another_Shell]->m_main_groups.find(make_pair(Another_Position_Start, Another_Position_End));
@@ -152,7 +154,9 @@ void TortoiseShell::localsearch1()
 						))
 					{
 						// 如果有一项约束不满足，则删除此钢卷组
-						iter_now = s_mapSetOfTortoiseShell[Chosen_Shell]->m_main_groups.erase(iter_now++);
+						iter_temp = iter_now;
+						++iter_now;
+						s_mapSetOfTortoiseShell[Chosen_Shell]->m_main_groups.erase(iter_temp);
 						s_mapSetOfTortoiseShell[Chosen_Shell]->m_main_groups.insert(make_pair(make_pair(iter3->first.first, iter3->first.second), iter3->second));
 						continue;
 					}
@@ -178,7 +182,9 @@ void TortoiseShell::localsearch1()
 					// 将Another_Shell里的选中钢卷组放入一个中间map里，并在Another_Shell里删除它		 	 
 					map<pair<int, int>, Group*> ::iterator iter2 = s_mapSetOfTortoiseShell[Another_Shell]->m_main_groups.find(make_pair(Another_Position_Start, Another_Position_End));
 					temp1.insert(make_pair(make_pair(iter2->first.first, iter2->first.second), iter2->second));
-					iter2 = s_mapSetOfTortoiseShell[Another_Shell]->m_main_groups.erase(iter2);
+					iter_temp = iter2;
+					++iter2;
+					s_mapSetOfTortoiseShell[Another_Shell]->m_main_groups.erase(iter_temp);
 
 					// 将Chosen_Shell里选中的钢卷组放入Aother_Shell里，键值不改变，只改变value值	
 					map<pair<int, int>, Group*> ::iterator iter4 = temp1.begin();
@@ -274,7 +280,9 @@ void TortoiseShell::localsearch1()
 						m_temp_second.insert(make_pair(make_pair(iter8->first.first, iter8->first.second), iter8->second));
 					}
 					iter8 = s_mapSetOfTortoiseShell[Chosen_Shell]->m_main_groups.find(make_pair(Chosen_Position_Start, Chosen_Position_End));
-					iter8 = s_mapSetOfTortoiseShell[Chosen_Shell]->m_main_groups.erase(iter8);
+					iter_temp = iter8;
+					++iter8;
+					s_mapSetOfTortoiseShell[Chosen_Shell]->m_main_groups.erase(iter_temp);
 
 					//map<pair<int, int>, Group*> ::iterator iter03 = temp.begin();
 					//map<pair<int, int>, Group*> ::iterator iter01 = s_mapSetOfTortoiseShell[Another_Shell]->m_main_groups.find(make_pair(Another_Position_Start, Another_Position_End));
@@ -300,7 +308,9 @@ void TortoiseShell::localsearch1()
 					s_mapSetOfTortoiseShell[Chosen_Shell]->m_main_groups.insert(make_pair(make_pair(0, m_iter->second->roll_len), m_iter->second));
 					s_mapSetOfTortoiseShell[Chosen_Shell]->steelCoilNum = m_iter->second->m_SteelCoil.size();
 					s_mapSetOfTortoiseShell[Chosen_Shell]->steelCoilLenth = m_iter->second->roll_len;
-					m_iter = m_temp.erase(m_iter);
+					iter_temp = m_iter;
+					++m_iter;
+					m_temp.erase(iter_temp);
 
 					// 如果m_temp不为空，进行下一步判断
 					if (!m_temp.empty())
@@ -337,7 +347,9 @@ void TortoiseShell::localsearch1()
 								m_temp1_second.insert(make_pair(make_pair(iter9->first.first, iter9->first.second), iter9->second));
 							}
 							iter9 = s_mapSetOfTortoiseShell[Another_Shell]->m_main_groups.find(make_pair(Another_Position_Start, Another_Position_End));
-							iter9 = s_mapSetOfTortoiseShell[Another_Shell]->m_main_groups.erase(iter9);
+							iter_temp = iter9;
+							++iter9;
+							s_mapSetOfTortoiseShell[Another_Shell]->m_main_groups.erase(iter_temp);
 							//				map<pair<int, int>, Group*> ::iterator iter04 = temp1.begin();
 							s_mapSetOfTortoiseShell[Another_Shell]->m_main_groups.insert(make_pair(make_pair(iter4->first.first, iter4->first.second), iter3->second));
 							swap(s_mapSetOfTortoiseShell[Another_Shell]->m_main_groups, m_temp1);
@@ -362,7 +374,9 @@ void TortoiseShell::localsearch1()
 							s_mapSetOfTortoiseShell[Another_Shell]->m_main_groups.insert(make_pair(make_pair(0, m_iter1->second->roll_len), m_iter1->second));
 							s_mapSetOfTortoiseShell[Another_Shell]->steelCoilNum = m_iter1->second->m_SteelCoil.size();
 							s_mapSetOfTortoiseShell[Another_Shell]->steelCoilLenth = m_iter1->second->roll_len;
-							m_iter1 = m_temp1.erase(m_iter1);
+							iter_temp = m_iter1;
+							++m_iter1;
+							m_temp1.erase(iter_temp);
 
 							// 如果m_temp1不为空，则继续判断
 							if (!m_temp1.empty())
@@ -513,7 +527,9 @@ void TortoiseShell::localsearch1()
 							m_temp1_second.insert(make_pair(make_pair(iter9->first.first, iter9->first.second), iter9->second));
 						}
 						iter9 = s_mapSetOfTortoiseShell[Another_Shell]->m_main_groups.find(make_pair(Another_Position_Start, Another_Position_End));
-						iter9 = s_mapSetOfTortoiseShell[Another_Shell]->m_main_groups.erase(iter9);
+						iter_temp = iter9;
+						++iter9;
+						s_mapSetOfTortoiseShell[Another_Shell]->m_main_groups.erase(iter_temp);
 						//			map<pair<int, int>, Group*> ::iterator iter04 = temp1.begin();
 						s_mapSetOfTortoiseShell[Another_Shell]->m_main_groups.insert(make_pair(make_pair(iter4->first.first, iter4->first.second), iter3->second));
 						swap(s_mapSetOfTortoiseShell[Another_Shell]->m_main_groups, m_temp1);
@@ -537,7 +553,9 @@ void TortoiseShell::localsearch1()
 						s_mapSetOfTortoiseShell[Another_Shell]->m_main_groups.insert(make_pair(make_pair(0, m_iter1->second->roll_len), m_iter1->second));
 						s_mapSetOfTortoiseShell[Another_Shell]->steelCoilNum = m_iter1->second->m_SteelCoil.size();
 						s_mapSetOfTortoiseShell[Another_Shell]->steelCoilLenth = m_iter1->second->roll_len;
-						m_iter1 = m_temp1.erase(m_iter1);
+						iter_temp = m_iter1;
+						++m_iter1;
+						m_temp1.erase(iter_temp);
 
 
 						// 如果m_temp1不为空，则继续判断

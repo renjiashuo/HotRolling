@@ -32,7 +32,7 @@ int main()
 	//TortoiseShell::showResult();	// 输出到控制台
 	TortoiseShell::computekpi();	// 输出最优KPI
 	TortoiseShell::showResultFile();// 结果输出到文本
-	TortoiseShell::showResultSQL();	// 结果输出到SQL
+	ReadDate::showResultSQL();	// 结果输出到SQL
 
 	finishTime = clock();
 	totalTime = (double)(finishTime - startTime) / CLOCKS_PER_SEC;
