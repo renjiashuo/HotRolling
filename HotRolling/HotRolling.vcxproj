@@ -11,38 +11,51 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="common.h" />
-    <ClInclude Include="global.h" />
-    <ClInclude Include="Group.h" />
-    <ClInclude Include="keyindicator_def.h" />
-    <ClInclude Include="readdate.h" />
-    <ClInclude Include="rulepara_def.h" />
-    <ClInclude Include="rulescore.h" />
-    <ClInclude Include="ruleset_def.h" />
-    <ClInclude Include="rule_def.h" />
-    <ClInclude Include="rule_penalty.h" />
-    <ClInclude Include="sectionlink_rule.h" />
-    <ClInclude Include="SteelCoil.h" />
-    <ClInclude Include="tangguncai.h" />
-    <ClInclude Include="TortoiseShell.h" />
-    <ClInclude Include="TortoiseShell_rule.h" />
-    <ClInclude Include="zhuticai.h" />
+    <ClInclude Include="f_iphr_coldHotSlab.h" />
+    <ClInclude Include="f_iphr_common.h" />
+    <ClInclude Include="f_iphr_global.h" />
+    <ClInclude Include="f_iphr_Group.h" />
+    <ClInclude Include="f_iphr_KPI.h" />
+    <ClInclude Include="f_iphr_overhaulTime.h" />
+    <ClInclude Include="f_iphr_proRuncon.h" />
+    <ClInclude Include="f_iphr_readdate.h" />
+    <ClInclude Include="f_iphr_rollingKm.h" />
+    <ClInclude Include="f_iphr_ruleparaDef.h" />
+    <ClInclude Include="f_iphr_rulescore.h" />
+    <ClInclude Include="f_iphr_rulesetDef.h" />
+    <ClInclude Include="f_iphr_ruleDef.h" />
+    <ClInclude Include="f_iphr_rulePenalty.h" />
+    <ClInclude Include="f_iphr_sectionlinkRule.h" />
+    <ClInclude Include="f_iphr_SteelCoil.h" />
+    <ClInclude Include="f_iphr_tangguncai.h" />
+    <ClInclude Include="f_iphr_TortoiseShell.h" />
+    <ClInclude Include="f_iphr_TortoiseShellRule.h" />
+    <ClInclude Include="f_iphr_zhuticai.h" />
+    <ClInclude Include="f_iphr_localsearch.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="datacheck.cpp" />
-    <ClCompile Include="Group.cpp" />
-    <ClCompile Include="localsearch.cpp" />
-    <ClCompile Include="localsearch1.cpp" />
-    <ClCompile Include="localsearch2.cpp" />
-    <ClCompile Include="localsearch3.cpp" />
-    <ClCompile Include="localsearch4.cpp" />
+    <ClCompile Include="f_iphr_coldHotSlab.cpp" />
+    <ClCompile Include="f_iphr_datacheck.cpp" />
+    <ClCompile Include="f_iphr_Group.cpp" />
+    <ClCompile Include="f_iphr_KPI.cpp" />
+    <ClCompile Include="f_iphr_localsearch.cpp" />
+    <ClCompile Include="f_iphr_localsearch1.cpp" />
+    <ClCompile Include="f_iphr_localsearch2.cpp" />
+    <ClCompile Include="f_iphr_localsearch3.cpp" />
+    <ClCompile Include="f_iphr_localsearch4.cpp" />
+    <ClCompile Include="f_iphr_overhaulTime.cpp" />
+    <ClCompile Include="f_iphr_proRuncon.cpp" />
+    <ClCompile Include="f_iphr_rollingKm.cpp" />
+    <ClCompile Include="f_iphr_ruleDef.cpp" />
+    <ClCompile Include="f_iphr_ruleparaDef.cpp" />
+    <ClCompile Include="f_iphr_rulePenalty.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="readdate.cpp" />
-    <ClCompile Include="SteelCoil.cpp" />
-    <ClCompile Include="tangguncai.cpp" />
-    <ClCompile Include="TortoiseShell.cpp" />
-    <ClCompile Include="TortoiseShell_rule.cpp" />
-    <ClCompile Include="zhuticai.cpp" />
+    <ClCompile Include="f_iphr_readdate.cpp" />
+    <ClCompile Include="f_iphr_SteelCoil.cpp" />
+    <ClCompile Include="f_iphr_tangguncai.cpp" />
+    <ClCompile Include="f_iphr_TortoiseShell.cpp" />
+    <ClCompile Include="f_iphr_TortoiseShellRule.cpp" />
+    <ClCompile Include="f_iphr_zhuticai.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{9412BE51-8056-4100-A5F3-31E8B4C8D2AF}</ProjectGuid>

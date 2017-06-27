@@ -15,96 +15,135 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="global.h">
+    <ClInclude Include="f_iphr_common.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Group.h">
+    <ClInclude Include="f_iphr_global.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="TortoiseShell.h">
+    <ClInclude Include="f_iphr_Group.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="SteelCoil.h">
+    <ClInclude Include="f_iphr_readdate.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="rulescore.h">
+    <ClInclude Include="f_iphr_ruleDef.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="common.h">
+    <ClInclude Include="f_iphr_rulePenalty.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="keyindicator_def.h">
+    <ClInclude Include="f_iphr_ruleparaDef.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="sectionlink_rule.h">
+    <ClInclude Include="f_iphr_rulescore.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="ruleset_def.h">
+    <ClInclude Include="f_iphr_rulesetDef.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="rulepara_def.h">
+    <ClInclude Include="f_iphr_sectionlinkRule.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="rule_penalty.h">
+    <ClInclude Include="f_iphr_SteelCoil.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="rule_def.h">
+    <ClInclude Include="f_iphr_tangguncai.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="zhuticai.h">
+    <ClInclude Include="f_iphr_TortoiseShell.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="tangguncai.h">
+    <ClInclude Include="f_iphr_TortoiseShellRule.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="readdate.h">
+    <ClInclude Include="f_iphr_zhuticai.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="TortoiseShell_rule.h">
+    <ClInclude Include="f_iphr_localsearch.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="f_iphr_rollingKm.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="f_iphr_coldHotSlab.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="f_iphr_overhaulTime.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="f_iphr_proRuncon.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="f_iphr_KPI.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Group.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="TortoiseShell.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="SteelCoil.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="datacheck.cpp">
+    <ClCompile Include="f_iphr_datacheck.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="localsearch.cpp">
+    <ClCompile Include="f_iphr_Group.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="localsearch1.cpp">
+    <ClCompile Include="f_iphr_localsearch.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="localsearch2.cpp">
+    <ClCompile Include="f_iphr_localsearch1.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="localsearch3.cpp">
+    <ClCompile Include="f_iphr_localsearch2.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="localsearch4.cpp">
+    <ClCompile Include="f_iphr_localsearch3.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="readdate.cpp">
+    <ClCompile Include="f_iphr_localsearch4.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="tangguncai.cpp">
+    <ClCompile Include="f_iphr_readdate.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="TortoiseShell_rule.cpp">
+    <ClCompile Include="f_iphr_SteelCoil.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="zhuticai.cpp">
+    <ClCompile Include="f_iphr_tangguncai.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="f_iphr_TortoiseShell.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="f_iphr_TortoiseShellRule.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="f_iphr_zhuticai.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="f_iphr_coldHotSlab.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="f_iphr_KPI.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="f_iphr_overhaulTime.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="f_iphr_proRuncon.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="f_iphr_rollingKm.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="f_iphr_ruleDef.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="f_iphr_ruleparaDef.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="f_iphr_rulePenalty.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
