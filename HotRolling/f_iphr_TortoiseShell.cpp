@@ -68,6 +68,14 @@ TortoiseShell::TortoiseShell()
 TortoiseShell::~TortoiseShell()
 {
 }
+void TortoiseShell::release()
+{
+	for (map<int, TortoiseShell*>::iterator iter = s_mapSetOfTortoiseShell.begin(); iter != s_mapSetOfTortoiseShell.end(); ++iter)
+	{
+		TortoiseShell *tortoiseShell = iter->second;
+		delete tortoiseShell;
+	}
+}
 
 ////////////////////////////////////////////////////////////////////////
 #pragma endregion
@@ -992,7 +1000,7 @@ bool TortoiseShell::addMainGroup2(Group *group)
 
 void TortoiseShell::calculateRollingFinishTime()
 {
-	double nowTime = 0;	
+	double nowTime = 0;
 	// 遍历乌龟壳
 	for (map<int, TortoiseShell*>::iterator iter = s_mapSetOfTortoiseShell.begin(); iter != s_mapSetOfTortoiseShell.end(); iter++)
 	{
@@ -1003,65 +1011,64 @@ void TortoiseShell::calculateRollingFinishTime()
 			Group *group = iter2->second;
 			// 遍历钢卷组内的钢卷
 			for (vector<SteelCoil*>::iterator iter3 = group->m_SteelCoil.begin(); iter3 != group->m_SteelCoil.end(); iter3++)
-			
 			{
 				SteelCoil *steelCoil = *iter3;
-				steelCoil->roll_begin_time_double = nowTime;
+				//steelCoil->roll_begin_time_double = nowTime;
 				nowTime += steelCoil->roll_time;
-				steelCoil->roll_end_time_double = nowTime;								
+				//steelCoil->roll_end_time_double = nowTime;
 			}
 		}
 	}
 	// 根据计算好的轧制时间，计算天数(向上取整)
-	int day = ceil(nowTime / (24 * 60));	
+	int day = ceil(nowTime / (24 * 60));
 	int i = 1;
 	nowTime = 0;
 	double WT_10 = 0;
 	double WT_11 = 0;
-		// 遍历乌龟壳
-		for (map<int, TortoiseShell*>::iterator iter = s_mapSetOfTortoiseShell.begin(); iter != s_mapSetOfTortoiseShell.end(); iter++)
+	// 遍历乌龟壳
+	for (map<int, TortoiseShell*>::iterator iter = s_mapSetOfTortoiseShell.begin(); iter != s_mapSetOfTortoiseShell.end(); iter++)
+	{
+		TortoiseShell *tortoiseShell = iter->second;
+		// 遍历乌龟壳内的钢卷组
+		for (map<pair<int, int>, Group*>::iterator iter2 = tortoiseShell->m_main_groups.begin(); iter2 != tortoiseShell->m_main_groups.end(); iter2++)
 		{
-			TortoiseShell *tortoiseShell = iter->second;
-			// 遍历乌龟壳内的钢卷组
-			for (map<pair<int, int>, Group*>::iterator iter2 = tortoiseShell->m_main_groups.begin(); iter2 != tortoiseShell->m_main_groups.end(); iter2++)
+			Group *group = iter2->second;
+			// 遍历钢卷组内的钢卷
+			for (vector<SteelCoil*>::iterator iter3 = group->m_SteelCoil.begin(); iter3 != group->m_SteelCoil.end(); iter3++)
 			{
-				Group *group = iter2->second;
-				// 遍历钢卷组内的钢卷
-				for (vector<SteelCoil*>::iterator iter3 = group->m_SteelCoil.begin(); iter3 != group->m_SteelCoil.end(); iter3++)
+				SteelCoil *steelCoil = *iter3;
+				steelCoil->roll_begin_time_double = nowTime;
+				nowTime += steelCoil->roll_time;
+				steelCoil->roll_end_time_double = nowTime;
+				for (; i <= day;)
 				{
-					SteelCoil *steelCoil = *iter3;
-					steelCoil->roll_begin_time_double = nowTime;
-					nowTime += steelCoil->roll_time;
-					steelCoil->roll_end_time_double = nowTime;
-					for (; i <= day;)
+					if (nowTime >= (i - 1) * 1440 && nowTime <= i * 1440)
 					{
-						if (nowTime >= (i - 1) * 1440 && nowTime <= i * 1440)
-						{
-							if (steelCoil->flow == "10")
-								WT_10 += steelCoil->slab_wt;
-							else
-								WT_11 += steelCoil->slab_wt;
-							break;
-						}
-						else
-						{
-							actualflow.insert(make_pair(make_pair(i, "10"), WT_10));
-							actualflow.insert(make_pair(make_pair(i, "11"), WT_11));
-							WT_10 = 0;
-							WT_11 = 0;
-							i++;
-							continue;
-						}						
-					}					
+						if (steelCoil->flow == "10")
+							WT_10 += steelCoil->slab_wt;
+						else if (steelCoil->flow == "11")
+							WT_11 += steelCoil->slab_wt;
+						break;
+					}
+					else
+					{
+						actualflow.insert(make_pair(make_pair(i, "10"), WT_10));
+						actualflow.insert(make_pair(make_pair(i, "11"), WT_11));
+						WT_10 = 0;
+						WT_11 = 0;
+						i++;
+						continue;
+					}
 				}
 			}
 		}
-		// 将不足一天的各流向的钢卷重量插入map
-		{
-			actualflow.insert(make_pair(make_pair(i, "10"), WT_10));
-			actualflow.insert(make_pair(make_pair(i, "11"), WT_11));
-		}
 	}
+	// 将不足一天的各流向的钢卷重量插入map
+	{
+		actualflow.insert(make_pair(make_pair(i, "10"), WT_10));
+		actualflow.insert(make_pair(make_pair(i, "11"), WT_11));
+	}
+}
 
 string TortoiseShell::DatetimeToString(time_t time)
 {

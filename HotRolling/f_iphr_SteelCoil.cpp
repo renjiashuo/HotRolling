@@ -197,12 +197,23 @@ void SteelCoil::indata(map<pair<pair<pair < pair<pair<pair<pair<pair<pair<pair<p
 //}
 
 #pragma region ¸¨Öúº¯Êý
-		//////////////////////////////////////////////////////////////////////////
-		SteelCoil::~SteelCoil()
+//////////////////////////////////////////////////////////////////////////
+SteelCoil::~SteelCoil()
+{
+
+}
+void SteelCoil::release()
+{
+	for (map<pair<pair<pair < pair<pair<pair<pair<pair<pair<pair<pair<pair<double, double>, string>, string>, int>, int>, int>, string>, int>, int>, int>, int>, string>, vector<SteelCoil*> >::iterator iter = s_SteelCoil.begin(); iter != s_SteelCoil.end(); iter++)
+	{
+		for (int i = 0; i < iter->second.size(); i++)
 		{
-			
+			SteelCoil *steelCoil = iter->second[i];
+			delete steelCoil;
 		}
-		////////////////////////////////////////////////////////////////////////
+	}
+}
+////////////////////////////////////////////////////////////////////////
 #pragma endregion
 
 		////////////////////////////////////////////////////////////////////////

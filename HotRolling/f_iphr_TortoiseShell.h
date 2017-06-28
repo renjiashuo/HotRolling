@@ -98,6 +98,10 @@ public:
 	// 摘要:
 	//     析构函数。
 	~TortoiseShell();
+	//
+	// 摘要:
+	//     释放所有static map的指针。
+	static void release();
 	//////////////////////////////////////////////////////////////////////////
 	#pragma endregion
 

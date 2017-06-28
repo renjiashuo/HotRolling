@@ -181,6 +181,25 @@ Group::~Group()
 {
 }
 
+void Group::release()
+{
+	//for (map<int, Group*>::iterator iter = s_least.begin(); iter != s_least.end(); ++iter)
+	//{
+	//	Group *group = iter->second;
+	//	delete group;
+	//}
+	for (map<int, Group*>::iterator iter = s_mapSetOfGroup.begin(); iter != s_mapSetOfGroup.end(); ++iter)
+	{
+		Group *group = iter->second;
+		delete group;
+	}
+	for (map<int, Group*>::iterator iter = s_mapSetOfsmallGroup.begin(); iter != s_mapSetOfsmallGroup.end(); ++iter)
+	{
+		Group *group = iter->second;
+		delete group;
+	}
+}
+
 ////////////////////////////////////////////////////////////////////////
 #pragma endregion
 

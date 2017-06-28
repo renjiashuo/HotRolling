@@ -160,7 +160,10 @@ void ReadDate::showResultSQL()
 		string str1 = "insert into TIPHR25 (MOD_STAMP_NO ,IPS_LOT_NO ,PLAN_NO ,MAT_NO, PLAN_EXEC_SEQ_NO, PLAN_BACKLOG_CODE, ROLL_SEQ_NO, PLAN_START_TIME,PLAN_END_TIME, WORK_TYPE ) values(";
 		string str2 = ")";
 		string tNowStr = "20170421080000";
+		string tFirstDayStr = tNowStr.substr(0, 8) + "000000";
 		time_t tNow = TortoiseShell::StringToDatetime(tNowStr);
+		time_t tFirstDay = TortoiseShell::StringToDatetime(tNowStr) - TortoiseShell::StringToDatetime(tFirstDayStr);
+		tFirstDay /= 60;
 		for (map<int, TortoiseShell*>::iterator iter = TortoiseShell::s_mapSetOfTortoiseShell.begin(); iter != TortoiseShell::s_mapSetOfTortoiseShell.end(); iter++)
 		{
 			int tortoiseShellNo = iter->first;
@@ -175,7 +178,7 @@ void ReadDate::showResultSQL()
 					// 模型邮戳号
 					string str_MOD_STAMP_NO = steelCoil->mod_stamp_no;
 					// 应用批次号
-					int int_IPS_LOT_NO = (int)steelCoil->roll_end_time_double / (24 * 60) + 1;
+					int int_IPS_LOT_NO = (int)(steelCoil->roll_begin_time_double + tFirstDay + (tortoiseShellNo - 1) * 10) / (24 * 60) + 1;
 					char char_IPS_LOT_NO[10];
 					sprintf(char_IPS_LOT_NO, "%d", int_IPS_LOT_NO);
 					string str_IPS_LOT_NO = char_IPS_LOT_NO;

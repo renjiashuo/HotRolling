@@ -90,6 +90,10 @@ public:
 	~Group();
 	//
 	// 摘要:
+	//     释放所有static map的指针。
+	static void release();
+	//
+	// 摘要:
 	//     indata。
 	static void indata(map<int, Group*>&m_data, int a, Group* b);
 	

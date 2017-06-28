@@ -4,6 +4,20 @@
 #include "f_iphr_TortoiseShell.h"
 #include "f_iphr_readdate.h"
 
+void release()
+{
+	//////////////////////////////////////////////////////////////////////////
+	TortoiseShell::s_mapSetOfTortoiseShell;
+	Group::s_least;
+	Group::s_mapSetOfGroup;
+	Group::s_mapSetOfsmallGroup;
+	SteelCoil::s_SteelCoil;
+	//////////////////////////////////////////////////////////////////////////
+	TortoiseShell::release();
+	Group::release();
+	SteelCoil::release();
+}
+
 int main()
 {
 	clock_t startTime, finishTime;
@@ -38,6 +52,7 @@ int main()
 	totalTime = (double)(finishTime - startTime) / CLOCKS_PER_SEC;
 	cout << "程序的运行时间为" << totalTime << "秒！" << endl << endl;
 
+	release();
 	system("pause");
 	return 0;
 }

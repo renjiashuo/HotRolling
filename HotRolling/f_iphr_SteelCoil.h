@@ -165,6 +165,10 @@ public:
 	~SteelCoil();
 	//
 	// 摘要:
+	//     释放所有static map的指针。
+	static void release();
+	//
+	// 摘要:
 	//     indata。
 	static void indata(map<pair<pair<pair < pair<pair<pair<pair<pair<pair<pair<pair<pair<double, double>, string>, string>, int>, int>, int>, string>, int>, int>, int>, int>, string>, vector<SteelCoil*> > &m_data, double a, double b, string c, string d, int e, int f, int g, string k, int i, int j, int m, int n, string p, SteelCoil* h);
 
