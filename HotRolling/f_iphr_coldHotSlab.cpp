@@ -51,6 +51,11 @@ coldHotSlab::~coldHotSlab()
 {
 }
 
+void coldHotSlab::release()
+{
+	coldHotSlab::row = 0;
+}
+
 ////////////////////////////////////////////////////////////////////////
 #pragma endregion
 

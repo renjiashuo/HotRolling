@@ -448,10 +448,10 @@ void TortoiseShell::localsearch1()
 										// »Ö¸´Ñ¡ÖÐµÄÎÚ¹ê¿Ç
 										s_mapSetOfTortoiseShell[Chosen_Shell]->m_main_groups.clear();
 										swap(s_mapSetOfTortoiseShell[Chosen_Shell]->m_main_groups, m_temp_second);
-										s_mapSetOfTortoiseShell[Another_Shell]->m_main_groups.clear();
-										swap(s_mapSetOfTortoiseShell[Another_Shell]->m_main_groups, m_temp1_second);
 										// ²åÈëÎ´·ÖÅä¸Ö¾í×éµÄÎÚ¹ê¿Ç
 										s_mapSetOfTortoiseShell.insert(make_pair(iter07->first, iter07->second));
+										s_mapSetOfTortoiseShell[Another_Shell]->m_main_groups.clear();
+										swap(s_mapSetOfTortoiseShell[Another_Shell]->m_main_groups, m_temp1_second);
 
 										continue;
 									}
@@ -503,10 +503,10 @@ void TortoiseShell::localsearch1()
 									// »Ö¸´Ñ¡ÖÐµÄÎÚ¹ê¿Ç
 									s_mapSetOfTortoiseShell[Chosen_Shell]->m_main_groups.clear();
 									swap(s_mapSetOfTortoiseShell[Chosen_Shell]->m_main_groups, m_temp_second);
-									s_mapSetOfTortoiseShell[Another_Shell]->m_main_groups.clear();
-									swap(s_mapSetOfTortoiseShell[Another_Shell]->m_main_groups, m_temp1_second);
 									// ²åÈëÎ´·ÖÅä¸Ö¾í×éµÄÎÚ¹ê¿Ç
 									s_mapSetOfTortoiseShell.insert(make_pair(iter07->first, iter07->second));
+									s_mapSetOfTortoiseShell[Another_Shell]->m_main_groups.clear();
+									swap(s_mapSetOfTortoiseShell[Another_Shell]->m_main_groups, m_temp1_second);
 
 									continue;
 								}
@@ -628,10 +628,10 @@ void TortoiseShell::localsearch1()
 									// »Ö¸´Ñ¡ÖÐµÄÎÚ¹ê¿Ç
 									s_mapSetOfTortoiseShell[Chosen_Shell]->m_main_groups.clear();
 									swap(s_mapSetOfTortoiseShell[Chosen_Shell]->m_main_groups, m_temp_second);
-									s_mapSetOfTortoiseShell[Another_Shell]->m_main_groups.clear();
-									swap(s_mapSetOfTortoiseShell[Another_Shell]->m_main_groups, m_temp1_second);
 									// ²åÈëÎ´·ÖÅä¸Ö¾í×éµÄÎÚ¹ê¿Ç
 									s_mapSetOfTortoiseShell.insert(make_pair(iter07->first, iter07->second));
+									s_mapSetOfTortoiseShell[Another_Shell]->m_main_groups.clear();
+									swap(s_mapSetOfTortoiseShell[Another_Shell]->m_main_groups, m_temp1_second);
 									continue;
 								}
 							}
@@ -682,10 +682,10 @@ void TortoiseShell::localsearch1()
 								// »Ö¸´Ñ¡ÖÐµÄÎÚ¹ê¿Ç
 								s_mapSetOfTortoiseShell[Chosen_Shell]->m_main_groups.clear();
 								swap(s_mapSetOfTortoiseShell[Chosen_Shell]->m_main_groups, m_temp_second);
-								s_mapSetOfTortoiseShell[Another_Shell]->m_main_groups.clear();
-								swap(s_mapSetOfTortoiseShell[Another_Shell]->m_main_groups, m_temp1_second);
 								// ²åÈëÎ´·ÖÅä¸Ö¾í×éµÄÎÚ¹ê¿Ç
 								s_mapSetOfTortoiseShell.insert(make_pair(iter07->first, iter07->second));
+								s_mapSetOfTortoiseShell[Another_Shell]->m_main_groups.clear();
+								swap(s_mapSetOfTortoiseShell[Another_Shell]->m_main_groups, m_temp1_second);
 								continue;
 							}
 						}

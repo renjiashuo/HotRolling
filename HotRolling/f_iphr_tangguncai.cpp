@@ -60,6 +60,11 @@ tangguncai::~tangguncai()
 {
 }
 
+void tangguncai::release()
+{
+	tangguncai::row = 0;
+}
+
 ////////////////////////////////////////////////////////////////////////
 #pragma endregion
 

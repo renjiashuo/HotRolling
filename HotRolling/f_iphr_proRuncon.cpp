@@ -61,6 +61,11 @@ proRuncon::~proRuncon()
 {
 }
 
+void proRuncon::release()
+{
+	proRuncon::row = 0;
+}
+
 ////////////////////////////////////////////////////////////////////////
 #pragma endregion
 

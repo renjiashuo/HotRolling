@@ -49,6 +49,11 @@ overhaulTime::~overhaulTime()
 {
 }
 
+void overhaulTime::release()
+{
+	overhaulTime::row = 0;
+}
+
 ////////////////////////////////////////////////////////////////////////
 #pragma endregion
 

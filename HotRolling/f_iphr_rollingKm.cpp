@@ -51,6 +51,11 @@ rollingKm::~rollingKm()
 {
 }
 
+void rollingKm::release()
+{
+	rollingKm::row = 0;
+}
+
 ////////////////////////////////////////////////////////////////////////
 #pragma endregion
 

@@ -56,6 +56,11 @@ ruleparaDef::~ruleparaDef()
 {
 }
 
+void ruleparaDef::release()
+{
+	ruleparaDef::row = 0;
+}
+
 ////////////////////////////////////////////////////////////////////////
 #pragma endregion
 

@@ -50,6 +50,11 @@ keyindicatorDef::~keyindicatorDef()
 {
 }
 
+void keyindicatorDef::release()
+{
+	keyindicatorDef::row = 0;
+}
+
 ////////////////////////////////////////////////////////////////////////
 #pragma endregion
 

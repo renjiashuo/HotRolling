@@ -53,6 +53,11 @@ zhuticai::~zhuticai()
 {
 }
 
+void zhuticai::release()
+{
+	zhuticai::row = 0;
+}
+
 ////////////////////////////////////////////////////////////////////////
 #pragma endregion
 

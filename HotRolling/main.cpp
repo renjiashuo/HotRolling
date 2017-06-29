@@ -26,7 +26,7 @@ int main()
 	//////////////////////////////////////////////////////////////////////////
 	// º‡ ””√
 	SteelCoil::s_SteelCoil;
-	Group::s_mapSetOfGroup;
+	Group::s_mapSetOfGroup; 
 	Group::s_mapSetOfsmallGroup;
 	TortoiseShell::s_mapSetOfTortoiseShell;
 	Group::s_least;

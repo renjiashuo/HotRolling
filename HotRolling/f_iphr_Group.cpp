@@ -198,6 +198,10 @@ void Group::release()
 		Group *group = iter->second;
 		delete group;
 	}
+	s_least.clear();
+	s_mapSetOfGroup.clear();
+	s_mapSetOfsmallGroup.clear();
+	Group::s_GroupCount = 0;
 }
 
 ////////////////////////////////////////////////////////////////////////

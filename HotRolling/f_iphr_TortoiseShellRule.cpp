@@ -53,6 +53,11 @@ TortoiseShellRule::~TortoiseShellRule()
 {
 }
 
+void TortoiseShellRule::release()
+{
+	TortoiseShellRule::row = 0;
+}
+
 ////////////////////////////////////////////////////////////////////////
 #pragma endregion
 

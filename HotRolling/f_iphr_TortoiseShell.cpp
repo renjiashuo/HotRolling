@@ -75,6 +75,21 @@ void TortoiseShell::release()
 		TortoiseShell *tortoiseShell = iter->second;
 		delete tortoiseShell;
 	}
+	s_mapSetOfTortoiseShell.clear();
+	TortoiseShell::s_TortoiseShellCount = 0;
+	TortoiseShell::allTortoiseShell_len = 0;
+	//TortoiseShell::m_DHCR = 0;
+	TortoiseShell::allsteelcCoil_wt = 0;
+	TortoiseShell::best_kpi = 0;
+	TortoiseShell::all_penalty = 0;
+	TortoiseShell::flow_rate = 0;
+	TortoiseShell::DHCR_rate = 0;
+	TortoiseShell::order_rate = 0;
+	TortoiseShell::Scheduling_quality = 0;
+	TortoiseShell::rollingkm_rate = 0;
+	TortoiseShell::plantype.clear();
+	TortoiseShell::flowrule.clear();
+	TortoiseShell::actualflow.clear();
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -1011,6 +1026,7 @@ void TortoiseShell::calculateRollingFinishTime()
 			Group *group = iter2->second;
 			// 遍历钢卷组内的钢卷
 			for (vector<SteelCoil*>::iterator iter3 = group->m_SteelCoil.begin(); iter3 != group->m_SteelCoil.end(); iter3++)
+
 			{
 				SteelCoil *steelCoil = *iter3;
 				//steelCoil->roll_begin_time_double = nowTime;
@@ -1150,15 +1166,15 @@ int								TortoiseShell::s_TortoiseShellCount = 0;
 double							TortoiseShell::allTortoiseShell_len = 0;
 //double							TortoiseShell::m_DHCR = 0;
 double							TortoiseShell::allsteelcCoil_wt = 0;
-double							TortoiseShell::best_kpi=0;
-int								TortoiseShell::all_penalty=0;
-double							TortoiseShell::flow_rate;
-double							TortoiseShell::DHCR_rate;
-double							TortoiseShell::order_rate;
-double							TortoiseShell::Scheduling_quality;
-double							TortoiseShell::rollingkm_rate;
+double							TortoiseShell::best_kpi = 0;
+int								TortoiseShell::all_penalty = 0;
+double							TortoiseShell::flow_rate = 0;
+double							TortoiseShell::DHCR_rate = 0;
+double							TortoiseShell::order_rate = 0;
+double							TortoiseShell::Scheduling_quality = 0;
+double							TortoiseShell::rollingkm_rate = 0;
 map<pair<string, string>, string>		TortoiseShell::plantype = map<pair<string, string>, string>();
 map<pair<double, string>, double>		TortoiseShell::flowrule = map<pair<double, string>, double>();
-map<pair<double, string>, double>		TortoiseShell::actualflow = map<pair<double,string>,double >() ;
+map<pair<double, string>, double>		TortoiseShell::actualflow = map<pair<double, string>, double >();
 ////////////////////////////////////////////////////////////////////////
 #pragma endregion

@@ -212,6 +212,8 @@ void SteelCoil::release()
 			delete steelCoil;
 		}
 	}
+	s_SteelCoil.clear();
+	SteelCoil::s_SteelCoilCount = 0;
 }
 ////////////////////////////////////////////////////////////////////////
 #pragma endregion

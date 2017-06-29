@@ -54,6 +54,11 @@ rulePenalty::~rulePenalty()
 {
 }
 
+void rulePenalty::release()
+{
+	rulePenalty::row = 0;
+}
+
 ////////////////////////////////////////////////////////////////////////
 #pragma endregion
 

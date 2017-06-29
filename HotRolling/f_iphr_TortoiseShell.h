@@ -100,7 +100,7 @@ public:
 	~TortoiseShell();
 	//
 	// 摘要:
-	//     释放所有static map的指针。
+	//     释放所有static的。
 	static void release();
 	//////////////////////////////////////////////////////////////////////////
 	#pragma endregion

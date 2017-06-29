@@ -63,6 +63,10 @@ public:
 	// 摘要:
 	//     析构函数。
 	~TortoiseShellRule();
+	//
+	// 摘要:
+	//     释放所有static的。
+	static void release();
 
 	//////////////////////////////////////////////////////////////////////////
 #pragma endregion
