@@ -169,6 +169,11 @@ void ReadDate::showResultSQL()
 			int tortoiseShellNo = iter->first;
 			TortoiseShell *tortoiseShell = iter->second;
 			int seqNo = 1;
+			// 应用批次号
+			int int_IPS_LOT_NO = (int)((*tortoiseShell->m_main_groups.begin()->second->m_SteelCoil.begin())->roll_begin_time_double + tFirstDay + (tortoiseShellNo - 1) * 10) / (24 * 60) + 1;
+			char char_IPS_LOT_NO[10];
+			sprintf(char_IPS_LOT_NO, "%d", int_IPS_LOT_NO);
+			string str_IPS_LOT_NO = char_IPS_LOT_NO;
 			for (map<pair<int, int>, Group*>::iterator iter2 = tortoiseShell->m_main_groups.begin(); iter2 != tortoiseShell->m_main_groups.end(); iter2++)
 			{
 				Group *group = iter2->second;
@@ -178,10 +183,10 @@ void ReadDate::showResultSQL()
 					// 模型邮戳号
 					string str_MOD_STAMP_NO = steelCoil->mod_stamp_no;
 					// 应用批次号
-					int int_IPS_LOT_NO = (int)(steelCoil->roll_begin_time_double + tFirstDay + (tortoiseShellNo - 1) * 10) / (24 * 60) + 1;
-					char char_IPS_LOT_NO[10];
-					sprintf(char_IPS_LOT_NO, "%d", int_IPS_LOT_NO);
-					string str_IPS_LOT_NO = char_IPS_LOT_NO;
+					//int int_IPS_LOT_NO = (int)(steelCoil->roll_begin_time_double + tFirstDay + (tortoiseShellNo - 1) * 10) / (24 * 60) + 1;
+					//char char_IPS_LOT_NO[10];
+					//sprintf(char_IPS_LOT_NO, "%d", int_IPS_LOT_NO);
+					//string str_IPS_LOT_NO = char_IPS_LOT_NO;
 					// 计划号
 					char char_PLAN_NO[10];
 					sprintf(char_PLAN_NO, "%d", tortoiseShellNo);
