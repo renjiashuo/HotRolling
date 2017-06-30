@@ -86,6 +86,10 @@ public:
 	Group(Group *group, double lonth);
 	//
 	// 摘要:
+	//     构造函数。将钢卷组的小于lonth公里数、小于n个钢卷，最多能放的钢卷赋给新的钢卷组。
+	Group(Group *group, double lonth, int n);
+	//
+	// 摘要:
 	//     析构函数。
 	~Group();
 	//

@@ -137,6 +137,54 @@ Group::Group(Group *group, double lonth)
 	Group::s_mapSetOfsmallGroup.insert(make_pair(this->group_no, this));
 }
 
+Group::Group(Group *group, double lonth, int n)
+{
+	// 初始化相同遍历
+	this->group_no = s_mapSetOfsmallGroup.size() + 1;
+	this->plan_type = group->plan_type;
+	this->st_no = group->st_no;
+	this->nom_roll_thick = group->nom_roll_thick;
+	this->nom_roll_width = group->nom_roll_width;
+	this->nom_heat_temp = group->nom_heat_temp;
+	this->nom_afft_temp = group->nom_afft_temp;
+	this->nom_coil_temp = group->nom_coil_temp;
+	this->high_temp_flag = group->high_temp_flag;
+	this->zone_max_m = group->zone_max_m;
+	this->zone_max_num = group->zone_max_num;
+	this->zone_min_m = group->zone_min_m;
+	this->zone_min_num = group->zone_min_num;
+	this->slab_wt = group->slab_wt;
+	this->roll_len = group->roll_len;
+	this->nom_hard_group_code = group->nom_hard_group_code;
+	// 转移钢卷到新的钢卷组中
+	roll_len = 0;	// 轧制长度
+	int n_now = 0;
+	for (vector<SteelCoil*>::iterator iter = group->m_SteelCoil.begin(); iter != group->m_SteelCoil.end();)
+	{
+		// 钢卷组内每一个钢卷
+		SteelCoil *steelCoil = *iter;
+		// 如果新钢卷组的长度加下一个钢卷的长度小于等于需要的长度
+		if (roll_len + steelCoil->roll_len <= lonth && n_now < n)
+		{
+			n_now++;
+			// 更新新钢卷组长度
+			roll_len += steelCoil->roll_len;
+			// 更新原钢卷组长度
+			group->roll_len -= steelCoil->roll_len;
+			// 更新新钢卷组的重量
+			slab_wt += steelCoil->slab_wt;
+			// 更新原钢卷组的重量
+			group->slab_wt -= steelCoil->slab_wt;
+			// 转移钢卷
+			this->m_SteelCoil.insert(this->m_SteelCoil.end(), iter, iter + 1);
+			iter = group->m_SteelCoil.erase(iter);
+		}
+		else
+			break;
+	}
+	Group::s_mapSetOfsmallGroup.insert(make_pair(this->group_no, this));
+}
+
 void Group::indata(map<int, Group*>&m_data, int a, Group* b)
 {
 	m_data.insert(make_pair(a, b));

@@ -189,6 +189,7 @@ void TortoiseShell::FinishShell()
 	//////////////////////////////////////////////////////////////////////////
 	const double samewidth_limit = 500000.0;			// 同宽公里数限制
 	const double max_TortoiseShell_len = 50000;			// 乌龟壳最大公里（假设）	
+	int	SAME_WIDTH_NUM = 100;			// 同宽块数
 	for (map<int, Group*>::iterator iter = Group::s_mapSetOfGroup.begin(); iter != Group::s_mapSetOfGroup.end();)
 	{
 		// 准备放入的钢卷组及其计划类型
@@ -279,10 +280,10 @@ void TortoiseShell::FinishShell()
 		if (iter2 == s_mapSetOfTortoiseShell.end())
 		{
 			// 如果钢卷组内的公里数大于最大同宽公里数限制，则分割成小钢卷组
-			if (group->roll_len >= samewidth_limit)
+			if (group->roll_len >= samewidth_limit || group->m_SteelCoil.size() > SAME_WIDTH_NUM)
 			{
 				// 创建小钢卷组
-				Group *group_new = new Group(group, samewidth_limit);
+				Group *group_new = new Group(group, samewidth_limit, SAME_WIDTH_NUM);
 				// 如果是空空的小钢卷组，则说明一个钢卷太大放不了了，那么查找下一个乌龟壳
 				if (group_new->m_SteelCoil.empty())
 				{
@@ -412,7 +413,10 @@ void TortoiseShell::DeleteBad()
 			end_located = tortoiseShell->m_main_groups.rbegin()->first.second;
 		tortoiseShell->m_main_groups.insert(make_pair(make_pair(end_located, end_located + group->roll_len), group));
 	}
-	s_mapSetOfTortoiseShell.insert(make_pair(s_mapSetOfTortoiseShell.size()+1, tortoiseShell));	
+	if (!tortoiseShell->m_main_groups.empty())
+		s_mapSetOfTortoiseShell.insert(make_pair(s_mapSetOfTortoiseShell.size() + 1, tortoiseShell));
+	else
+		delete tortoiseShell;
 	////////////////////////////////////////////////////////////////////////////
 	#pragma endregion
 }
@@ -512,17 +516,17 @@ double TortoiseShell::computekpi()
 	// 计算流向匹配率
 	for (int i = 1; i <= actualflow.size() / 2; i++)
 	{
-		double actualflow_i10 = actualflow.find(make_pair(i, "10"))->second;
-		double flowrule_i10 = flowrule.find(make_pair(i, "10"))->second;
-		double actualflow_i11 = actualflow.find(make_pair(i, "11"))->second;
-		double flowrule_i11 = flowrule.find(make_pair(i, "11"))->second;
+		double actualflow_i10 = actualflow.find(make_pair(i, "10")) != actualflow.end() ? actualflow.find(make_pair(i, "10"))->second : 0;
+		double flowrule_i10 = flowrule.find(make_pair(i, "10")) != flowrule.end() ? flowrule.find(make_pair(i, "10"))->second : 0;
+		double actualflow_i11 = actualflow.find(make_pair(i, "11")) != actualflow.end() ? actualflow.find(make_pair(i, "11"))->second : 0;
+		double flowrule_i11 = flowrule.find(make_pair(i, "11")) != flowrule.end() ? flowrule.find(make_pair(i, "11"))->second : 0;
 		double flowrate = 0;
 		if (flowrule_i10 != 0)
 			flowrate = (actualflow_i10 / flowrule_i10) / 2;
 		if (flowrule_i11 != 0)
 			flowrate = (actualflow_i11 / flowrule_i11) / 2;
 		flowrateall += flowrate;
-	}
+	} 
 	// 计算排好乌龟壳的所有钢卷总重量、某流向钢卷总重量、有DHCR标记的钢卷总数、乌龟壳总长度
 	int j = 0;// 计算钢卷总数
 	for (map<int, TortoiseShell*>::iterator iter = s_mapSetOfTortoiseShell.begin(); iter != s_mapSetOfTortoiseShell.end(); iter++)
@@ -777,7 +781,7 @@ bool TortoiseShell::addMainGroup(Group *group)
 	for (int i = 0; i < group->m_SteelCoil.size(); i++)
 	{
 		// 如果要放入的钢卷大于轧制位区间约束，则不可放入
-		if (partZoneKm >(*group->m_SteelCoil[i]).zone_min_m || partZoneNum > (*group->m_SteelCoil[i]).zone_min_num)
+		if (partZoneKm >(*group->m_SteelCoil[i]).zone_max_m || partZoneNum > (*group->m_SteelCoil[i]).zone_max_num)
 		{
 			if (canSaveNum > i)
 				canSaveNum = i;
